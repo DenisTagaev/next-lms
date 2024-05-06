@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { SidebarItemProps } from "./interfaces";
+import { SidebarItemProps } from "../interfaces";
 import { cn } from "@/lib/utils";
 
 export const SidebarItem = ({

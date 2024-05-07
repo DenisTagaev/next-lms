@@ -1,14 +1,12 @@
 "use client"
 
 import * as zod from "zod"
-import axios, { AxiosError, AxiosResponse } from "axios"
+import axios, { AxiosResponse } from "axios"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { UseFormReturn, useForm } from "react-hook-form"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import toast from "react-hot-toast"
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime"
-import { CustomAxiosError } from "@/app/(dashboard)/interfaces"
 
 import { 
     Form, 
@@ -23,36 +21,29 @@ import {
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { formSchema } from "@/app/(dashboard)/_schemas/new-course"
+import { getErrorMessage } from "@/app/(dashboard)/client-utils"
+import toast from "react-hot-toast"
 
 export default function AddCourse() {
     const router: AppRouterInstance = useRouter();
     const form: UseFormReturn<zod.infer<typeof formSchema>> = 
-        useForm<zod.infer<typeof formSchema>>
-    ({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-        title: "",
-      },
-    });
+        useForm<zod.infer<typeof formSchema>>(
+        {
+            resolver: zodResolver(formSchema),
+            defaultValues: {
+                title: "",
+            },
+        });
 
     const { isSubmitting, isValid } = form.formState;
 
     const onSubmit = async(values: zod.infer<typeof formSchema>) => {
         try {
-            const response: AxiosResponse<any, any> = await axios.post("/api/course", values);
+            const response: AxiosResponse<any, any> = await axios.post("/api/courses", values);
             router.push(`/teacher/courses/${response.data.id}`);
+            toast.success("Course successfully created!");
         } catch (error) {
-            
-            if(error instanceof AxiosError) {
-                (error as CustomAxiosError).response?.data?.message
-                ? toast.error(
-                    (error as CustomAxiosError)?.response?.data?.message
-                )
-                : toast.error((error as CustomAxiosError)?.message);
-                ;
-            } else {
-                toast.error("An unexpected error occurred.");
-            }
+            getErrorMessage(error);
         }
     };
 

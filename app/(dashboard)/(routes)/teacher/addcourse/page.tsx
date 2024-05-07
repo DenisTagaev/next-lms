@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation"
 import Link from "next/link"
 import toast from "react-hot-toast"
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime"
+import { CustomAxiosError } from "@/app/(dashboard)/interfaces"
 
 import { 
     Form, 
@@ -18,10 +19,6 @@ import {
     FormLabel,
     FormMessage 
 } from '@/components/ui/form'
-
-interface MyAxiosError<T = any> extends AxiosError {
-    response?: AxiosResponse<T>;
-}
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -47,11 +44,11 @@ export default function AddCourse() {
         } catch (error) {
             
             if(error instanceof AxiosError) {
-                (error as MyAxiosError).response?.data?.message
+                (error as CustomAxiosError).response?.data?.message
                 ? toast.error(
-                    (error as MyAxiosError)?.response?.data?.message
+                    (error as CustomAxiosError)?.response?.data?.message
                 )
-                : toast.error((error as MyAxiosError)?.message);
+                : toast.error((error as CustomAxiosError)?.message);
                 ;
             } else {
                 toast.error("An unexpected error occurred.");

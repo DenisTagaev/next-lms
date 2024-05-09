@@ -5,15 +5,15 @@ import { NextResponse } from "next/server";
 
 export async function POST(
     req: Request,
-) {
+): Promise<NextResponse<unknown>> {
     try {
         const { userId }: { userId: string | null } = auth();
-        const { title } : { title: string } = await req.json();
-
+        
         if(!userId) {
             return new NextResponse("Unauthorized", { status: 401});
         }
-
+        
+        const { title } : { title: string } = await req.json();
         const course: Course = await db.course.create({
             data: { 
                 userId,

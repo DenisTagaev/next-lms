@@ -1,10 +1,15 @@
-import { checkExistence } from "@/app/(dashboard)/client-utils";
-import { IconBadge } from "@/components/icon-badge";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { Course } from "@prisma/client";
 import { LayoutDashboard } from "lucide-react";
 import { redirect } from "next/navigation";
+
+import { checkExistence } from "@/app/(dashboard)/client-utils";
+
+import { IconBadge } from "@/components/icon-badge";
+import { TitleForm } from "./_components/title-form";
+import { DescriptionForm } from "./_components/description-form";
+import { ImageForm } from "./_components/image-form";
 
 export default async function CourseIdPage({
     params
@@ -35,7 +40,7 @@ export default async function CourseIdPage({
         `(${requiredFields.filter(Boolean).length}/${requiredFields.length})`
 
     return (
-        <section className="p-6">
+        <section className="p-6 md:max-w-full">
         <div className="flex items-center justify-between">
             <div className="flex flex-col gap-y-2">
                 <h2 className="text-2xl font-semibold">
@@ -54,6 +59,18 @@ export default async function CourseIdPage({
                         Customize your course
                     </h3>
                 </div>
+                <TitleForm
+                    initialData={course}
+                    courseId={course.id}
+                />
+                <DescriptionForm
+                    initialData={course}
+                    courseId={course.id}
+                />
+                <ImageForm
+                    initialData={course}
+                    courseId={course.id}
+                />
             </div>
         </div>
         </section>

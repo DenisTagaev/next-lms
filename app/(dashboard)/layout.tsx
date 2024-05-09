@@ -7,7 +7,7 @@ const DashboardLayout = ({
   children: React.ReactNode
 }>) => {
   return (
-    <main className="h-full w-full max-w-lg">
+    <main className="h-full w-full">
         <nav className="h-[80px] md:pl-52 fixed inset-y-0 w-full z-99">
             <Navbar/>
         </nav>

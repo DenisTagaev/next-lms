@@ -20,16 +20,16 @@ import {
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { formSchema } from "@/app/(dashboard)/_schemas/new-course"
+import { formTitleSchema } from "@/app/(dashboard)/_schemas/new-course"
 import { getErrorMessage } from "@/app/(dashboard)/client-utils"
 import toast from "react-hot-toast"
 
 export default function AddCourse() {
     const router: AppRouterInstance = useRouter();
-    const form: UseFormReturn<zod.infer<typeof formSchema>> = 
-        useForm<zod.infer<typeof formSchema>>(
+    const form: UseFormReturn<zod.infer<typeof formTitleSchema>> = 
+        useForm<zod.infer<typeof formTitleSchema>>(
         {
-            resolver: zodResolver(formSchema),
+            resolver: zodResolver(formTitleSchema),
             defaultValues: {
                 title: "",
             },
@@ -37,7 +37,7 @@ export default function AddCourse() {
 
     const { isSubmitting, isValid } = form.formState;
 
-    const onSubmit = async(values: zod.infer<typeof formSchema>) => {
+    const onSubmit = async(values: zod.infer<typeof formTitleSchema>) => {
         try {
             const response: AxiosResponse<any, any> = await axios.post("/api/courses", values);
             router.push(`/teacher/courses/${response.data.id}`);
@@ -78,6 +78,7 @@ export default function AddCourse() {
                                     {...field}
                                 />
                             </FormControl>
+                            <FormMessage/>
                             <FormDescription>
                                 What would you like to teach in this course?
                             </FormDescription>

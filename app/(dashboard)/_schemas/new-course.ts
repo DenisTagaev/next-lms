@@ -1,9 +1,21 @@
 import * as zod from "zod"
 
-const formSchema = zod.object({
+const formTitleSchema = zod.object({
     title: zod.string().min(1, {
         message: "Title is required", 
     })
-})
+});
 
-export { formSchema } ;
+const formDescriptionSchema = zod.object({
+    description: zod.string().min(1, {
+        message: "Description is required",
+    })
+});
+
+const formImageSchema = zod.object({
+    imageUrl: zod.string().min(1, {
+        message: "Image is required",
+    }),
+});
+
+export { formTitleSchema, formDescriptionSchema, formImageSchema } ;

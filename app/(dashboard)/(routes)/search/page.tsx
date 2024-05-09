@@ -1,4 +1,4 @@
-export default function SearchPage() {
+export default function SearchPage(): JSX.Element {
   return (
     <div>
       

@@ -15,7 +15,7 @@ export async function PATCH(
     }
 
     const { courseId }: { courseId: string } = params;
-    const values = await req.json();
+    const _values = await req.json();
 
     const course: Course = await db.course.update({
         where: { 
@@ -23,7 +23,7 @@ export async function PATCH(
             userId,
         },
         data: {
-            ...values,
+            ..._values,
       },
     });
 

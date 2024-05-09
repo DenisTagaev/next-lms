@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export const Logo = () => {
+export const Logo = (): JSX.Element => {
     return (
         <Image
             height={30}

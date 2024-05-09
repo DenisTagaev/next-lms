@@ -8,16 +8,16 @@ export const SidebarItem = ({
     icon: Icon,
     label,
     href
-}: ISidebarItemProps) => {
-    const path = usePathname();
+}: ISidebarItemProps): JSX.Element => {
+    const path: string = usePathname();
     const router = useRouter();
 
-    const isActiveRoute: boolean =
+    const _isActiveRoute: boolean =
         (path === '/' && href === '/') ||
         path === href ||
         path?.startsWith(`${href}/`);
 
-    const onClick = () => router.push(href);
+    const onClick = (): void => router.push(href);
 
     return (
         <button 
@@ -27,7 +27,7 @@ export const SidebarItem = ({
                 `flex items-center gap-x-3 text-slate-600 text-nowrap 
                 text-sm font-[500] pl-6 transition-all hover:text-sky-600
                 hover:bg-slate-400/75`,
-                isActiveRoute && `text-sky-600 bg-slate-400/75 
+                _isActiveRoute && `text-sky-600 bg-slate-400/75 
                 hover:text-sky-600 hover:bg-slate-400/75 border-r-4
                 border-sky-600`
             )}
@@ -37,7 +37,7 @@ export const SidebarItem = ({
                     size={22}
                     className={cn(
                         'text-slate-600',
-                        isActiveRoute && 'text-sky-600'
+                        _isActiveRoute && 'text-sky-600'
                     )}
                 />
                 {label}

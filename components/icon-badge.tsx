@@ -53,7 +53,7 @@ export const IconBadge = ({
     icon: Icon,
     variant,
     size
-}: IconBadgeProps) => {
+}: IconBadgeProps): JSX.Element => {
     return (
         <div className={cn(backgroundVariance({ variant, size}))}>
             <Icon className={cn(iconVariance({ variant, size}))}/>

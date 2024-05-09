@@ -5,21 +5,22 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
+import { getErrorMessage } from "@/app/(dashboard)/client-utils";
+import { formImageSchema } from "@/app/(dashboard)/_schemas/new-course";
+import { IDescriptionFormProps } from "@/lib/interfaces";
+
 import Image  from "next/image"
 import { Button } from "@/components/ui/button";
 import { ImageIcon, Pencil, PlusCircle } from "lucide-react";
 import { FileUpload } from "@/components/file-upload";
 
-import { getErrorMessage } from "@/app/(dashboard)/client-utils";
-import { formImageSchema } from "@/app/(dashboard)/_schemas/new-course";
-import { IDescriptionFormProps } from "@/lib/interfaces";
 
 export const ImageForm = ({
     initialData,
     courseId
-}: IDescriptionFormProps) => {
+}: IDescriptionFormProps): JSX.Element => {
     const [isEditing, setIsEditing] = useState(false);
-    const toggleEdit = () => setIsEditing((current) => !current);
+    const toggleEdit = (): void => setIsEditing((current) => !current);
     
     const router = useRouter();
 

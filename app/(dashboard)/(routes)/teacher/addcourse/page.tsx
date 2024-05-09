@@ -7,6 +7,10 @@ import { UseFormReturn, useForm } from "react-hook-form"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime"
+import toast from "react-hot-toast"
+
+import { formTitleSchema } from "@/app/(dashboard)/_schemas/new-course"
+import { getErrorMessage } from "@/app/(dashboard)/client-utils"
 
 import { 
     Form, 
@@ -17,16 +21,13 @@ import {
     FormLabel,
     FormMessage 
 } from '@/components/ui/form'
-
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { formTitleSchema } from "@/app/(dashboard)/_schemas/new-course"
-import { getErrorMessage } from "@/app/(dashboard)/client-utils"
-import toast from "react-hot-toast"
 
-export default function AddCourse() {
+
+export default function AddCourse(): JSX.Element {
     const router: AppRouterInstance = useRouter();
-    const form: UseFormReturn<zod.infer<typeof formTitleSchema>> = 
+    const _form: UseFormReturn<zod.infer<typeof formTitleSchema>> = 
         useForm<zod.infer<typeof formTitleSchema>>(
         {
             resolver: zodResolver(formTitleSchema),
@@ -35,7 +36,7 @@ export default function AddCourse() {
             },
         });
 
-    const { isSubmitting, isValid } = form.formState;
+    const { isSubmitting, isValid } = _form.formState;
 
     const onSubmit = async(values: zod.infer<typeof formTitleSchema>) => {
         try {
@@ -58,13 +59,13 @@ export default function AddCourse() {
             How would you like to name your course? Don&apos;t worry, you can
             change this later.
           </p>
-          <Form {...form}>
+          <Form {..._form}>
             <form 
-                onSubmit={form.handleSubmit(onSubmit)}
+                onSubmit={_form.handleSubmit(onSubmit)}
                 className="space-y-8 mt-8"
             >
                 <FormField
-                    control={form.control}
+                    control={_form.control}
                     name="title"
                     render={({ field }) => (
                         <FormItem>

@@ -7,9 +7,10 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
-import { formTitleSchema } from "@/app/(dashboard)/_schemas/new-course";
+import { formCategorySchema } from "@/app/(dashboard)/_schemas/new-course";
 import { getErrorMessage } from "@/app/(dashboard)/client-utils";
-import { ITitleFormProps } from "@/lib/interfaces";
+import { ICategoryFormProps } from "@/lib/interfaces";
+import { cn } from "@/lib/utils";
 
 import {
   Form,
@@ -18,30 +19,36 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Pencil } from "lucide-react";
+import { Combobox } from "@/components/ui/combobox";
 
 
-export const TitleForm = ({
+export const CategoryForm = ({
     initialData,
-    courseId
-}: ITitleFormProps): JSX.Element => {
+    courseId,
+    options
+}: ICategoryFormProps): JSX.Element => {
     const [isEditing, setIsEditing] = useState(false);
     const toggleEdit = (): void => setIsEditing((current) => !current);
     
     const router = useRouter();
 
-    const _form: UseFormReturn<zod.infer<typeof formTitleSchema>> = useForm<
-      zod.infer<typeof formTitleSchema>
+    const _form: UseFormReturn<zod.infer<typeof formCategorySchema>> = useForm<
+      zod.infer<typeof formCategorySchema>
     >({
-      resolver: zodResolver(formTitleSchema),
-      defaultValues: initialData
+      resolver: zodResolver(formCategorySchema),
+      defaultValues: {
+        categoryId: initialData?.categoryId || ""
+      }
     });
+
+    const _selectedCategory = options.find(
+      option => option.value === initialData?.categoryId);
 
     const { isSubmitting, isValid } = _form.formState;
 
-    const onSubmit = async (values: zod.infer<typeof formTitleSchema>) => {
+    const onSubmit = async (values: zod.infer<typeof formCategorySchema>) => {
       try {
         const response: AxiosResponse<any, any> = await axios.patch(
           `/api/courses/${courseId}`,
@@ -58,20 +65,25 @@ export const TitleForm = ({
     return (
       <div className="p-4 mt-6 border bg-sky-300/50 rounded-md">
         <div className="font-medium flex items-center justify-between">
-          Course Title
+          Course category
           <Button onClick={toggleEdit} variant="ghost">
             {isEditing ? (
               <>Cancel</>
             ) : (
               <>
                 <Pencil className="h-4 w-4 mr-2" />
-                Edit title
+                Edit category
               </>
             )}
           </Button>
         </div>
         {!isEditing ? (
-          <p className="text-sm mt-2">{initialData?.title}</p>
+          <p className={cn(
+            "text-sm mt-2",
+            !initialData?.categoryId && "text-slate-600 italic"
+          )}>
+            {_selectedCategory?.label || "No category yet"}
+          </p>
         ) : (
           <Form {..._form}>
             <form
@@ -80,14 +92,12 @@ export const TitleForm = ({
             >
               <FormField
                 control={_form.control}
-                name="title"
+                name="categoryId"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input
-                        className="bg-slate-100"
-                        disabled={isSubmitting}
-                        placeholder="e.g. 'Next.js 2024 full course'"
+                      <Combobox
+                        options={options}
                         {...field}
                       />
                     </FormControl>

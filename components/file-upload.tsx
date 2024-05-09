@@ -8,7 +8,7 @@ import { ClientUploadedFileData } from "uploadthing/types";
 export const FileUpload = ({ 
     onChange,
     endPoint
-}: IFileUploadProps) => {
+}: IFileUploadProps): JSX.Element => {
   return (
     <UploadDropzone
       endpoint={endPoint}

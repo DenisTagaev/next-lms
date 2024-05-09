@@ -4,10 +4,12 @@ import { UploadThingError } from "uploadthing/server";
 
 const f = createUploadthing();
 
-const getAuth = () => {
+const getAuth = (): {
+  userId: string;
+} => {
   const { userId }: { userId: string | null } = auth();
 
-  if(!userId) throw new UploadThingError("Unauthorized");;
+  if(!userId) throw new UploadThingError("Unauthorized");
   return { userId };
 }
 

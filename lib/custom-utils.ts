@@ -1,4 +1,8 @@
-export const getPathParams = (path: string) => {
+export const getPathParams = (path: string): {
+    isTeacher: boolean;
+    isPlayer: boolean;
+    isStudent: boolean;
+} => {
     if (path?.startsWith('/teacher')) {
          return { isTeacher: true, isPlayer: false, isStudent: false };
     } else if (path?.includes('/chapter')) {

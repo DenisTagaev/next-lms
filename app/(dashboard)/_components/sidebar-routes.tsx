@@ -5,7 +5,7 @@ import { SidebarItem } from "./sidebar-item";
 import { usePathname } from "next/navigation";
 import { getPathParams } from "@/lib/custom-utils";
 
-const guestRoutes = [
+const _guestRoutes = [
     {
         icon: Layout,
         label: "Dashboard",
@@ -18,7 +18,7 @@ const guestRoutes = [
     }
 ]
 
-const teacherRoutes = [
+const _teacherRoutes = [
     {
         icon: List,
         label: "Courses",
@@ -31,10 +31,10 @@ const teacherRoutes = [
     },
 ]
 
-export const SidebarRoutes = () => {
-    const path = usePathname();
+export const SidebarRoutes = (): JSX.Element => {
+    const path: string = usePathname();
     const routes = getPathParams(path).isTeacher ? 
-        teacherRoutes : guestRoutes;
+        _teacherRoutes : _guestRoutes;
 
     return (
         <div className="flex flex-col w-full">

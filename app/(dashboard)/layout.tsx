@@ -5,7 +5,7 @@ const DashboardLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode
-}>) => {
+}>): JSX.Element => {
   return (
     <main className="h-full w-full">
         <nav className="h-[80px] md:pl-52 fixed inset-y-0 w-full z-99">

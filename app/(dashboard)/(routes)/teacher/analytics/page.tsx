@@ -1,4 +1,4 @@
-export default function AnalyticsPage () {
+export default function AnalyticsPage (): JSX.Element {
     return (
         <div>
             Analytics page

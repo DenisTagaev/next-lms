@@ -1,10 +1,19 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    images: {
-        domains: [
-            "utfs.io"
-        ]
-    }
-}
+  images: {
+    remotePatterns: [
+      {
+        protocol: "http",
+        hostname: "utfs.io",
+        port: "",
+      },
+      {
+        protocol: "https",
+        hostname: "utfs.io",
+        port: "",
+      },
+    ],
+  },
+};
 
 module.exports = nextConfig

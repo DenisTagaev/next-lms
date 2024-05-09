@@ -18,4 +18,10 @@ const formImageSchema = zod.object({
     }),
 });
 
-export { formTitleSchema, formDescriptionSchema, formImageSchema } ;
+const formCategorySchema = zod.object({
+  categoryId: zod.string().min(1, {
+    message: "Category selection is required",
+  }),
+});
+
+export { formTitleSchema, formDescriptionSchema, formImageSchema, formCategorySchema } ;

@@ -23,7 +23,23 @@ export interface IDescriptionFormProps {
   initialData?: Course
   courseId: string;
 }
+
 export interface IFileUploadProps {
   onChange: (url?: string) => void;
   endPoint: keyof typeof fileRouter;
+}
+
+export interface ICategoryFormProps {
+  initialData?: Course;
+  courseId: string;
+  options: { label: string; value: string; }[];
+}
+
+export interface IComboBoxProps {
+  options: {
+    label: string;
+    value: string;
+  }[];
+  value?: string;
+  onChange: (value: string) => void;
 }

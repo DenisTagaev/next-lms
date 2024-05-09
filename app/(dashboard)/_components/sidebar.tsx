@@ -1,7 +1,7 @@
 import { Logo } from "./logo"
 import { SidebarRoutes } from "./sidebar-routes"
 
-export const Sidebar = () => {
+export const Sidebar = (): JSX.Element => {
     return (
         <aside className="h-full border-r flex flex-col 
             overflow-y-auto bg-slate-200 shadow-sm">

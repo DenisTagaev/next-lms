@@ -8,30 +8,28 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
 import { formDescriptionSchema } from "@/app/(dashboard)/_schemas/new-course";
+import { getErrorMessage } from "@/app/(dashboard)/client-utils";
 import { IDescriptionFormProps } from "@/lib/interfaces";
+import { cn } from "@/lib/utils";
 
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Pencil } from "lucide-react";
-import { getErrorMessage } from "@/app/(dashboard)/client-utils";
-import { cn } from "@/lib/utils";
 
 
 export const DescriptionForm = ({
     initialData,
     courseId
-}: IDescriptionFormProps) => {
+}: IDescriptionFormProps): JSX.Element => {
     const [isEditing, setIsEditing] = useState(false);
-    const toggleEdit = () => setIsEditing((current) => !current);
+    const toggleEdit = (): void => setIsEditing((current) => !current);
     
     const router = useRouter();
 
@@ -63,7 +61,7 @@ export const DescriptionForm = ({
     return (
       <div className="p-4 mt-6 border bg-sky-300/50 rounded-md">
         <div className="font-medium flex items-center justify-between">
-          Course description
+          Course category
           <Button onClick={toggleEdit} variant="ghost">
             {isEditing ? (
               <>Cancel</>
@@ -92,7 +90,7 @@ export const DescriptionForm = ({
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input
+                      <Textarea
                         className="bg-slate-100"
                         disabled={isSubmitting}
                         placeholder="e.g. 'Next.js 2024 full course'"

@@ -1,7 +1,7 @@
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { Course } from "@prisma/client";
-import { LayoutDashboard } from "lucide-react";
+import { CircleDollarSignIcon, LayoutDashboard, ListChecks } from "lucide-react";
 import { redirect } from "next/navigation";
 
 import { checkExistence } from "@/app/(dashboard)/client-utils";
@@ -11,6 +11,7 @@ import { TitleForm } from "./_components/title-form";
 import { DescriptionForm } from "./_components/description-form";
 import { ImageForm } from "./_components/image-form";
 import { CategoryForm } from "./_components/categories-form";
+import { PriceForm } from "./_components/price-form";
 
 export default async function CourseIdPage({
   params,
@@ -30,7 +31,10 @@ export default async function CourseIdPage({
     return redirect("/");
   }
 
-  const _categories = await db.category.findMany({
+  const _categories: {
+    id: string;
+    name: string;
+  }[] = await db.category.findMany({
     orderBy: {
       name: "asc",
     },
@@ -61,7 +65,7 @@ export default async function CourseIdPage({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16">
           <div className="flex items-center gap-x-2">
             <IconBadge variant="success" icon={LayoutDashboard} />
-            <h3 className="text-xl">Customize your _course</h3>
+            <h3 className="text-xl">Customize your course</h3>
           </div>
           <TitleForm initialData={_course} courseId={_course.id} />
           <DescriptionForm initialData={_course} courseId={_course.id} />
@@ -76,6 +80,18 @@ export default async function CourseIdPage({
               })
             )}
           />
+          <div className="space-y-6">
+            <div className="flex items-center gap-x-2">
+              <IconBadge icon={ListChecks} />
+              <h3 className="text-2xl">Course Chapters</h3>
+            </div>
+            <div>TODO: Chapters</div>
+            <div className="flex items-center gap-x-2">
+              <IconBadge icon={CircleDollarSignIcon} />
+              <h3 className="text-2xl">Put on sale</h3>
+            </div>
+            <PriceForm initialData={_course} courseId={_course.id} />
+          </div>
         </div>
       </div>
     </section>

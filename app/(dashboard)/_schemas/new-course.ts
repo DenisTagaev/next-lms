@@ -24,4 +24,8 @@ const formCategorySchema = zod.object({
   }),
 });
 
-export { formTitleSchema, formDescriptionSchema, formImageSchema, formCategorySchema } ;
+const formPriceSchema = zod.object({
+  price: zod.coerce.number(),
+});
+
+export { formTitleSchema, formDescriptionSchema, formImageSchema, formCategorySchema, formPriceSchema } ;

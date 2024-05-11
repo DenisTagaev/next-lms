@@ -4,6 +4,7 @@ const _db =  new PrismaClient();
 
 (async function main() {
     try {
+        await _db.category.deleteMany();
         await _db.category.createMany({
           data: [
             {
@@ -24,7 +25,7 @@ const _db =  new PrismaClient();
             {
               name: "Medical Courses",
             },
-          ],
+          ]
         });
         console.log("Successfully seeded categories");
     } catch (error) {   

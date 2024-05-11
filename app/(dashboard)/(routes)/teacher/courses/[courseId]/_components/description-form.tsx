@@ -61,7 +61,7 @@ export const DescriptionForm = ({
     return (
       <div className="p-4 mt-6 border bg-sky-300/50 rounded-md">
         <div className="font-medium flex items-center justify-between">
-          Course category
+          Course description
           <Button onClick={toggleEdit} variant="ghost">
             {isEditing ? (
               <>Cancel</>

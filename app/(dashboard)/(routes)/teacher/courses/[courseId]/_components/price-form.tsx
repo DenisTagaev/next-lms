@@ -7,9 +7,10 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
-import { formCategorySchema } from "@/app/(dashboard)/_schemas/new-course";
+import { formPriceSchema } from "@/app/(dashboard)/_schemas/new-course";
 import { getErrorMessage } from "@/app/(dashboard)/client-utils";
-import { ICategoryFormProps } from "@/lib/interfaces";
+import { IPriceFormProps } from "@/lib/interfaces";
+import { formatPrice } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 import {
@@ -21,33 +22,30 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Pencil } from "lucide-react";
-import { Combobox } from "@/components/ui/combobox";
+import { Input } from "@/components/ui/input";
 
 
-export const CategoryForm = ({
+export const PriceForm = ({
     initialData,
-    courseId,
-    options
-}: ICategoryFormProps): JSX.Element => {
+    courseId
+}: IPriceFormProps): JSX.Element => {
     const [isEditing, setIsEditing] = useState(false);
     const toggleEdit = (): void => setIsEditing((current) => !current);
     
     const router = useRouter();
 
-    const _form: UseFormReturn<zod.infer<typeof formCategorySchema>> = 
-      useForm<zod.infer<typeof formCategorySchema>>({
-        resolver: zodResolver(formCategorySchema),
-        defaultValues: {
-          categoryId: initialData.categoryId || ""
-        }
+    const form: UseFormReturn<zod.infer<typeof formPriceSchema>> = useForm<
+      zod.infer<typeof formPriceSchema>
+    >({
+      resolver: zodResolver(formPriceSchema),
+      defaultValues: {
+        price: initialData.price || undefined
+      }
     });
 
-    const _selectedCategory = options.find(
-      option => option.value === initialData.categoryId);
+    const { isSubmitting, isValid } = form.formState;
 
-    const { isSubmitting, isValid } = _form.formState;
-
-    const onSubmit = async (values: zod.infer<typeof formCategorySchema>) => {
+    const onSubmit = async (values: zod.infer<typeof formPriceSchema>) => {
       try {
         const response: AxiosResponse<any, any> = await axios.patch(
           `/api/courses/${courseId}`,
@@ -60,43 +58,51 @@ export const CategoryForm = ({
         getErrorMessage(error);
       }
     };
-    
+
     return (
       <div className="p-4 mt-6 border bg-sky-300/50 rounded-md">
         <div className="font-medium flex items-center justify-between">
-          Course category
+          Course price
           <Button onClick={toggleEdit} variant="ghost">
             {isEditing ? (
               <>Cancel</>
             ) : (
               <>
                 <Pencil className="h-4 w-4 mr-2" />
-                Edit category
+                Edit price
               </>
             )}
           </Button>
         </div>
         {!isEditing ? (
-          <p className={cn(
-            "text-sm mt-2",
-            !initialData.categoryId && "text-slate-600 italic"
-          )}>
-            {_selectedCategory?.label || "No category yet"}
+          <p
+            className={cn(
+              "text-sm mt-2",
+              !initialData.price && "text-slate-600 italic"
+            )}
+          >
+            {initialData.price ? 
+              formatPrice(initialData.price) : "No price yet"
+            }
           </p>
         ) : (
-          <Form {..._form}>
+          <Form {...form}>
             <form
               className="space-y-4 mt-4"
-              onSubmit={_form.handleSubmit(onSubmit)}
+              onSubmit={form.handleSubmit(onSubmit)}
             >
               <FormField
-                control={_form.control}
-                name="categoryId"
+                control={form.control}
+                name="price"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Combobox
-                        options={options}
+                      <Input
+                        type="number"
+                        step={0.1}
+                        className="bg-slate-100"
+                        disabled={isSubmitting}
+                        placeholder="Set a price for your course"
                         {...field}
                       />
                     </FormControl>
@@ -105,10 +111,7 @@ export const CategoryForm = ({
                 )}
               />
               <div className="flex items-center gap-x-2">
-                <Button
-                  disabled={ !isValid || isSubmitting}
-                  type="submit"
-                >
+                <Button disabled={!isValid || isSubmitting} type="submit">
                   Save
                 </Button>
               </div>

@@ -30,9 +30,14 @@ export interface IFileUploadProps {
 }
 
 export interface ICategoryFormProps {
-  initialData?: Course;
+  initialData: Course;
   courseId: string;
   options: { label: string; value: string; }[];
+}
+
+export interface IPriceFormProps {
+  initialData: Course;
+  courseId: string;
 }
 
 export interface IComboBoxProps {

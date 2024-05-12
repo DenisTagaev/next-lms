@@ -44,7 +44,9 @@ export const DescriptionForm = ({
 
     const { isSubmitting, isValid } = form.formState;
 
-    const onSubmit = async (values: zod.infer<typeof formDescriptionSchema>) => {
+    const onSubmit = async (
+      values: zod.infer<typeof formDescriptionSchema>
+    ): Promise<void> => {
       try {
         const response: AxiosResponse<any, any> = await axios.patch(
           `/api/courses/${courseId}`,

@@ -1,7 +1,7 @@
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { Course } from "@prisma/client";
-import { CircleDollarSignIcon, LayoutDashboard, ListChecks } from "lucide-react";
+import { CircleDollarSignIcon, File, LayoutDashboard, ListChecks } from "lucide-react";
 import { redirect } from "next/navigation";
 
 import { checkExistence } from "@/app/(dashboard)/client-utils";
@@ -12,6 +12,7 @@ import { DescriptionForm } from "./_components/description-form";
 import { ImageForm } from "./_components/image-form";
 import { CategoryForm } from "./_components/categories-form";
 import { PriceForm } from "./_components/price-form";
+import { AttachmentForm } from "./_components/attachments-form";
 
 export default async function CourseIdPage({
   params,
@@ -25,6 +26,13 @@ export default async function CourseIdPage({
     where: {
       id: params.courseId,
     },
+    include: {
+        attachments: {
+            orderBy: {
+                createdAt: "desc"
+            }
+        }
+    }
   });
 
   if (!_course) {
@@ -47,6 +55,7 @@ export default async function CourseIdPage({
     _course.price,
     _course.categoryId,
   ];
+
   const completionStatus: string = `(${
     _requiredFields.filter(Boolean).length
   }/${_requiredFields.length})`;
@@ -55,7 +64,7 @@ export default async function CourseIdPage({
     <section className="p-6 md:max-w-full">
       <div className="flex items-center justify-between">
         <div className="flex flex-col gap-y-2">
-          <h2 className="text-2xl font-semibold">Course content</h2>
+          <h2 className="text-3xl font-semibold">Course content</h2>
           <span className="text-sm text-slate-600">
             Complete all fields {completionStatus}
           </span>
@@ -82,15 +91,20 @@ export default async function CourseIdPage({
           />
           <div className="space-y-6">
             <div className="flex items-center gap-x-2">
-              <IconBadge icon={ListChecks} />
-              <h3 className="text-2xl">Course Chapters</h3>
+              <IconBadge size="sm" icon={ListChecks} />
+              <h3 className="text-xl">Course Chapters</h3>
             </div>
-            <div>TODO: Chapters</div>
+            <div className="text-sm md:text-base">TODO: Chapters</div>
             <div className="flex items-center gap-x-2">
-              <IconBadge icon={CircleDollarSignIcon} />
-              <h3 className="text-2xl">Put on sale</h3>
+              <IconBadge size="sm" icon={CircleDollarSignIcon} />
+              <h3 className="text-xl">Put on sale</h3>
             </div>
             <PriceForm initialData={_course} courseId={_course.id} />
+            <div className="flex items-center gap-x-2">
+              <IconBadge size="sm" icon={File} />
+              <h3 className="text-xl">Resources&Attachments</h3>
+            </div>
+            <AttachmentForm initialData={_course} courseId={_course.id} />
           </div>
         </div>
       </div>

@@ -2,21 +2,19 @@ import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { Course } from "@prisma/client";
 import { NextResponse } from "next/server";
+import { checkAuthorization } from "./utils";
 
 export async function POST(
     req: Request,
 ): Promise<NextResponse<unknown>> {
     try {
         const { userId }: { userId: string | null } = auth();
-        
-        if(!userId) {
-            return new NextResponse("Unauthorized", { status: 401});
-        }
+        checkAuthorization(!!userId);
         
         const { title } : { title: string } = await req.json();
         const course: Course = await db.course.create({
             data: { 
-                userId,
+                userId: userId!,
                 title,
             }
         });

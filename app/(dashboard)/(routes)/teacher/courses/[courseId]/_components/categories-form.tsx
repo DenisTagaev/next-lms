@@ -47,7 +47,9 @@ export const CategoryForm = ({
 
     const { isSubmitting, isValid } = _form.formState;
 
-    const onSubmit = async (values: zod.infer<typeof formCategorySchema>) => {
+    const onSubmit = async (
+      values: zod.infer<typeof formCategorySchema>
+    ): Promise<void> => {
       try {
         const response: AxiosResponse<any, any> = await axios.patch(
           `/api/courses/${courseId}`,

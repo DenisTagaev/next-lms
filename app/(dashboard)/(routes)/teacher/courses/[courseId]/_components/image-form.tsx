@@ -24,7 +24,9 @@ export const ImageForm = ({
     
     const router = useRouter();
 
-    const onSubmit = async (values: zod.infer<typeof formImageSchema>) => {
+    const onSubmit = async (
+      values: zod.infer<typeof formImageSchema>
+    ): Promise<void> => {
       try {
         const response: AxiosResponse<any, any> = await axios.patch(
           `/api/courses/${courseId}`,
@@ -80,12 +82,15 @@ export const ImageForm = ({
           <>
             <FileUpload
               endPoint="courseImage"
-              onChange={(url) => {
+              onChange={(url: string | undefined):void => {
                 if (url) {
                   onSubmit({ imageUrl: url });
                 }
               }}
             />
+            <div className="text-xs text-muted-foreground mt-4">
+              16:9 aspect ratio recommended
+            </div>
           </>
         )}
       </div>

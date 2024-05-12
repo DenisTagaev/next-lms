@@ -2,6 +2,7 @@ import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { Course } from "@prisma/client";
 import { NextResponse } from "next/server";
+import { checkAuthorization } from "../utils";
 
 export async function PATCH(
     req: Request,
@@ -9,10 +10,7 @@ export async function PATCH(
 ): Promise<NextResponse<unknown>> {
   try {
     const { userId }: { userId: string | null } = auth();
-    
-    if (!userId) {
-        return new NextResponse("Unauthorized", { status: 401 });
-    }
+    checkAuthorization(!!userId);
 
     const { courseId }: { courseId: string } = params;
     const _values = await req.json();
@@ -20,7 +18,7 @@ export async function PATCH(
     const course: Course = await db.course.update({
         where: { 
             id: courseId,
-            userId,
+            userId: userId!,
         },
         data: {
             ..._values,

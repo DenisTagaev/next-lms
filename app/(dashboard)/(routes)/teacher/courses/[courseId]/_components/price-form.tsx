@@ -45,7 +45,9 @@ export const PriceForm = ({
 
     const { isSubmitting, isValid } = form.formState;
 
-    const onSubmit = async (values: zod.infer<typeof formPriceSchema>) => {
+    const onSubmit = async (
+      values: zod.infer<typeof formPriceSchema>
+    ): Promise<void> => {
       try {
         const response: AxiosResponse<any, any> = await axios.patch(
           `/api/courses/${courseId}`,

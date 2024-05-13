@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
-import { Course } from "@prisma/client";
+import { Chapter, Course } from "@prisma/client";
 import { CircleDollarSignIcon, File, LayoutDashboard, ListChecks } from "lucide-react";
 import { redirect } from "next/navigation";
 
@@ -13,6 +13,7 @@ import { ImageForm } from "./_components/image-form";
 import { CategoryForm } from "./_components/categories-form";
 import { PriceForm } from "./_components/price-form";
 import { AttachmentForm } from "./_components/attachments-form";
+import { ChapterForm } from "./_components/chapters-form";
 
 export default async function CourseIdPage({
   params,
@@ -25,12 +26,18 @@ export default async function CourseIdPage({
   const _course: Course | null = await db.course.findUnique({
     where: {
       id: params.courseId,
+      userId: userId!
     },
     include: {
         attachments: {
-            orderBy: {
-                createdAt: "desc"
-            }
+          orderBy: {
+            createdAt: "desc"
+          }
+        },
+        chapters: {
+          orderBy: {
+            position: "asc"
+          }
         }
     }
   });
@@ -54,6 +61,7 @@ export default async function CourseIdPage({
     _course.imageUrl,
     _course.price,
     _course.categoryId,
+    _course.chapters.some((ch: Chapter): boolean => ch.isPublished)
   ];
 
   const completionStatus: string = `(${
@@ -94,7 +102,7 @@ export default async function CourseIdPage({
               <IconBadge size="sm" icon={ListChecks} />
               <h3 className="text-xl">Course Chapters</h3>
             </div>
-            <div className="text-sm md:text-base">TODO: Chapters</div>
+            <ChapterForm initialData={_course} courseId={_course.id} />
             <div className="flex items-center gap-x-2">
               <IconBadge size="sm" icon={CircleDollarSignIcon} />
               <h3 className="text-xl">Put on sale</h3>

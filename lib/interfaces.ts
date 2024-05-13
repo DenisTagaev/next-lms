@@ -1,5 +1,5 @@
 import { fileRouter } from "@/app/api/uploadthing/core";
-import { Attachment, Course } from "@prisma/client";
+import { Attachment, Chapter, Course } from "@prisma/client";
 import { AxiosError, AxiosResponse } from "axios";
 import { LucideIcon } from "lucide-react";
 
@@ -42,6 +42,11 @@ export interface IPriceFormProps {
 
 export interface IAttachmentFormProps {
   initialData: Course & { attachments?: Attachment[] };
+  courseId: string;
+}
+
+export interface IChapterFormProps {
+  initialData: Course & { chapters?: Chapter[] };
   courseId: string;
 }
 

@@ -7,10 +7,9 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
-import { formPriceSchema } from "@/app/(dashboard)/_schemas/new-course";
+import { formChapterSchema } from "@/app/(dashboard)/_schemas/new-course";
 import { getErrorMessage } from "@/app/(dashboard)/client-utils";
-import { IPriceFormProps } from "@/lib/interfaces";
-import { formatPrice } from "@/lib/format";
+import { IChapterFormProps } from "@/lib/interfaces";
 import { cn } from "@/lib/utils";
 
 import {
@@ -20,41 +19,42 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
-import { Pencil } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { PlusCircle } from "lucide-react";
 
 
-export const PriceForm = ({
+export const ChapterForm = ({
     initialData,
     courseId
-}: IPriceFormProps): JSX.Element => {
+}: IChapterFormProps): JSX.Element => {
+    const [isCreating, setIsCreating] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
-    const toggleEdit = (): void => setIsEditing((current) => !current);
+    const toggleCreating= (): void => setIsCreating((current) => !current);
     
     const router = useRouter();
 
-    const form: UseFormReturn<zod.infer<typeof formPriceSchema>> = useForm<
-      zod.infer<typeof formPriceSchema>
+    const form: UseFormReturn<zod.infer<typeof formChapterSchema>> = useForm<
+      zod.infer<typeof formChapterSchema>
     >({
-      resolver: zodResolver(formPriceSchema),
+      resolver: zodResolver(formChapterSchema),
       defaultValues: {
-        price: initialData.price ?? undefined
+        title: ""
       }
     });
 
     const { isSubmitting, isValid } = form.formState;
 
     const onSubmit = async (
-      values: zod.infer<typeof formPriceSchema>
+      values: zod.infer<typeof formChapterSchema>
     ): Promise<void> => {
       try {
-        const response: AxiosResponse<any, any> = await axios.patch(
-          `/api/courses/${courseId}`,
+        const response: AxiosResponse<any, any> = await axios.post(
+          `/api/courses/${courseId}/chapters`,
           values
         );
-        toast.success("Course successfully edited!");
-        toggleEdit();
+        toast.success("Chapter successfully created!");
+        toggleCreating();
         router.refresh();
       } catch (error) {
         getErrorMessage(error);
@@ -64,30 +64,19 @@ export const PriceForm = ({
     return (
       <div className="p-4 mt-6 border bg-sky-300/50 rounded-md">
         <div className="font-medium flex items-center justify-between">
-          Course price
-          <Button onClick={toggleEdit} variant="ghost">
-            {isEditing ? (
+          Course chapters
+          <Button onClick={toggleCreating} variant="ghost">
+            {isCreating ? (
               <>Cancel</>
             ) : (
               <>
-                <Pencil className="h-4 w-4 mr-2" />
-                Edit price
+                <PlusCircle className="h-4 w-4 mr-2" />
+                Add a chapter
               </>
             )}
           </Button>
         </div>
-        {!isEditing ? (
-          <p
-            className={cn(
-              "text-sm mt-2",
-              !initialData.price && "text-slate-600 italic"
-            )}
-          >
-            {initialData.price ? 
-              formatPrice(initialData.price) : "No price yet"
-            }
-          </p>
-        ) : (
+        {isCreating && (
           <Form {...form}>
             <form
               className="space-y-4 mt-4"
@@ -95,16 +84,14 @@ export const PriceForm = ({
             >
               <FormField
                 control={form.control}
-                name="price"
+                name="title"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
                       <Input
-                        type="number"
-                        step={0.1}
                         className="bg-slate-100"
                         disabled={isSubmitting}
-                        placeholder="Set a price for your course"
+                        placeholder="e.g. 'Introduction'"
                         {...field}
                       />
                     </FormControl>
@@ -112,13 +99,26 @@ export const PriceForm = ({
                   </FormItem>
                 )}
               />
-              <div className="flex items-center gap-x-2">
-                <Button disabled={!isValid || isSubmitting} type="submit">
-                  Save
+                <Button
+                  disabled={ !isValid || isSubmitting}
+                  type="submit"
+                >
+                  Create
                 </Button>
-              </div>
             </form>
           </Form>
+        )}
+        {!isCreating && (
+          <>
+            <p className={cn(
+              "text-sm mt-2",
+              !initialData.chapters?.length && "text-slate-500 italic"
+            )}>
+              {!initialData.chapters?.length && "No chapters"}
+              {/* TODO: Add list of chapters */}
+            </p>
+            <p className="text-xs text-muted-foreground mt-3">Drag & Drop to reorder</p> 
+          </>
         )}
       </div>
     );

@@ -38,7 +38,7 @@ export const DescriptionForm = ({
     >({
       resolver: zodResolver(formDescriptionSchema),
       defaultValues: {
-        description: initialData?.description || ""
+        description: initialData?.description ?? ""
       }
     });
 

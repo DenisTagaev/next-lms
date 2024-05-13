@@ -38,7 +38,7 @@ export const CategoryForm = ({
       useForm<zod.infer<typeof formCategorySchema>>({
         resolver: zodResolver(formCategorySchema),
         defaultValues: {
-          categoryId: initialData.categoryId || ""
+          categoryId: initialData.categoryId ?? ""
         }
     });
 

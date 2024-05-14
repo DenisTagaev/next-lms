@@ -28,7 +28,7 @@ export const ImageForm = ({
       values: zod.infer<typeof formImageSchema>
     ): Promise<void> => {
       try {
-        const response: AxiosResponse<any, any> = await axios.patch(
+        await axios.patch(
           `/api/courses/${courseId}`,
           values
         );

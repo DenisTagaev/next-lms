@@ -45,7 +45,7 @@ export const TitleForm = ({
       values: zod.infer<typeof formTitleSchema>
     ): Promise<void> => {
       try {
-        const response: AxiosResponse<any, any> = await axios.patch(
+        await axios.patch(
           `/api/courses/${courseId}`,
           values
         );

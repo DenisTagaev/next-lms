@@ -42,9 +42,7 @@ export default async function CourseIdPage({
     }
   });
 
-  if (!_course) {
-    return redirect("/");
-  }
+  checkExistence(_course);
 
   const _categories: {
     id: string;
@@ -56,12 +54,12 @@ export default async function CourseIdPage({
   });
 
   const _requiredFields: (string | number | null)[] = [
-    _course.title,
-    _course.description,
-    _course.imageUrl,
-    _course.price,
-    _course.categoryId,
-    _course.chapters.some((ch: Chapter): boolean => ch.isPublished)
+    _course!.title,
+    _course!.description,
+    _course!.imageUrl,
+    _course!.price,
+    _course!.categoryId,
+    _course!.chapters.some((ch: Chapter): boolean => ch.isPublished)
   ];
 
   const completionStatus: string = `(${
@@ -84,12 +82,12 @@ export default async function CourseIdPage({
             <IconBadge variant="success" icon={LayoutDashboard} />
             <h3 className="text-xl">Customize your course</h3>
           </div>
-          <TitleForm initialData={_course} courseId={_course.id} />
-          <DescriptionForm initialData={_course} courseId={_course.id} />
-          <ImageForm initialData={_course} courseId={_course.id} />
+          <TitleForm initialData={_course!} courseId={_course!.id} />
+          <DescriptionForm initialData={_course!} courseId={_course!.id} />
+          <ImageForm initialData={_course!} courseId={_course!.id} />
           <CategoryForm
-            initialData={_course}
-            courseId={_course.id}
+            initialData={_course!}
+            courseId={_course!.id}
             options={_categories.map(
               (category: { id: string; name: string }) => ({
                 label: category.name,
@@ -102,17 +100,17 @@ export default async function CourseIdPage({
               <IconBadge size="sm" icon={ListChecks} />
               <h3 className="text-xl">Course Chapters</h3>
             </div>
-            <ChapterForm initialData={_course} courseId={_course.id} />
+            <ChapterForm initialData={_course!} courseId={_course!.id} />
             <div className="flex items-center gap-x-2">
               <IconBadge size="sm" icon={CircleDollarSignIcon} />
               <h3 className="text-xl">Put on sale</h3>
             </div>
-            <PriceForm initialData={_course} courseId={_course.id} />
+            <PriceForm initialData={_course!} courseId={_course!.id} />
             <div className="flex items-center gap-x-2">
               <IconBadge size="sm" icon={File} />
               <h3 className="text-xl">Resources&Attachments</h3>
             </div>
-            <AttachmentForm initialData={_course} courseId={_course.id} />
+            <AttachmentForm initialData={_course!} courseId={_course!.id} />
           </div>
         </div>
       </div>

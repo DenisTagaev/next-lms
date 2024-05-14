@@ -1,6 +1,6 @@
 "use client"
 import * as zod from "zod";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UseFormReturn, useForm } from "react-hook-form";
 import { useState } from "react";
@@ -21,7 +21,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { PlusCircle } from "lucide-react";
+import { Loader2, PlusCircle } from "lucide-react";
+import { ChaptersList } from "./chapters-list";
 
 
 export const ChapterForm = ({
@@ -49,7 +50,7 @@ export const ChapterForm = ({
       values: zod.infer<typeof formChapterSchema>
     ): Promise<void> => {
       try {
-        const response: AxiosResponse<any, any> = await axios.post(
+        await axios.post(
           `/api/courses/${courseId}/chapters`,
           values
         );
@@ -61,8 +62,36 @@ export const ChapterForm = ({
       }
     };
 
+    const onReorder = async (updateData: { 
+      id: string, 
+      position: number 
+    }[]) => {
+      try {
+        setIsEditing(true);
+
+        await axios.put(`/api/courses/${courseId}/chapters/reorder`, {
+          list: updateData
+        });
+        toast.success("Chapters reordered");
+        router.refresh();
+      } catch (error) {
+        getErrorMessage(error);
+      } finally {
+        setIsEditing(false);
+      }
+    }
+
+    const onEdit = (id: string): void => {
+      router.push(`/teacher/courses/${courseId}/chapters/${id}`)
+    }
+
     return (
-      <div className="p-4 mt-6 border bg-sky-300/50 rounded-md">
+      <div className="relative p-4 mt-6 border bg-sky-300/50 rounded-md">
+        {isEditing && (
+          <div className="absolute h-full w-full bg-slate-500/60 top-0 right-0 rounded-md flex items-center justify-center">
+            <Loader2 className="animate-spin h-7 w-7 text-sky-500"/>
+          </div>
+        )}
         <div className="font-medium flex items-center justify-between">
           Course chapters
           <Button onClick={toggleCreating} variant="ghost">
@@ -110,13 +139,17 @@ export const ChapterForm = ({
         )}
         {!isCreating && (
           <>
-            <p className={cn(
+            <div className={cn(
               "text-sm mt-2",
               !initialData.chapters?.length && "text-slate-500 italic"
             )}>
               {!initialData.chapters?.length && "No chapters"}
-              {/* TODO: Add list of chapters */}
-            </p>
+              <ChaptersList
+                onEdit={onEdit}
+                onReorder={onReorder}
+                items={initialData.chapters ?? []}
+              />
+            </div>
             <p className="text-xs text-muted-foreground mt-3">Drag & Drop to reorder</p> 
           </>
         )}

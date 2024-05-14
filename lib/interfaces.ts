@@ -20,7 +20,7 @@ export interface ITitleFormProps {
 }
 
 export interface IDescriptionFormProps {
-  initialData?: Course
+  initialData: Course
   courseId: string;
 }
 
@@ -29,9 +29,7 @@ export interface IFileUploadProps {
   endPoint: keyof typeof fileRouter;
 }
 
-export interface ICategoryFormProps {
-  initialData: Course;
-  courseId: string;
+export interface ICategoryFormProps extends IDescriptionFormProps {
   options: { label: string; value: string; }[];
 }
 
@@ -57,4 +55,14 @@ export interface IComboBoxProps {
   }[];
   value?: string;
   onChange: (value: string) => void;
+}
+
+export interface IChapterListProps {
+  items: Chapter[];
+  onEdit: (id: string) => void;
+  onReorder: (updateData: { id: string; position: number;}[]) => void;
+}
+
+export interface IChTitleFormProps extends ITitleFormProps {
+  chapterId: string;
 }

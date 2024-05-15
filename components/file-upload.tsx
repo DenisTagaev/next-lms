@@ -20,7 +20,7 @@ export const FileUpload = ({
       onClientUploadComplete={(res: ClientUploadedFileData<null>[]) => {
         onChange(res?.[0].url);
       }}
-      onUploadError={(error: Error) => {
+      onUploadError={(error) => {
         toast.error(`${error?.message}`);
       }}
     />

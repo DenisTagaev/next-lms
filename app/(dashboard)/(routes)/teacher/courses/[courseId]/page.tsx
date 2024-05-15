@@ -2,7 +2,6 @@ import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { Chapter, Course } from "@prisma/client";
 import { CircleDollarSignIcon, File, LayoutDashboard, ListChecks } from "lucide-react";
-import { redirect } from "next/navigation";
 
 import { checkExistence } from "@/app/(dashboard)/client-utils";
 

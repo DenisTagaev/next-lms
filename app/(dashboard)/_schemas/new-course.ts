@@ -15,17 +15,17 @@ const formDescriptionSchema = zod.object({
 const formImageSchema = zod.object({
   imageUrl: zod.string().min(1, {
       message: "Image is required",
-  }),
+  })
 });
 
 const formCategorySchema = zod.object({
   categoryId: zod.string().min(1, {
     message: "Category selection is required",
-  }),
+  })
 });
 
 const formPriceSchema = zod.object({
-  price: zod.coerce.number(),
+  price: zod.coerce.number()
 });
 
 const formAttachmentSchema = zod.object({
@@ -36,6 +36,14 @@ const formChapterSchema = zod.object({
   title: zod.string().min(1)
 });
 
+const formAccessSchema = zod.object({
+  isFree: zod.boolean().default(false)
+});
+
+const formVideoSchema = zod.object({
+  videoUrl: zod.string().min(1)
+});
+
 export { 
   formTitleSchema, 
   formDescriptionSchema, 
@@ -43,5 +51,7 @@ export {
   formCategorySchema, 
   formPriceSchema, 
   formAttachmentSchema, 
-  formChapterSchema
+  formChapterSchema,
+  formAccessSchema,
+  formVideoSchema
 } ;

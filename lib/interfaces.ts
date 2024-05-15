@@ -1,5 +1,5 @@
 import { fileRouter } from "@/app/api/uploadthing/core";
-import { Attachment, Chapter, Course } from "@prisma/client";
+import { Attachment, Chapter, Course, MuxData } from "@prisma/client";
 import { AxiosError, AxiosResponse } from "axios";
 import { LucideIcon } from "lucide-react";
 
@@ -33,19 +33,15 @@ export interface ICategoryFormProps extends IDescriptionFormProps {
   options: { label: string; value: string; }[];
 }
 
-export interface IPriceFormProps {
-  initialData: Course;
-  courseId: string;
+export interface IPriceFormProps extends IDescriptionFormProps {
 }
 
-export interface IAttachmentFormProps {
+export interface IAttachmentFormProps extends IDescriptionFormProps{
   initialData: Course & { attachments?: Attachment[] };
-  courseId: string;
 }
 
-export interface IChapterFormProps {
+export interface IChapterFormProps  extends IDescriptionFormProps{
   initialData: Course & { chapters?: Chapter[] };
-  courseId: string;
 }
 
 export interface IComboBoxProps {
@@ -57,6 +53,14 @@ export interface IComboBoxProps {
   onChange: (value: string) => void;
 }
 
+export interface IPreviewComponentProps {
+  value: string;
+}
+
+export interface IEditorComponentProps extends IPreviewComponentProps{
+  onChange: (value: string) => void;
+}
+
 export interface IChapterListProps {
   items: Chapter[];
   onEdit: (id: string) => void;
@@ -65,4 +69,17 @@ export interface IChapterListProps {
 
 export interface IChTitleFormProps extends ITitleFormProps {
   chapterId: string;
+}
+
+export interface IChDescriptionFormProps {
+  initialData: Chapter;
+  courseId: string;
+  chapterId: string;
+}
+
+export interface IChAccessFormProps extends IChDescriptionFormProps{
+}
+
+export interface IChVideoFormProps extends IChDescriptionFormProps{
+  initialData: Chapter & { muxData?: MuxData | null};
 }

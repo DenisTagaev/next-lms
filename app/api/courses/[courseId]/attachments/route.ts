@@ -12,7 +12,7 @@ export async function POST(
     const { userId }: { userId: string | null } = auth();
     
     checkAuthorization(!!userId);
-    checkOwnership(params.courseId, userId!);
+    await checkOwnership(params.courseId, userId!);
     
     const { url }: { url: string } = await req.json();
     const newFile: Attachment = await db.attachment.create({

@@ -12,12 +12,11 @@ export async function PATCH(
     const { userId }: { userId: string | null } = auth();
     checkAuthorization(!!userId);
 
-    const { courseId }: { courseId: string } = params;
     const _values = await req.json();
 
-    const course: Course = await db.course.update({
+    const _course: Course = await db.course.update({
         where: { 
-            id: courseId,
+            id: params.courseId,
             userId: userId!,
         },
         data: {
@@ -25,7 +24,7 @@ export async function PATCH(
       },
     });
 
-    return NextResponse.json(course);
+    return NextResponse.json(_course);
   } catch (error) {
     console.log("[COURSES]", error);
     return new NextResponse("Internal Error", { status: 500 });

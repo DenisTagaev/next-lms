@@ -12,14 +12,14 @@ export async function POST(
         checkAuthorization(!!userId);
         
         const { title } : { title: string } = await req.json();
-        const course: Course = await db.course.create({
+        const _course: Course = await db.course.create({
             data: { 
                 userId: userId!,
                 title,
             }
         });
 
-        return NextResponse.json(course);
+        return NextResponse.json(_course);
     } catch (error) {
         console.log("[COURSES]", error);
         return new NextResponse("Internal Error", { status: 500});

@@ -12,7 +12,7 @@ export async function DELETE(
     const { userId }: { userId: string | null } = auth();
     
     checkAuthorization(!!userId);
-    checkOwnership(params.courseId, userId!);   
+    await checkOwnership(params.courseId, userId!);   
 
     const attachment: Attachment = await db.attachment.delete({
       where:{

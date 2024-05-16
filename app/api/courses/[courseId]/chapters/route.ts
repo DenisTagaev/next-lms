@@ -10,12 +10,12 @@ export async function POST(
 ): Promise<NextResponse<unknown>> {
   try {
     const { userId }: { userId: string | null } = auth();
-    const { title }: { title: string} = await req.json();
+    const { title }: { title: string } = await req.json();
 
     checkAuthorization(!!userId);
-    checkOwnership(params.courseId, userId!);
+    await checkOwnership(params.courseId, userId!);
 
-    const prevChapter: Chapter | null = await db.chapter.findFirst({
+    const _prevChapter: Chapter | null = await db.chapter.findFirst({
       where: { 
         courseId: params.courseId
       },
@@ -24,15 +24,15 @@ export async function POST(
       }
     });
 
-    const newChapter: Chapter = await db.chapter.create({
+    const _newChapter: Chapter = await db.chapter.create({
       data: {
         title,
         courseId: params.courseId,
-        position: prevChapter ? prevChapter.position + 1 : 1
+        position: _prevChapter ? _prevChapter.position + 1 : 1
       },
     });
 
-    return NextResponse.json(newChapter);
+    return NextResponse.json(_newChapter);
   } catch (error) {
     console.log("[COURSE_ID_CHAPTERS]", error);
     return new NextResponse("Internal Error", { status: 500 });

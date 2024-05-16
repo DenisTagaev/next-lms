@@ -2,15 +2,64 @@ import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { Chapter, MuxData } from "@prisma/client";
 import { NextResponse } from "next/server";
-
 import Mux from "@mux/mux-node";
+
+import { checkAuthorization, checkOwnership, check_and_updateVoidCourse } from "../../../utils";
 
 const mux: Mux = new Mux({
   tokenId: process.env.MUX_TOKEN_ID,
   tokenSecret: process.env.MUX_TOKEN_SECRET,
 });
 
-import { checkAuthorization, checkOwnership } from "../../../utils";
+
+export async function DELETE(
+  req: Request,
+  { params }: { params: { courseId: string; chapterId: string } }
+): Promise<NextResponse<unknown>> {
+  try {
+    const { userId }: { userId: string | null } = auth();
+    checkAuthorization(!!userId);
+    await checkOwnership(params.courseId, userId!);
+
+    const _chapter: Chapter | null = await db.chapter.findUnique({
+      where: {
+        id: params.chapterId,
+        courseId: params.courseId,
+      },
+    });
+
+    if(!_chapter) return new NextResponse("Not Found", { status: 404 });
+
+    if(_chapter.videoUrl) {
+      const muxData: MuxData | null = await db.muxData.findFirst({
+        where: {
+          chapterId: params.chapterId,
+        }
+      });
+      
+      if(muxData) {
+        await mux.video.assets.delete(muxData.assetId);
+        await db.muxData.delete({
+          where: {
+            id: muxData.id
+          }
+        });
+      }
+    }
+
+    const _deletedChapter: Chapter = await db.chapter.delete({
+      where: {
+        id: params.chapterId
+      }
+    });
+    await check_and_updateVoidCourse(params.courseId);
+
+    return NextResponse.json(_deletedChapter);
+  } catch (error) {
+    console.log("[COURSES_CHAPTER_ID]", error);
+    return new NextResponse("Internal Error", { status: 500 });
+  }
+};
 
 export async function PATCH(
   req: Request,
@@ -19,11 +68,11 @@ export async function PATCH(
   try {
     const { userId }: { userId: string | null } = auth();
     checkAuthorization(!!userId);
-    checkOwnership(params.courseId, userId!);
+    await checkOwnership(params.courseId, userId!);
 
     const { isPublished, ...values } = await req.json();
 
-    const chapter: Chapter = await db.chapter.update({
+    const _chapter: Chapter = await db.chapter.update({
       where: {
         id: params.chapterId,
         courseId: params.courseId,
@@ -67,7 +116,7 @@ export async function PATCH(
       });
     }
 
-    return NextResponse.json(chapter);
+    return NextResponse.json(_chapter);
   } catch (error) {
     console.log("[COURSES_CHAPTER_ID]", error);
     return new NextResponse("Internal Error", { status: 500 });

@@ -11,8 +11,7 @@ export async function PUT(
   try {
     const { userId }: { userId: string | null } = auth();
     checkAuthorization(!!userId);
-    const { courseId }: { courseId: string } = params;
-    checkOwnership(courseId, userId!);
+    await checkOwnership(params.courseId, userId!);
 
     const { list } = await req.json();
 

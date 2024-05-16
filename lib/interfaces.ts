@@ -53,6 +53,11 @@ export interface IComboBoxProps {
   onChange: (value: string) => void;
 }
 
+export interface IConfirmationModalProps{
+  children: React.ReactNode;
+  onConfirm: () => void;
+}
+
 export interface IPreviewComponentProps {
   value: string;
 }
@@ -83,3 +88,9 @@ export interface IChAccessFormProps extends IChDescriptionFormProps{
 export interface IChVideoFormProps extends IChDescriptionFormProps{
   initialData: Chapter & { muxData?: MuxData | null};
 }
+
+export interface IChapterControlProps extends Omit<IChDescriptionFormProps, 'initialData'> {
+  disabled: boolean;
+  isPublished: boolean;
+}
+

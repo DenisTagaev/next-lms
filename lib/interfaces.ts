@@ -44,6 +44,12 @@ export interface IChapterFormProps  extends IDescriptionFormProps{
   initialData: Course & { chapters?: Chapter[] };
 }
 
+export interface ICourseControlProps{
+  disabled: boolean;
+  courseId: string;
+  isPublished: boolean | null;
+}
+
 export interface IComboBoxProps {
   options: {
     label: string;
@@ -89,8 +95,7 @@ export interface IChVideoFormProps extends IChDescriptionFormProps{
   initialData: Chapter & { muxData?: MuxData | null};
 }
 
-export interface IChapterControlProps extends Omit<IChDescriptionFormProps, 'initialData'> {
-  disabled: boolean;
-  isPublished: boolean;
+export interface IChapterControlProps extends ICourseControlProps {
+  chapterId: string;
 }
 

@@ -70,8 +70,7 @@ export default async function ChapterIdPage({
     <>
       {!_chapter!.isPublished && (
         <Banner
-          variant="warning"
-          label="Chapter is unpublished. It's not visible to the public"
+          label="Chapter is unpublished. It will not be visible to the public"
         />
       )}
       <section className="p-6 md:max-w-full">

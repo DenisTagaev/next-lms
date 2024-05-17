@@ -4,7 +4,7 @@ import { Chapter, MuxData } from "@prisma/client";
 import { NextResponse } from "next/server";
 import Mux from "@mux/mux-node";
 
-import { checkAuthorization, checkOwnership, check_and_updateVoidCourse } from "../../../utils";
+import { checkAuthorization, checkExistingRecord, checkOwnership, check_and_updateVoidCourse } from "../../../utils";
 
 const mux: Mux = new Mux({
   tokenId: process.env.MUX_TOKEN_ID,
@@ -27,10 +27,9 @@ export async function DELETE(
         courseId: params.courseId,
       },
     });
+    checkExistingRecord(!!_chapter);
 
-    if(!_chapter) return new NextResponse("Not Found", { status: 404 });
-
-    if(_chapter.videoUrl) {
+    if(_chapter!.videoUrl) {
       const muxData: MuxData | null = await db.muxData.findFirst({
         where: {
           chapterId: params.chapterId,

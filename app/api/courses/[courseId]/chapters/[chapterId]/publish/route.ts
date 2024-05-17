@@ -34,7 +34,7 @@ export async function PATCH(
       _chapter.description ||
       _chapter.videoUrl
     ) {
-        return new NextResponse("Missing required fields", { status: 400 });
+        return new NextResponse("Missing required fields", { status: 401 });
     }
 
     const _publishedChapter: Chapter = await db.chapter.update({

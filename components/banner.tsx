@@ -16,26 +16,26 @@ const bannerVariance = cva(
       }
     },
     defaultVariants: {
-        variant: "warning",
+      variant: "warning",
     }
   }
 );
 
 const iconMap = {
-    warning: AlertTriangle,
-    success: CheckCircleIcon
+  warning: AlertTriangle,
+  success: CheckCircleIcon
 }
 
 export const Banner = ({
-    label,
-    variant
+  label,
+  variant
 }: BannerProps): JSX.Element => {
-    const Icon = iconMap[variant ?? "warning"];
+  const Icon = iconMap[variant ?? "warning"];
 
-    return(
-        <div className={cn(bannerVariance({variant: variant}))}>
-            <Icon className="h-4 w-4 mr-2"/>
-            {label}
-        </div>
-    )
+  return(
+      <div className={cn(bannerVariance({variant: variant}))}>
+          <Icon className="h-4 w-4 mr-2"/>
+          {label}
+      </div>
+  )
 }

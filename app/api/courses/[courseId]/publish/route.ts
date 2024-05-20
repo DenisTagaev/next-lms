@@ -33,10 +33,10 @@ export async function PATCH(
 
     if (
       !hasPublishedChapter ||
-      _course!.title ||
-      _course!.categoryId ||
-      _course!.description ||
-      _course!.imageUrl
+      !_course!.title ||
+      !_course!.categoryId ||
+      !_course!.description ||
+      !_course!.imageUrl
     ) {
         return new NextResponse("Missing required fields", { status: 401 });
     }

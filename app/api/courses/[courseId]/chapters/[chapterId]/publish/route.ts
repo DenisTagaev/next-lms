@@ -20,20 +20,22 @@ export async function PATCH(
         courseId: params.courseId,
       }
     });
-
+    
     const _muxData: MuxData | null = await db.muxData.findUnique({
       where: {
-        id: params.chapterId,
+        chapterId: params.chapterId,
       },
     });
 
     if (
       !_chapter ||
       !_muxData ||
-      _chapter.title ||
-      _chapter.description ||
-      _chapter.videoUrl
+      !_chapter.title ||
+      !_chapter.description ||
+      !_chapter.videoUrl
     ) {
+        console.log(!_chapter, !_muxData, _chapter.title, _chapter.description, _chapter.videoUrl);
+        
         return new NextResponse("Missing required fields", { status: 401 });
     }
 

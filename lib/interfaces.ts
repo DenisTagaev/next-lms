@@ -1,7 +1,9 @@
+import { CourseWithCategoryProgress } from "@/actions/get-courses";
 import { fileRouter } from "@/app/api/uploadthing/core";
-import { Attachment, Chapter, Course, MuxData } from "@prisma/client";
+import { Attachment, Category, Chapter, Course, MuxData } from "@prisma/client";
 import { AxiosError, AxiosResponse } from "axios";
 import { LucideIcon } from "lucide-react";
+import { IconType } from "react-icons/lib";
 
 export interface ISidebarItemProps {
   icon: LucideIcon,
@@ -99,3 +101,33 @@ export interface IChapterControlProps extends ICourseControlProps {
   chapterId: string;
 }
 
+export interface ICategoriesSearchProps {
+  items: Category[];
+}
+
+export interface ICategoryItemProps {
+  label: string;
+  icon?: IconType;
+  value?: string;
+}
+
+export interface ISearchPageProps {
+  searchParams: {
+    title: string;
+    categoryId: string
+  }
+}
+
+export interface ICoursesListProps {
+  items: CourseWithCategoryProgress[];
+}
+
+export interface ICourseCardProps {
+  id: string;
+  title: string;
+  imageUrl: string;
+  chaptersLength: number;
+  price: number;
+  progress: number | null;
+  category: string;
+}

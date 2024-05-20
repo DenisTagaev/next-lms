@@ -9,13 +9,13 @@ export const SidebarItem = ({
     label,
     href
 }: ISidebarItemProps): JSX.Element => {
-    const path: string = usePathname();
+    const _path: string = usePathname();
     const router = useRouter();
 
     const _isActiveRoute: boolean =
-        (path === '/' && href === '/') ||
-        path === href ||
-        path?.startsWith(`${href}/`);
+        (_path === '/' && href === '/') ||
+        _path === href ||
+        _path?.startsWith(`${href}/`);
 
     const onClick = (): void => router.push(href);
 

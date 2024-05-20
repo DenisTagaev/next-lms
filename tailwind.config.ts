@@ -4,11 +4,11 @@ import { withUt } from "uploadthing/tw"
 const config = withUt({
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
-	],
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+  ],
   prefix: "",
   theme: {
     container: {
@@ -68,14 +68,22 @@ const config = withUt({
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        borderRotate: {
+          "0%": { borderColor: "green" },
+          "25%": { borderColor: "blue" },
+          "50%": { borderColor: "red" },
+          "75%": { borderColor: "blue" },
+          "100%": { borderColor: "green" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "border-rotate": "borderRotate 4s linear infinite",
       },
     },
   },
   plugins: [require("tailwindcss-animate")],
-}) satisfies Config
+}) satisfies Config;
 
 export default config

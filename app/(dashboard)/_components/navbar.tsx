@@ -1,5 +1,5 @@
-import { NavbarRoutes } from "@/components/navbar-routes"
 import { MobileSidebar } from "./_mobile-view/mobile-sidebar"
+import { NavbarRoutes } from "./navbar-routes"
 
 export const Navbar = (): JSX.Element => {
     return (

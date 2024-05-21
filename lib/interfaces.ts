@@ -1,6 +1,6 @@
 import { CourseWithCategoryProgress } from "@/actions/get-courses";
 import { fileRouter } from "@/app/api/uploadthing/core";
-import { Attachment, Category, Chapter, Course, MuxData } from "@prisma/client";
+import { Attachment, Category, Chapter, Course, MuxData, UserProgression } from "@prisma/client";
 import { AxiosError, AxiosResponse } from "axios";
 import { LucideIcon } from "lucide-react";
 import { IconType } from "react-icons/lib";
@@ -130,4 +130,23 @@ export interface ICourseCardProps {
   price: number;
   progress: number | null;
   category: string;
+}
+
+export interface ICourseSidebarProps {
+  course: Course & {
+    chapters: (Chapter & {
+      userProgression: UserProgression[] | null
+    })[]
+  };
+  progress: number;
+}
+
+export interface ICourseNavbarProps extends ICourseSidebarProps{}
+
+export interface ICourseSidebarItemProps {
+  id: string;
+  label: string;
+  isCompleted: boolean;
+  courseId: string;
+  isLocked: boolean;
 }

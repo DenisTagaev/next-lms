@@ -3,18 +3,18 @@ import { Category, Course } from "@prisma/client";
 import { auth } from "@clerk/nextjs/server";
 
 import { getCourses } from "@/actions/get-courses";
-import { checkAuthorization } from "@/app/api/courses/utils";
 import { ISearchPageProps } from "@/lib/interfaces";
 
 import { Categories } from "./_components/categories";
 import { CoursesList } from "@/components/courses-list";
 import { SearchInput } from "../../_components/search-input";
+import { checkExistence } from "@/app/(dashboard)/client-utils";
 
 export default async function SearchPage({
   searchParams
-}: ISearchPageProps): Promise<JSX.Element> {
+}: Readonly<ISearchPageProps>): Promise<JSX.Element> {
   const { userId }: { userId: string | null } = auth();
-  checkAuthorization(!!userId);
+  checkExistence(userId);
 
   const _categories: Category[] = await db.category.findMany({ 
     orderBy: {

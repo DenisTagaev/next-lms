@@ -20,7 +20,7 @@ export const getCourses = async ({
     categoryId
 }: GetCourses): Promise<CourseWithCategoryProgress[]> => {
     try {
-        const courses = await db.course.findMany({
+        const _courses = await db.course.findMany({
             where: {
                 isPublished: true,
                 title: {
@@ -49,8 +49,8 @@ export const getCourses = async ({
             }
         });
 
-        const coursesWithProgress: CourseWithCategoryProgress[] = await Promise.all(
-            courses.map(async course => {
+        const _coursesWithProgress: CourseWithCategoryProgress[] = await Promise.all(
+            _courses.map(async course => {
                 
                 if(course.purchases.length === 0) {
                     return { 
@@ -68,7 +68,7 @@ export const getCourses = async ({
             })
         );
 
-        return coursesWithProgress;
+        return _coursesWithProgress;
     } catch (error) {
         console.log("GET_COURSES", error);
         return [];

@@ -20,7 +20,7 @@ export const CourseSidebarItem = ({
     const Icon = isLocked ? Lock : (isCompleted ? CheckCircle : PlayCircle);
     const isActiveChapter  = _path?.includes(id);
 
-    const onClick = () => {
+    const onClick = (): void => {
         router.push(`/courses/${courseId}/chapters/${id}`);
     }
 
@@ -33,7 +33,7 @@ export const CourseSidebarItem = ({
                 text-sm font-[500] pl-6 transition-all hover:text-sky-600
                 hover:bg-slate-400/75`,
                 isActiveChapter && `text-sky-600 bg-slate-400/75 
-                hover:text-sky-600 hover:bg-slate-400/75 border-r-4
+                hover:text-sky-600 hover:bg-slate-400/75
                 border-sky-600`,
                 isCompleted && `text-emerald-600 
                 hover:bg-emerald-600 hover:text-white`,
@@ -52,7 +52,7 @@ export const CourseSidebarItem = ({
                 {label}
             </div>
             <div className={cn(
-                "ml-auto opacity-0 border-2 border-slate-700 h-full transition-all",
+                "ml-auto opacity-0 border-2 border-sky-600 h-full transition-all",
                 isActiveChapter && "opacity-100",
                 isCompleted && "border-emerald-600"
             )}/>

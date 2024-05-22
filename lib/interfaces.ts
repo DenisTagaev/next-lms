@@ -150,3 +150,13 @@ export interface ICourseSidebarItemProps {
   courseId: string;
   isLocked: boolean;
 }
+
+export interface ICourseVideoPlayerProps {
+  chapterId: string;
+  title: string;
+  courseId: string;
+  nextChapterId?: string;
+  playbackId: string;
+  isLocked: boolean;
+  completeOnFinish: boolean;
+}

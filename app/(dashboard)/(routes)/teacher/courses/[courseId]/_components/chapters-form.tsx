@@ -1,9 +1,9 @@
 "use client"
 import * as zod from "zod";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UseFormReturn, useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
@@ -29,6 +29,7 @@ export const ChapterForm = ({
     initialData,
     courseId
 }: IChapterFormProps): JSX.Element => {
+    const [chapters, setChapters] = useState(initialData.chapters ?? []);
     const [isCreating, setIsCreating] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const toggleCreating= (): void => setIsCreating((current) => !current);
@@ -50,13 +51,19 @@ export const ChapterForm = ({
       values: zod.infer<typeof formChapterSchema>
     ): Promise<void> => {
       try {
-        await axios.post(
+        const response: AxiosResponse<any, any> = await axios.post(
           `/api/courses/${courseId}/chapters`,
           values
         );
+        const newChapter = response.data;
+
+        setChapters((prevChapters) => {
+          const updatedChapters = [...prevChapters, newChapter];
+          return updatedChapters;
+        });
+
         toast.success("Chapter successfully created!");
         toggleCreating();
-        router.refresh();
       } catch (error) {
         getErrorMessage(error);
       }
@@ -65,7 +72,7 @@ export const ChapterForm = ({
     const onReorder = async (updateData: { 
       id: string, 
       position: number 
-    }[]) => {
+    }[]): Promise<void> => {
       try {
         setIsEditing(true);
 
@@ -84,6 +91,10 @@ export const ChapterForm = ({
     const onEdit = (id: string): void => {
       router.push(`/teacher/courses/${courseId}/chapters/${id}`)
     }
+
+    useEffect(() => {
+      console.log("Chapters updated:", chapters);
+    }, [chapters]);
 
     return (
       <div className="relative p-4 mt-6 border bg-sky-300/50 rounded-md">
@@ -141,13 +152,13 @@ export const ChapterForm = ({
           <>
             <div className={cn(
               "text-sm mt-2",
-              !initialData.chapters?.length && "text-slate-500 italic"
+              !chapters?.length && "text-slate-500 italic"
             )}>
-              {!initialData.chapters?.length && "No chapters"}
+              {!chapters?.length && "No chapters"}
               <ChaptersList
                 onEdit={onEdit}
                 onReorder={onReorder}
-                items={initialData.chapters ?? []}
+                items={chapters}
               />
             </div>
             <p className="text-xs text-muted-foreground mt-3">Drag & Drop to reorder</p> 

@@ -2,7 +2,7 @@ import { db } from "@/lib/db";
 import { Category, Course } from "@prisma/client";
 import { auth } from "@clerk/nextjs/server";
 
-import { getCourses } from "@/actions/get-courses";
+import { CourseWithCategoryProgress, getCourses } from "@/actions/get-courses";
 import { ISearchPageProps } from "@/lib/interfaces";
 
 import { Categories } from "./_components/categories";
@@ -22,9 +22,9 @@ export default async function SearchPage({
     }
   });
 
-  const _courses: Course[] = await getCourses({
+  const _courses: CourseWithCategoryProgress[] = await getCourses({
     userId: userId!,
-    ...searchParams
+    ...searchParams,
   });
   
   return (

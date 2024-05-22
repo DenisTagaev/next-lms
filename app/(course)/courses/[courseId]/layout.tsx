@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 
 import { checkExistence } from "@/app/(dashboard)/client-utils";
 import { getProgress } from "@/actions/get-progress";
+
 import { CourseSidebar } from "../_components/course-sidebar";
 import { CourseNavbar } from "../_components/course-navbar";
 

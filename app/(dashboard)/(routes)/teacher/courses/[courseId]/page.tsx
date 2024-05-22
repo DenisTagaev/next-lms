@@ -24,7 +24,7 @@ export default async function CourseIdPage({
   const { userId }: { userId: string | null } = auth();
   checkExistence(userId);
 
-  const _course: Course | null = await db.course.findUnique({
+  const _course = await db.course.findUnique({
     where: {
       id: params.courseId,
       userId: userId!
@@ -54,13 +54,13 @@ export default async function CourseIdPage({
     },
   });
 
-  const _requiredFields: (string | number | null)[] = [
+  const _requiredFields: (string | number | null | boolean)[] = [
     _course!.title,
     _course!.description,
     _course!.imageUrl,
     _course!.price,
     _course!.categoryId,
-    _course!.chapters.some((ch: Chapter): boolean => ch.isPublished)
+    _course!.chapters.some((ch: Chapter) => ch.isPublished)
   ];
 
   const completionStatus: string = `(${

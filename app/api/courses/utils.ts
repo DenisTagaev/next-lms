@@ -2,7 +2,9 @@ import { db } from "@/lib/db";
 import { Chapter } from "@prisma/client";
 import { NextResponse } from "next/server";
 
-export const checkExistingRecord = (value: boolean) => {
+export const checkExistingRecord = (
+  value: boolean
+): NextResponse<unknown> | undefined => {
   if (!value) {
     return new NextResponse("Not found", { status: 404 });
   }
@@ -32,7 +34,9 @@ export const checkOwnership = async(
   checkAuthorization(isCourseOwner);
 }
 
-export const check_and_updateVoidCourse = async(courseId: string) => {
+export const check_and_updateVoidCourse = async(
+  courseId: string
+): Promise<void> => {
   const _publishedChInCourse: Chapter[] = await db.chapter.findMany({
     where: {
       courseId: courseId,

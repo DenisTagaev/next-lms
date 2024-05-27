@@ -82,7 +82,7 @@ export const columns: ColumnDef<Course>[] = [
       const isPublished: boolean = row.getValue("isPublished") || false;
 
       return (
-        <Badge className={cn("bg-slate-500", isPublished && "bg-emerald-500")}>
+        <Badge className={cn("bg-slate-500", isPublished && "bg-emerald-600")}>
           {isPublished ? "Published" : "Draft"}
         </Badge>
       );

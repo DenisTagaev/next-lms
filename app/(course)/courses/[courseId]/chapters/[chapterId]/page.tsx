@@ -9,6 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import { Preview } from "@/components/preview";
 import { VideoPlayer } from "./_components/video-player";
 import { CourseEnrollButton } from "./_components/enroll-button";
+import { CourseProgressButton } from "./_components/progress-button";
 import { File } from "lucide-react";
 
 export default async function ChapterIdPage({
@@ -62,9 +63,13 @@ export default async function ChapterIdPage({
             <div className="p-4 flex flex-col md:flex-row items-center justify-between">
               <h2 className="text-2xl font-semibold mb-2">{_chapter!.title}</h2>
               {_purchase ? (
-                <progress>Course progress</progress>
+                <CourseProgressButton
+                    chapterId={params.chapterId}
+                    courseId={params.courseId}
+                    nextChapterId={_nextChapter?.id}
+                    isCompleted={!!_userProgression?.isCompleted}
+                />
               ) : (
-                // TODO: Add course progress button
                 <CourseEnrollButton
                   courseId={params.courseId}
                   price={_course?.price!}

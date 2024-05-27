@@ -14,7 +14,7 @@ export const FileUpload = ({
       endpoint={endPoint}
       className="
         bg-slate-700 ut-label:text-lg 
-        ut-label:text-sky-300 ut-label:ut-uploading:text-emerald-500
+        ut-label:text-sky-300 ut-label:ut-uploading:text-emerald-400
         ut-allowed-content:text-white 
         ut-button:ut-readying:bg-red-500/50"
       onClientUploadComplete={(res: ClientUploadedFileData<null>[]) => {

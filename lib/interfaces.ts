@@ -151,11 +151,21 @@ export interface ICourseSidebarItemProps {
   isLocked: boolean;
 }
 
-export interface ICourseVideoPlayerProps {
+export interface ICourseProgressProps {
+  value: number;
+  variant?: "default" | "success";
+  size?: "default" | "sm";
+}
+
+export interface ICourseProgressButtonProps {
   chapterId: string;
-  title: string;
   courseId: string;
   nextChapterId?: string;
+  isCompleted?: boolean;
+}
+
+export interface ICourseVideoPlayerProps extends Omit<ICourseProgressButtonProps, "isCompleted">{
+  title: string;
   playbackId: string;
   isLocked: boolean;
   completeOnFinish: boolean;

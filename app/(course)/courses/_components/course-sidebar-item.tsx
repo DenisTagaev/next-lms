@@ -35,8 +35,8 @@ export const CourseSidebarItem = ({
                 isActiveChapter && `text-sky-600 bg-slate-400/75 
                 hover:text-sky-600 hover:bg-slate-400/75
                 border-sky-600`,
-                isCompleted && `text-emerald-600 
-                hover:bg-emerald-600 hover:text-white`,
+                isCompleted && `text-emerald-400 
+                hover:bg-emerald-600/75 hover:text-white`,
                 isCompleted && isActiveChapter && `bg-emerald-400/75`
             )}
         >
@@ -46,7 +46,7 @@ export const CourseSidebarItem = ({
                     className={cn(
                         'text-slate-600',
                         isActiveChapter && 'text-sky-600',
-                        isCompleted && 'text-emerald-600'
+                        isCompleted && 'text-emerald-400'
                     )}
                 />
                 {label}

@@ -1,25 +1,34 @@
 import Stripe from "stripe";
 import { db } from "@/lib/db";
 import { headers } from "next/headers";
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
+import { stripe } from "@/lib/stripe";
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
 
 export async function POST(
-    req: Request
+    req: NextRequest
 ): Promise<NextResponse<unknown>> {
     const body: string = await req.text();
-    const signature: string = headers().get("Stripe-Signature") as string;
-    
+    const signature = headers().get("Stripe-Signature") as string;    
+
     let event: Stripe.Event;
     
     try {
-        event = Stripe.webhooks.constructEvent(
+        event = stripe.webhooks.constructEvent(
           body,
           signature,
-          process.env.STRIPE_WEBHOOK_SECRET!
+          process.env.NODE_ENV !== "production"
+            ? process.env.STRIPE_WEBHOOK_LOCAL_SECRET!
+            : process.env.STRIPE_WEBHOOK_SECRET!
         );
-    } catch (error: any) {
+    } catch (error: any) {    
         return new NextResponse(`Stripe Webhook Error ${error.message}`,
-         { status: 500 }
+         { status: 400 }
         );
     }
 
@@ -28,7 +37,7 @@ export async function POST(
     const userId: string | undefined = session.metadata?.userId;
     const courseId: string | undefined = session.metadata?.courseId;
 
-    if(event.type === 'checkout.session.completed') {
+    if(event.type === "checkout.session.completed") {
         if(!userId || !courseId) {
             return new NextResponse(`Webhook is missing Metadata`,
              { status: 400 }
@@ -40,7 +49,7 @@ export async function POST(
                 courseId: courseId,
                 userId: userId
             }
-        })
+        });
     } else {
         return new NextResponse(`Unhandled Webhook event: ${event.type}`,
          { status: 200 }

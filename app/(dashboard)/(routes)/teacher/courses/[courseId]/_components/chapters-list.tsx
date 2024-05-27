@@ -70,7 +70,7 @@ export const ChaptersList = ({
                         border-slate-200 border text-slate-700 
                         rounded-md mb-4 text-sm`,
                         chapter.isPublished &&
-                          "bg-sky-100 border-sky-200 text-sky-700"
+                          "bg-white border-sky-200 text-sky-700"
                       )}
                       ref={provided.innerRef}
                       {...provided.draggableProps}
@@ -92,7 +92,7 @@ export const ChaptersList = ({
                         <Badge
                             className={cn(
                                 "bg-slate-700",
-                                chapter.isPublished && "bg-emerald-500"
+                                chapter.isPublished && "bg-emerald-600"
                             )
                             }
                         >

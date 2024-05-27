@@ -5,6 +5,7 @@ import { formatPrice } from "@/lib/format";
 
 import Image from "next/image"
 import { IconBadge } from "@/components/icon-badge";
+import { CourseProgress } from "@/components/course-progress";
 import { BookOpen } from "lucide-react";
 
 export const CourseCard = ({
@@ -47,9 +48,11 @@ export const CourseCard = ({
                         </div>
                     </div>
                     {progress !== null ? (
-                        <>
-                            TODO: progress component
-                        </>
+                        <CourseProgress
+                            value={progress}
+                            size="sm"
+                            variant={progress === 100 ? "success" : "default"}
+                        />
                     ): (
                         <p className="text-md md:text-sm font-medium text-slate-900">
                             {formatPrice(price)}

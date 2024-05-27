@@ -5,6 +5,7 @@ import { ICourseSidebarProps } from "@/lib/interfaces";
 import { checkExistence } from "@/app/(dashboard)/client-utils";
 
 import { CourseSidebarItem } from "./course-sidebar-item";
+import { CourseProgress } from "@/components/course-progress";
 
 export const CourseSidebar = async({
     course,
@@ -31,7 +32,14 @@ export const CourseSidebar = async({
             <h1 className="font-semibold">
                 {course.title}
             </h1>
-            {/* TODO: Check purchase and add progress */}
+            {_purchase && (
+                <div className="mt-10">
+                    <CourseProgress
+                        variant="success"
+                        value={progress}
+                    />
+                </div>
+            )}
         </div>
         <div className="flex flex-col w-full">
             {course.chapters.map(ch => (

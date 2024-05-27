@@ -1,12 +1,17 @@
 "use client"
 
+import axios from "axios";
+import toast from "react-hot-toast";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useConfettiStore } from "@/hooks/use-confetti-store";
 import { cn } from "@/lib/utils";
 
 import { ICourseVideoPlayerProps } from "@/lib/interfaces";
+import { getErrorMessage } from "@/app/(dashboard)/client-utils";
 
-import { Loader2, Lock } from "lucide-react";
 import MuxPlayer from "@mux/mux-player-react";
+import { Loader2, Lock } from "lucide-react";
 
 export const VideoPlayer = ({
     chapterId,
@@ -18,6 +23,34 @@ export const VideoPlayer = ({
     completeOnFinish,
 }: ICourseVideoPlayerProps) => {
     const [isReady, setIsReady] = useState(false);
+    const router = useRouter();
+    const confetti = useConfettiStore();
+
+    const onEnded = async (): Promise<void> => {
+      try {
+        if (completeOnFinish) {
+          await axios.put(
+            `/api/courses/${courseId}/chapters/${chapterId}/progress`,
+            {
+              isCompleted: true,
+            }
+          );
+        }
+
+        if (!nextChapterId) {
+          confetti.onOpen();
+        }
+        toast.success("Progress updated");
+        router.refresh();
+
+        if (nextChapterId) {
+          router.push(`/courses/${courseId}/chapters/${nextChapterId}`);
+        }
+      } catch (error) {
+        getErrorMessage(error);
+      }
+    };
+
     return (
       <div className="relative aspect-video">
         {isLocked && (
@@ -37,7 +70,7 @@ export const VideoPlayer = ({
         {!isLocked && (
           <MuxPlayer
             onCanPlay={(): void => setIsReady(true)}
-            onEnded={(): void => {}}
+            onEnded={onEnded}
             className={cn(" w-full", !isReady && "hidden")}
             title={title}
             playbackId={playbackId}

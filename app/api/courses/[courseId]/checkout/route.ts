@@ -48,7 +48,7 @@ export async function POST(
                     description: _course!.description!,
                     metadata: { id: _course!.id },
                 },
-            unit_amount: Math.round(_course?.price! * 100),
+            unit_amount: Math.round(_course!.price! * 100),
             },
         }
     ];
@@ -82,7 +82,7 @@ export async function POST(
         customer: _stripeCustomer.stripeCustomerId,
         line_items: _line_items,
         mode: 'payment',
-        success_url: `${process.env.NEXT_PUBLIC_APP_URL}/corses/${_course!.id}?success=1`,
+        success_url: `${process.env.NEXT_PUBLIC_APP_URL}/courses/${_course!.id}?success=1`,
         cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/courses/${_course!.id}?canceled=1}`,
         metadata: {
             courseId: _course!.id,

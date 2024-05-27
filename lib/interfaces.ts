@@ -1,9 +1,11 @@
+import { AxiosError, AxiosResponse } from "axios";
+import { Attachment, Category, Chapter, Course, MuxData, UserProgression } from "@prisma/client";
+
 import { CourseWithCategoryProgress } from "@/actions/get-courses";
 import { fileRouter } from "@/app/api/uploadthing/core";
-import { Attachment, Category, Chapter, Course, MuxData, UserProgression } from "@prisma/client";
-import { AxiosError, AxiosResponse } from "axios";
-import { LucideIcon } from "lucide-react";
+
 import { IconType } from "react-icons/lib";
+import { LucideIcon } from "lucide-react";
 
 export interface ISidebarItemProps {
   icon: LucideIcon,
@@ -169,4 +171,11 @@ export interface ICourseVideoPlayerProps extends Omit<ICourseProgressButtonProps
   playbackId: string;
   isLocked: boolean;
   completeOnFinish: boolean;
+}
+
+export interface IInfoCardProps {
+  icon: LucideIcon
+  variant?: "default" | "success";
+  label: string;
+  numOfItems: number;
 }

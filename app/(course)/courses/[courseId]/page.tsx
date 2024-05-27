@@ -1,12 +1,45 @@
-import { checkExistence } from "@/app/(dashboard)/client-utils";
 import { db } from "@/lib/db";
+import { Metadata } from "next";
 import { redirect } from "next/navigation";
+
+import { checkExistence } from "@/app/(dashboard)/client-utils";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { courseId: string };
+}): Promise<Metadata> {
+  const course = await db.course.findUnique({
+    where: {
+      id: params.courseId,
+    },
+    select: {
+      title: true,
+    },
+  });
+
+  return {
+    title: course ? `Course: ${course.title}` : "Course Not Found",
+  };
+}
+
+export async function generateStaticParams() {
+  const courses = await db.course.findMany({
+    select: {
+      id: true,
+    },
+  });
+
+  return courses.map((course) => ({
+    courseId: course.id,
+  }));
+}
 
 export default async function CourseIdPage({
   params,
 }: { params: { courseId: string } }): Promise<JSX.Element> {
   
-  const course = await db.course.findUnique({
+  const _course = await db.course.findUnique({
     where: {
       id: params.courseId,
     },
@@ -21,7 +54,7 @@ export default async function CourseIdPage({
       },
     },
   });
-  checkExistence(course);
+  checkExistence(_course);
   
-  return redirect(`/courses/${course!.id}/chapters/${course!.chapters[0].id}`);
+  return redirect(`/courses/${_course!.id}/chapters/${_course!.chapters[0].id}`);
 }

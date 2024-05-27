@@ -2,7 +2,7 @@ import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
-import { checkAuthorization } from "../../../../utils";
+import { checkAuthorization } from "@/app/api/courses/utils";
 
 export async function PUT(
   req: Request,

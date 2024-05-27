@@ -1,7 +1,9 @@
-import { getChapter } from "@/actions/get-chapter";
 import { auth } from "@clerk/nextjs/server";
+import { db } from "@/lib/db";
 import { Attachment } from "@prisma/client";
+import { Metadata } from "next";
 
+import { getChapter } from "@/actions/get-chapter";
 import { checkExistence } from "@/app/(dashboard)/client-utils";
 
 import { Banner } from "@/components/banner";
@@ -12,9 +14,48 @@ import { CourseEnrollButton } from "./_components/enroll-button";
 import { CourseProgressButton } from "./_components/progress-button";
 import { File } from "lucide-react";
 
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { courseId: string; chapterId: string };
+}): Promise<Metadata> {
+  const chapter = await db.chapter.findUnique({
+    where: {
+      id: params.chapterId,
+    },
+    select: {
+      title: true,
+    },
+  });
+
+  return {
+    title: chapter ? `Chapter: ${chapter.title}` : "Chapter Not Found",
+  };
+}
+
+export async function generateStaticParams() {
+  const chapters = await db.chapter.findMany({
+    select: {
+      id: true,
+      courseId: true,
+    },
+    where: {
+      isPublished: true,
+    },
+  });
+
+  return chapters.map((chapter) => ({
+    courseId: chapter.courseId,
+    chapterId: chapter.id,
+  }));
+}
+
 export default async function ChapterIdPage({
   params
-}: {params: {courseId: string, chapterId: string}}): Promise<JSX.Element> {
+}: { 
+    params: {courseId: string, chapterId: string }
+}): Promise<JSX.Element> {
     const { userId }: { userId: string | null } = auth();
     checkExistence(userId);
     
@@ -88,7 +129,7 @@ export default async function ChapterIdPage({
                             href={attachment.url!}
                             target="_blank"
                             className="flex items-center p-3 w-full bg-sky-200
-                                border text-sky-700 rounded-md hover:underline"
+                                border text-sky-600 rounded-md hover:underline"
                         >
                             <File/>
                             <p className="line-clamp-1">

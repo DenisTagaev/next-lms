@@ -179,3 +179,16 @@ export interface IInfoCardProps {
   label: string;
   numOfItems: number;
 }
+
+export interface IAnalyticsCardProps {
+  value: number;
+  label: string;
+  shouldFormat?: boolean;
+}
+
+export interface IAnalyticsChartProps {
+  data: {
+    name: string;
+    total: number;
+  }[];
+}

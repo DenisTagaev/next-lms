@@ -91,14 +91,12 @@ export default async function CourseIdPage({
           ></CourseControl>
         </div>
         <div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mt-16">
             <div className="flex items-center gap-x-2">
               <IconBadge variant="success" icon={LayoutDashboard} />
               <h3 className="text-xl">Customize your course</h3>
             </div>
             <TitleForm initialData={_course!} courseId={_course!.id} />
-            <DescriptionForm initialData={_course!} courseId={_course!.id} />
-            <ImageForm initialData={_course!} courseId={_course!.id} />
             <CategoryForm
               initialData={_course!}
               courseId={_course!.id}
@@ -109,6 +107,8 @@ export default async function CourseIdPage({
                 })
               )}
             />
+            <ImageForm initialData={_course!} courseId={_course!.id} />
+            <DescriptionForm initialData={_course!} courseId={_course!.id} />
             <div className="space-y-6">
               <div className="flex items-center gap-x-2">
                 <IconBadge size="sm" icon={ListChecks} />

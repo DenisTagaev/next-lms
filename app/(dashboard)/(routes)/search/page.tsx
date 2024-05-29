@@ -4,11 +4,30 @@ import { auth } from "@clerk/nextjs/server";
 
 import { CourseWithCategoryProgress, getCourses } from "@/actions/get-courses";
 import { ISearchPageProps } from "@/lib/interfaces";
+import { checkExistence } from "@/app/(dashboard)/client-utils";
 
 import { Categories } from "./_components/categories";
 import { CoursesList } from "@/components/courses-list";
 import { SearchInput } from "../../_components/search-input";
-import { checkExistence } from "@/app/(dashboard)/client-utils";
+
+export async function generateStaticParams() {
+  const categories: Category[] = await db.category.findMany({
+    orderBy: {
+      name: "asc",
+    },
+  });
+
+  return categories.map((category) => ({
+    searchParams: { category: category.id },
+  }));
+}
+
+export async function generateMetadata() {
+  return {
+    title: "Search Page",
+    description: "Search page for courses by category or course title",
+  };
+}
 
 export default async function SearchPage({
   searchParams

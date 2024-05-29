@@ -1,7 +1,6 @@
 import { db } from "@/lib/db";
 import { Attachment, Chapter, MuxData, Purchase } from "@prisma/client";
 
-
 export const getChapter = async ({
   userId,
   courseId,

@@ -1,16 +1,18 @@
 "use client"
 
+import MuxPlayer from "@mux/mux-player-react";
+import MuxPlayerElement from "@mux/mux-player"
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useConfettiStore } from "@/hooks/use-confetti-store";
 import { cn } from "@/lib/utils";
 
+import { useConfettiStore } from "@/hooks/use-confetti-store";
+import { useProgressStore } from "@/hooks/use-video-progress";
 import { ICourseVideoPlayerProps } from "@/lib/interfaces";
 import { getErrorMessage } from "@/app/(dashboard)/client-utils";
 
-import MuxPlayer from "@mux/mux-player-react";
 import { Loader2, Lock } from "lucide-react";
 
 export const VideoPlayer = ({
@@ -23,8 +25,28 @@ export const VideoPlayer = ({
     completeOnFinish,
 }: ICourseVideoPlayerProps) => {
     const [isReady, setIsReady] = useState(false);
+    const setProgress = useProgressStore((state) => state.setProgress);
+    const playerRef = useRef<MuxPlayerElement | null>(null);
     const router = useRouter();
     const confetti = useConfettiStore();
+
+    useEffect(() => {
+      const player: MuxPlayerElement | null = playerRef.current;
+
+      const handleTimeUpdate = (): void => {
+        if (player && player.duration) {
+          setProgress((player.currentTime / player.duration) * 100);
+        }
+      };
+
+      if (player) {
+        player.addEventListener("timeupdate", handleTimeUpdate);
+        
+        return (): void => {
+          player.removeEventListener("timeupdate", handleTimeUpdate);
+        };
+      }
+    }, [playerRef.current]);
 
     const onEnded = async (): Promise<void> => {
       try {
@@ -70,6 +92,7 @@ export const VideoPlayer = ({
         )}
         {!isLocked && (
           <MuxPlayer
+            ref={playerRef}
             onCanPlay={(): void => setIsReady(true)}
             onEnded={onEnded}
             className={cn(" w-full", !isReady && "hidden")}

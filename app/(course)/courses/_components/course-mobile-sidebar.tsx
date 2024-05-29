@@ -7,7 +7,7 @@ import { Menu } from "lucide-react";
 export const CourseMobileSidebar = ({
  course,
  progress   
-}: ICourseSidebarProps) => {
+}: ICourseSidebarProps): JSX.Element => {
   return (
     <Sheet>
       <SheetTrigger className="md:hidden pr-4 hover:opacity-75 transition-all">

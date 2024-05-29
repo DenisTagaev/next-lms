@@ -9,7 +9,9 @@ export async function generateMetadata({
 }: {
   params: { courseId: string };
 }): Promise<Metadata> {
-  const course = await db.course.findUnique({
+  const course: {
+    title: string;
+  } | null = await db.course.findUnique({
     where: {
       id: params.courseId,
     },
@@ -24,21 +26,30 @@ export async function generateMetadata({
 }
 
 export async function generateStaticParams() {
-  const courses = await db.course.findMany({
+  const courses: {
+    id: string;
+  }[] = await db.course.findMany({
     select: {
       id: true,
     },
   });
 
-  return courses.map((course) => ({
-    courseId: course.id,
-  }));
+  return courses.map(
+    (course: {
+      id: string;
+    }): {
+      courseId: string;
+    } => ({
+      courseId: course.id,
+    })
+  );
 }
 
 export default async function CourseIdPage({
   params,
-}: { params: { courseId: string } }): Promise<JSX.Element> {
-  
+}: {
+  params: { courseId: string };
+}): Promise<never> {
   const _course = await db.course.findUnique({
     where: {
       id: params.courseId,
@@ -55,6 +66,8 @@ export default async function CourseIdPage({
     },
   });
   checkExistence(_course);
-  
-  return redirect(`/courses/${_course!.id}/chapters/${_course!.chapters[0].id}`);
+
+  return redirect(
+    `/courses/${_course!.id}/chapters/${_course!.chapters[0].id}`
+  );
 }

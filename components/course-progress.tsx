@@ -21,7 +21,7 @@ export const CourseProgress = ({
   size,
 }: ICourseProgressProps) => {
   return (
-    <div>
+    <>
       <Progress className="h-2" value={value} variant={variant} />
       <p
         className={cn(
@@ -32,6 +32,6 @@ export const CourseProgress = ({
       >
         {Math.round(value)} % Complete
       </p>
-    </div>
+    </>
   );
 };

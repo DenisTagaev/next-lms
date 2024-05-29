@@ -64,7 +64,7 @@ export const CategoryForm = ({
     };
     
     return (
-      <div className="p-4 mt-6 border bg-sky-300/50 rounded-md">
+      <div className="p-4 mt-6 border bg-sky-300/50 rounded-md max-h-[250px]">
         <div className="font-medium flex items-center justify-between">
           Course category
           <Button onClick={toggleEdit} variant="ghost">
@@ -80,8 +80,9 @@ export const CategoryForm = ({
         </div>
         {!isEditing ? (
           <p className={cn(
-            "text-sm mt-2",
-            !initialData.categoryId && "text-slate-600 italic"
+            "text-md mt-2",
+            !initialData.categoryId && "text-slate-600 italic",
+            _selectedCategory?.label && "text-lg text-sky-500 bg-white rounded-md p-2"
           )}>
             {_selectedCategory?.label || "No category yet"}
           </p>

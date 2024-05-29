@@ -41,20 +41,18 @@ export const ImageForm = ({
     };
 
     return (
-      <div className="p-4 mt-6 border bg-sky-300/50 rounded-md">
+      <div className="p-4 mt-6 border bg-sky-300/50 rounded-md flex flex-col">
         <div className="font-medium flex items-center justify-between">
           Course image
           <Button onClick={toggleEdit} variant="ghost">
-            {isEditing && (
-              <>Cancel</>
-            )}
-            {!isEditing && !initialData?.imageUrl &&(
+            {isEditing && <>Cancel</>}
+            {!isEditing && !initialData?.imageUrl && (
               <>
-                <PlusCircle className="h-4 w-4 mr-2"/>
+                <PlusCircle className="h-4 w-4 mr-2" />
                 Add image
               </>
             )}
-            {!isEditing && initialData?.imageUrl &&(
+            {!isEditing && initialData?.imageUrl && (
               <>
                 <Pencil className="h-4 w-4 mr-2" />
                 Edit image
@@ -64,12 +62,14 @@ export const ImageForm = ({
         </div>
         {!isEditing ? (
           !initialData?.imageUrl ? (
-            <div className="flex items-center justify-center 
-              h-60 bg-slate-200 rounded-md">
-                <ImageIcon className="h-10 w-10 text-slate-500"/>
+            <div
+              className="flex items-center justify-center 
+              h-60 bg-slate-200 rounded-md flex-grow"
+            >
+              <ImageIcon className="h-10 w-10 text-slate-500" />
             </div>
           ) : (
-            <div className="relative aspect-video mt-2">
+            <div className="relative aspect-video mt-2 flex-grow">
               <Image
                 alt="Upload image zone"
                 fill
@@ -82,7 +82,7 @@ export const ImageForm = ({
           <>
             <FileUpload
               endPoint="courseImage"
-              onChange={(url: string | undefined):void => {
+              onChange={(url: string | undefined): void => {
                 if (url) {
                   onSubmit({ imageUrl: url });
                 }

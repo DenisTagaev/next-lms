@@ -20,7 +20,9 @@ export async function generateMetadata({
 }: {
   params: { courseId: string; chapterId: string };
 }): Promise<Metadata> {
-  const chapter = await db.chapter.findUnique({
+  const chapter: {
+    title: string;
+  } | null = await db.chapter.findUnique({
     where: {
       id: params.chapterId,
     },
@@ -34,8 +36,16 @@ export async function generateMetadata({
   };
 }
 
-export async function generateStaticParams() {
-  const chapters = await db.chapter.findMany({
+export async function generateStaticParams(): Promise<
+  {
+    courseId: string;
+    chapterId: string;
+  }[]
+> {
+  const chapters: {
+    id: string;
+    courseId: string;
+  }[] = await db.chapter.findMany({
     select: {
       id: true,
       courseId: true,
@@ -45,10 +55,18 @@ export async function generateStaticParams() {
     },
   });
 
-  return chapters.map((chapter) => ({
-    courseId: chapter.courseId,
-    chapterId: chapter.id,
-  }));
+  return chapters.map(
+    (chapter: {
+      id: string;
+      courseId: string;
+    }): {
+      courseId: string;
+      chapterId: string;
+    } => ({
+      courseId: chapter.courseId,
+      chapterId: chapter.id,
+    })
+  );
 }
 
 export default async function ChapterIdPage({

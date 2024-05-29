@@ -4,9 +4,9 @@ import axios, { AxiosResponse } from "axios";
 import { useState } from "react";
 
 import { formatPrice } from "@/lib/format";
+import { getErrorMessage } from "@/app/(dashboard)/client-utils";
 
 import { Button } from "@/components/ui/button";
-import { getErrorMessage } from "@/app/(dashboard)/client-utils";
 
 export const CourseEnrollButton = ({
     courseId,
@@ -24,9 +24,6 @@ export const CourseEnrollButton = ({
             const response: AxiosResponse<any, any> = await axios.post(
               `/api/courses/${courseId}/checkout`
             );
-
-            console.log(response.data);
-            
             window.location.assign(response.data.url);
         } catch (error) {
             getErrorMessage(error);

@@ -78,7 +78,7 @@ export const ChaptersList = ({
                       <div
                         className={cn(
                           `px-2 py-3 border-r border-r-slate-200
-                                                hover:bg-slate-300 rounded-l-md transition`,
+                           hover:bg-slate-300 transition`,
                           chapter.isPublished &&
                             "border-r-sky-200 hover:bg-sky-200"
                         )}

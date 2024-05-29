@@ -137,7 +137,7 @@ export interface ICourseCardProps {
 export interface ICourseSidebarProps {
   course: Course & {
     chapters: (Chapter & {
-      userProgression: UserProgression[] | null
+      userProgress: UserProgression[] | null
     })[]
   };
   progress: number;

@@ -1,7 +1,7 @@
 import Link from "next/link"
 
 import { ICourseCardProps } from "@/lib/interfaces"
-import { formatPrice } from "@/lib/format";
+import { formatPrice } from "@/lib/custom-utils";
 
 import Image from "next/image"
 import { IconBadge } from "@/components/icon-badge";

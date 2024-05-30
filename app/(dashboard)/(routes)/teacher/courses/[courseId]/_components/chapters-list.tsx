@@ -1,9 +1,10 @@
 "use client"
 
 import { useEffect, useState } from "react";
+import { Chapter } from "@prisma/client";
+import { cn } from "@/lib/utils";
 
 import { IChapterListProps } from "@/lib/interfaces";
-import { cn } from "@/lib/utils";
 
 import {
     DragDropContext,
@@ -11,8 +12,8 @@ import {
     Draggable,
     DropResult
 } from '@hello-pangea/dnd';
-import { Grip, Pencil } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Grip, Pencil } from "lucide-react";
 
 export const ChaptersList = ({
     items,
@@ -23,34 +24,34 @@ export const ChaptersList = ({
     const [chapters, setChapters] = useState(items);
 
     const onDragEnd = (result: DropResult): void => {
-        if (!result.destination) return;
+      if (!result.destination) return;
 
-        const items = Array.from(chapters);
-        const [reorderedChapter] = items.splice(result.source.index, 1);
-        items.splice(result.destination.index, 0, reorderedChapter);
+      const items: Chapter[] = Array.from(chapters);
+      const [reorderedChapter] = items.splice(result.source.index, 1);
+      items.splice(result.destination.index, 0, reorderedChapter);
 
-        const startIndex = Math.min(result.source.index, result.destination.index);
-        const endIndex = Math.max(result.source.index, result.destination.index);
-        const updatedChapters = items.slice(startIndex, endIndex + 1);
-        
-        setChapters(items);
+      const startIndex: number = Math.min(result.source.index, result.destination.index);
+      const endIndex: number = Math.max(result.source.index, result.destination.index);
+      const updatedChapters: Chapter[] = items.slice(startIndex, endIndex + 1);
+      setChapters(items);
 
-        const bulkUpdateData = updatedChapters.map((chapter) => ({
-            id: chapter.id,
-            position: items.findIndex((item) => item.id === chapter.id)
-        }));
-
-        onReorder(bulkUpdateData);
+      const bulkUpdateData: {
+        id: string;
+        position: number;
+      }[] = updatedChapters.map((chapter) => ({
+        id: chapter.id,
+        position: items.findIndex((item) => item.id === chapter.id),
+      }));
+      onReorder(bulkUpdateData);
     }
     
     useEffect(() =>{
-        setChapters(chapters)
+      setChapters(chapters)
     }, [items]);
 
     useEffect(() => {
-        setIsMounted(true);
+      setIsMounted(true);
     }, []);
-    
 
     return !isMounted ? null : (
       <DragDropContext onDragEnd={onDragEnd}>

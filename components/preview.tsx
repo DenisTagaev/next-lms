@@ -7,7 +7,7 @@ import "react-quill/dist/quill.bubble.css";
 
 import { IPreviewComponentProps } from "@/lib/interfaces";
 
-export const Preview = ({ value }: IPreviewComponentProps) => {
+export const Preview = ({ value }: IPreviewComponentProps): JSX.Element => {
   const ReactQuill = useMemo(
     () => dynamic(() => import("react-quill"), { ssr: false }),
     []

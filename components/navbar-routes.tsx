@@ -7,7 +7,7 @@ import { UserButton } from "@clerk/nextjs"
 import { getPathParams } from "@/lib/custom-utils"
 
 import { Button } from "@/components/ui/button"
-import { SearchInput } from "@/app/(dashboard)/_components/search-input"
+import { SearchInput } from "@/components/search-input"
 import { LogOut } from "lucide-react"
 
 export const NavbarRoutes = (): JSX.Element => {

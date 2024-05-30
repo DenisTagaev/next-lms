@@ -1,19 +1,43 @@
+import Link from "next/link";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
-import { Chapter, Course } from "@prisma/client";
-import Link from "next/link";
-import { redirect } from "next/navigation";
+import { Chapter } from "@prisma/client";
+import { Metadata } from "next";
 
 import { checkExistence } from "@/app/(dashboard)/client-utils";
 
 import { IconBadge } from "@/components/icon-badge";
-import { ChTitleForm } from "./_components/ch-title-form";
 import { Banner } from "@/components/banner";
+import { ChTitleForm } from "./_components/ch-title-form";
 import { ChDescriptionForm } from "./_components/ch-description-form";
-import { ArrowLeft, Eye, LayoutDashboard, Video } from "lucide-react";
 import { ChAccessForm } from "./_components/ch-access-form";
 import { ChVideoForm } from "./_components/ch-video-form";
 import { ChapterControl } from "./_components/ch-control";
+import { ArrowLeft, Eye, LayoutDashboard, Video } from "lucide-react";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { courseId: string };
+}): Promise<Metadata> {
+  const chapter: {
+    title: string;
+    description: string | null;
+  } | null = await db.chapter.findUnique({
+    where: {
+      id: params.courseId,
+    },
+    select: {
+      title: true,
+      description: true,
+    },
+  });
+
+  return {
+    title: chapter ? `${chapter.title}` : "Chapter Not Found",
+    description: chapter?.description ?? "Chapter details and data edit page",
+  };
+}
 
 export default async function ChapterIdPage({
   params,
@@ -22,25 +46,6 @@ export default async function ChapterIdPage({
 }>): Promise<JSX.Element> {
   const { userId }: { userId: string | null } = auth();
   checkExistence(userId);
-
-  const _course: Course | null = await db.course.findUnique({
-    where: {
-      id: params.courseId,
-      userId: userId!,
-    },
-    include: {
-      attachments: {
-        orderBy: {
-          createdAt: "desc",
-        },
-      },
-      chapters: {
-        orderBy: {
-          position: "asc",
-        },
-      },
-    },
-  });
 
   const _chapter: Chapter | null = await db.chapter.findUnique({
     where: {
@@ -51,7 +56,6 @@ export default async function ChapterIdPage({
         muxData: true
     }
   });
-  
   checkExistence(_chapter);
 
   const _requiredFields = [

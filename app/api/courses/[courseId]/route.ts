@@ -1,9 +1,10 @@
+import Mux from "@mux/mux-node";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { Course } from "@prisma/client";
 import { NextResponse } from "next/server";
-import { checkAuthorization, checkExistingRecord, checkOwnership } from "../utils";
-import Mux from "@mux/mux-node";
+
+import { checkAuthorization, checkExistingRecord, checkOwnership } from "@/app/api/courses/utils";
 
 const mux: Mux = new Mux({
   tokenId: process.env.MUX_TOKEN_ID,
@@ -60,6 +61,7 @@ export async function PATCH(
   try {
     const { userId }: { userId: string | null } = auth();
     checkAuthorization(!!userId);
+    await checkOwnership(params.courseId, userId!);
 
     const _values = await req.json();
 

@@ -1,8 +1,11 @@
 "use client"
 
+import { IconType } from "react-icons/lib";
+
 import { ICategoriesSearchProps } from "@/lib/interfaces";
 import { Category } from "@prisma/client";
 
+import { CategoryItem } from "./category-item";
 import {
     FcCommandLine,
     FcSportsMode,
@@ -11,8 +14,6 @@ import {
     FcCalculator,
     FcBiotech,
 } from "react-icons/fc"
-import { IconType } from "react-icons/lib";
-import { CategoryItem } from "./category-item";
 
 const iconMap: Record<Category["name"], IconType> = {
     "Computer Science": FcCommandLine,

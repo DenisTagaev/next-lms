@@ -29,10 +29,10 @@ export async function PATCH(
     });
     checkExistingRecord(!!_course);  
 
-    const hasPublishedChapter: boolean = _course!.chapters.some((ch) => ch.isPublished);
+    const _hasPublishedChapter: boolean = _course!.chapters.some((ch) => ch.isPublished);
 
     if (
-      !hasPublishedChapter ||
+      !_hasPublishedChapter ||
       !_course!.title ||
       !_course!.categoryId ||
       !_course!.description ||

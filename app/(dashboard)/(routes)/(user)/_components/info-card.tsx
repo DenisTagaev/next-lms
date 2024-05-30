@@ -1,5 +1,6 @@
-import { IconBadge } from "@/components/icon-badge";
 import { IInfoCardProps } from "@/lib/interfaces";
+
+import { IconBadge } from "@/components/icon-badge";
 
 export const InfoCard = ({
     variant,

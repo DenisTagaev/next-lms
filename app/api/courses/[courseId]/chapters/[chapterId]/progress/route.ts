@@ -2,7 +2,7 @@ import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
-import { checkAuthorization } from "@/app/api/courses/utils";
+import { checkAuthorization, checkOwnership } from "@/app/api/courses/utils";
 
 export async function PUT(
   req: Request,
@@ -11,6 +11,7 @@ export async function PUT(
   try {
     const { userId }: { userId: string | null } = auth();
     checkAuthorization(!!userId);
+    await checkOwnership(params.courseId, userId!);
 
     const { isCompleted }: { isCompleted: boolean } = await req.json();
     const _userProgression = await db.userProgression.upsert({

@@ -3,7 +3,7 @@ import { auth } from "@clerk/nextjs/server";
 import { Chapter, MuxData } from "@prisma/client";
 import { NextResponse } from "next/server";
 
-import { checkAuthorization, checkOwnership, check_and_updateVoidCourse } from "@/app/api/courses/utils";
+import { checkAuthorization, checkExistingRecord, checkOwnership, check_and_updateVoidCourse } from "@/app/api/courses/utils";
 
 export async function PATCH(
   req: Request,
@@ -20,12 +20,14 @@ export async function PATCH(
         courseId: params.courseId,
       }
     });
+    checkExistingRecord(!!_chapter);  
     
     const _muxData: MuxData | null = await db.muxData.findUnique({
       where: {
         chapterId: params.chapterId,
       },
     });
+    checkExistingRecord(!!_muxData);  
 
     if (
       !_chapter ||
@@ -33,9 +35,7 @@ export async function PATCH(
       !_chapter.title ||
       !_chapter.description ||
       !_chapter.videoUrl
-    ) {
-        console.log(!_chapter, !_muxData, _chapter.title, _chapter.description, _chapter.videoUrl);
-        
+    ) {        
         return new NextResponse("Missing required fields", { status: 401 });
     }
 

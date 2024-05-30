@@ -1,16 +1,16 @@
 "use client"
 import * as zod from "zod";
+import toast from "react-hot-toast";
 import axios, { AxiosResponse } from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UseFormReturn, useForm } from "react-hook-form";
 import { useState } from "react";
-import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 import { formDescriptionSchema } from "@/app/(dashboard)/_schemas/new-course";
 import { getErrorMessage } from "@/app/(dashboard)/client-utils";
 import { IDescriptionFormProps } from "@/lib/interfaces";
-import { cn } from "@/lib/utils";
 
 import {
   Form,
@@ -33,7 +33,7 @@ export const DescriptionForm = ({
     
     const router = useRouter();
 
-    const form: UseFormReturn<zod.infer<typeof formDescriptionSchema>> = useForm<
+    const _form: UseFormReturn<zod.infer<typeof formDescriptionSchema>> = useForm<
       zod.infer<typeof formDescriptionSchema>
     >({
       resolver: zodResolver(formDescriptionSchema),
@@ -42,7 +42,10 @@ export const DescriptionForm = ({
       }
     });
 
-    const { isSubmitting, isValid } = form.formState;
+    const {
+      isSubmitting,
+      isValid,
+    }: { isSubmitting: boolean; isValid: boolean } = _form.formState;
 
     const onSubmit = async (
       values: zod.infer<typeof formDescriptionSchema>
@@ -52,8 +55,9 @@ export const DescriptionForm = ({
           `/api/courses/${courseId}`,
           values
         );
-        toast.success("Course successfully edited!");
         toggleEdit();
+        toast.success("Course successfully edited!");
+
         router.refresh();
       } catch (error) {
         getErrorMessage(error);
@@ -81,13 +85,13 @@ export const DescriptionForm = ({
             !initialData?.description && "text-slate-600 italic"
           )}>{initialData?.description || "No description yet"}</p>
         ) : (
-          <Form {...form}>
+          <Form {..._form}>
             <form
               className="space-y-4 mt-4"
-              onSubmit={form.handleSubmit(onSubmit)}
+              onSubmit={_form.handleSubmit(onSubmit)}
             >
               <FormField
-                control={form.control}
+                control={_form.control}
                 name="description"
                 render={({ field }) => (
                   <FormItem>

@@ -9,9 +9,10 @@ import { Chart } from "./_components/chart";
 
 export function generateMetadata(): Metadata {
   const { userId }: { userId: string | null } = auth();
+    checkExistence(userId);
 
   return {
-    title: `${userId}'s Analytics`,
+    title: `Courses Analytics`,
     description: `Analytics and statistics page for ${userId} for sold courses`,
   };
 }
@@ -20,7 +21,14 @@ export default async function AnalyticsPage (): Promise<JSX.Element> {
     const { userId }: { userId: string | null } = auth();
     checkExistence(userId);
 
-    const{ data, totalRevenue, totalSales } = await getAnalytics(userId!);
+    const{ data, totalRevenue, totalSales } : {
+        data: {
+            name: string;
+            total: number;
+        }[],
+        totalRevenue: number,
+        totalSales: number
+    } = await getAnalytics(userId!);
     
     return (
         <section className="p-6">

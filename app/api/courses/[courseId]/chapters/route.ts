@@ -2,7 +2,8 @@ import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { Chapter } from "@prisma/client";
 import { NextResponse } from "next/server";
-import { checkAuthorization, checkOwnership } from "../../utils";
+
+import { checkAuthorization, checkOwnership } from "@/app/api/courses/utils";
 
 export async function POST(
   req: Request,
@@ -10,10 +11,10 @@ export async function POST(
 ): Promise<NextResponse<unknown>> {
   try {
     const { userId }: { userId: string | null } = auth();
-    const { title }: { title: string } = await req.json();
-
     checkAuthorization(!!userId);
     await checkOwnership(params.courseId, userId!);
+    
+    const { title }: { title: string } = await req.json();
 
     const _prevChapter: Chapter | null = await db.chapter.findFirst({
       where: { 

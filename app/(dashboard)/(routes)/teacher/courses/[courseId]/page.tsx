@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
-import { Chapter, Course } from "@prisma/client";
+import { Chapter } from "@prisma/client";
+import { Metadata } from "next";
 
 import { checkExistence } from "@/app/(dashboard)/client-utils";
 
@@ -15,6 +16,30 @@ import { AttachmentForm } from "./_components/attachments-form";
 import { ChapterForm } from "./_components/chapters-form";
 import { CourseControl } from "./_components/course-control";
 import { CircleDollarSignIcon, File, LayoutDashboard, ListChecks } from "lucide-react";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { courseId: string };
+}): Promise<Metadata> {
+  const course: {
+    title: string;
+    description: string | null;
+  } | null = await db.course.findUnique({
+    where: {
+      id: params.courseId,
+    },
+    select: {
+      title: true,
+      description: true,
+    },
+  });
+
+  return {
+    title: course ? `${course.title}` : "Course Not Found",
+    description: course?.description ?? "Course details and data edit page",
+  };
+}
 
 export default async function CourseIdPage({
   params,
@@ -42,7 +67,6 @@ export default async function CourseIdPage({
         }
     }
   });
-
   checkExistence(_course);
 
   const _categories: {

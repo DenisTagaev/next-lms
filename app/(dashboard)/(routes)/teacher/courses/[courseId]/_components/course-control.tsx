@@ -1,8 +1,8 @@
 "use client"
 
-import { useState } from "react"
 import axios from "axios"
 import toast from "react-hot-toast"
+import { useState } from "react"
 import { useRouter } from "next/navigation"
 
 import { getErrorMessage } from "@/app/(dashboard)/client-utils"
@@ -28,6 +28,7 @@ export const CourseControl = ({
         
         await axios.delete(`/api/courses/${courseId}`)
         toast.success("Course successfully deleted!");
+        
         router.refresh();
         router.push(`/teacher/courses`);
       } catch (error) {

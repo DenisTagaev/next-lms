@@ -1,16 +1,16 @@
 "use client"
 import * as zod from "zod";
 import axios from "axios";
+import toast from "react-hot-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UseFormReturn, useForm } from "react-hook-form";
 import { useState } from "react";
-import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 import { formDescriptionSchema } from "@/app/(dashboard)/_schemas/new-course";
 import { getErrorMessage } from "@/app/(dashboard)/client-utils";
 import { IChDescriptionFormProps } from "@/lib/interfaces";
-import { cn } from "@/lib/utils";
 
 import {
   Form,
@@ -21,8 +21,8 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Editor } from "@/components/editor";
-import { Pencil } from "lucide-react";
 import { Preview } from "@/components/preview";
+import { Pencil } from "lucide-react";
 
 
 export const ChDescriptionForm = ({
@@ -44,7 +44,10 @@ export const ChDescriptionForm = ({
       }
     });
 
-    const { isSubmitting, isValid } = _form.formState;
+    const {
+      isSubmitting,
+      isValid,
+    }: { isSubmitting: boolean; isValid: boolean } = _form.formState;
 
     const onSubmit = async (
       values: zod.infer<typeof formDescriptionSchema>
@@ -54,8 +57,9 @@ export const ChDescriptionForm = ({
           `/api/courses/${courseId}/chapters/${chapterId}`,
           values
         );
-        toast.success("Chapter successfully updated!");
         toggleEdit();
+        toast.success("Chapter successfully updated!");
+        
         router.refresh();
       } catch (error) {
         getErrorMessage(error);

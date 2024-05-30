@@ -3,7 +3,7 @@
 import axios, { AxiosResponse } from "axios";
 import { useState } from "react";
 
-import { formatPrice } from "@/lib/format";
+import { formatPrice } from "@/lib/custom-utils";
 import { getErrorMessage } from "@/app/(dashboard)/client-utils";
 
 import { Button } from "@/components/ui/button";

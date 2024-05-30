@@ -1,7 +1,8 @@
 import { ICoursesListProps } from "@/lib/interfaces";
+
 import { CourseCard } from "@/components/course-card";
 
-export const CoursesList = ({ items }: ICoursesListProps) => {
+export const CoursesList = ({ items }: ICoursesListProps): JSX.Element => {
   return (
     <section className="mt-4">
       <ul className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 list-none p-0">

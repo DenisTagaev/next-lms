@@ -1,16 +1,16 @@
 "use client"
 import * as zod from "zod";
+import toast from "react-hot-toast";
 import axios, { AxiosResponse } from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UseFormReturn, useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 import { formChapterSchema } from "@/app/(dashboard)/_schemas/new-course";
 import { getErrorMessage } from "@/app/(dashboard)/client-utils";
 import { IChapterFormProps } from "@/lib/interfaces";
-import { cn } from "@/lib/utils";
 
 import {
   Form,
@@ -21,8 +21,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Loader2, PlusCircle } from "lucide-react";
 import { ChaptersList } from "./chapters-list";
+import { Loader2, PlusCircle } from "lucide-react";
 
 
 export const ChapterForm = ({
@@ -36,7 +36,7 @@ export const ChapterForm = ({
     
     const router = useRouter();
 
-    const form: UseFormReturn<zod.infer<typeof formChapterSchema>> = useForm<
+    const _form: UseFormReturn<zod.infer<typeof formChapterSchema>> = useForm<
       zod.infer<typeof formChapterSchema>
     >({
       resolver: zodResolver(formChapterSchema),
@@ -45,7 +45,10 @@ export const ChapterForm = ({
       }
     });
 
-    const { isSubmitting, isValid } = form.formState;
+    const {
+      isSubmitting,
+      isValid,
+    }: { isSubmitting: boolean; isValid: boolean } = _form.formState;
 
     const onSubmit = async (
       values: zod.infer<typeof formChapterSchema>
@@ -80,6 +83,7 @@ export const ChapterForm = ({
           list: updateData
         });
         toast.success("Chapters reordered");
+
         router.refresh();
       } catch (error) {
         getErrorMessage(error);
@@ -91,10 +95,6 @@ export const ChapterForm = ({
     const onEdit = (id: string): void => {
       router.push(`/teacher/courses/${courseId}/chapters/${id}`)
     }
-
-    useEffect(() => {
-      console.log("Chapters updated:", chapters);
-    }, [chapters]);
 
     return (
       <div className="relative p-4 mt-6 border bg-sky-300/50 rounded-md">
@@ -117,13 +117,13 @@ export const ChapterForm = ({
           </Button>
         </div>
         {isCreating && (
-          <Form {...form}>
+          <Form {..._form}>
             <form
               className="space-y-4 mt-4"
-              onSubmit={form.handleSubmit(onSubmit)}
+              onSubmit={_form.handleSubmit(onSubmit)}
             >
               <FormField
-                control={form.control}
+                control={_form.control}
                 name="title"
                 render={({ field }) => (
                   <FormItem>

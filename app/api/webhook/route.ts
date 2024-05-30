@@ -4,7 +4,11 @@ import { headers } from "next/headers";
 import { NextResponse, NextRequest } from "next/server";
 import { stripe } from "@/lib/stripe";
 
-export const config = {
+export const config: {
+  api: {
+    bodyParser: boolean;
+  };
+} = {
   api: {
     bodyParser: false,
   },

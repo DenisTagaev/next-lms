@@ -1,25 +1,36 @@
 import { db } from "@/lib/db";
-import { Category, Course } from "@prisma/client";
+import { Category } from "@prisma/client";
 import { auth } from "@clerk/nextjs/server";
 
 import { CourseWithCategoryProgress, getCourses } from "@/actions/get-courses";
 import { ISearchPageProps } from "@/lib/interfaces";
 import { checkExistence } from "@/app/(dashboard)/client-utils";
 
-import { Categories } from "./_components/categories";
 import { CoursesList } from "@/components/courses-list";
-import { SearchInput } from "../../_components/search-input";
+import { SearchInput } from "@/components/search-input";
+import { Categories } from "./_components/categories";
 
 export async function generateStaticParams() {
-  const categories: Category[] = await db.category.findMany({
-    orderBy: {
-      name: "asc",
+  const exampleCourseTitles: {
+    title: string;
+  }[] = await db.course.findMany({
+    select: {
+      title: true,
     },
+    take: 10,
   });
 
-  return categories.map((category) => ({
-    searchParams: { category: category.id },
+  const courseTitleParams: {
+    searchParams: {
+      search: string;
+    };
+  }[] = exampleCourseTitles.map((course) => ({
+    searchParams: {
+      search: course.title,
+    },
   }));
+
+  return courseTitleParams;
 }
 
 export async function generateMetadata() {

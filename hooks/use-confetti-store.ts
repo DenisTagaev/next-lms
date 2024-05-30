@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-type ConfettiStore = {
+export type ConfettiStore = {
     isOpen: boolean;
     onOpen: () => void;
     onClose: () => void;

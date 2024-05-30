@@ -1,21 +1,32 @@
 import { auth } from "@clerk/nextjs/server";
+import { Metadata } from "next";
+
+import { DashboardInfo, getDashboardCourses } from "@/actions/get-dashboard-info";
 import { checkExistence } from "@/app/(dashboard)/client-utils";
-import { getDashboardCourses } from "@/actions/get-dashboard-info";
 
 import { CoursesList } from "@/components/courses-list";
-import { CheckCircle2Icon, Clock } from "lucide-react";
 import { InfoCard } from "./_components/info-card";
+import { CheckCircle2Icon, Clock } from "lucide-react";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { userId }: { userId: string | null } = auth();
+  checkExistence(!!userId);
+
+  return {
+    title: "User Dashboard",
+    description: `View ${userId}'s courses with progress and achievements`,
+  };
+}
 
 export default async function Dashboard(
 ): Promise<JSX.Element> {
   const { userId }: { userId: string | null } = auth();
   checkExistence(!!userId);
   
-
   const {
     completedCourses,
     coursesInProgress,
-  } = await getDashboardCourses(userId!);
+  }: DashboardInfo = await getDashboardCourses(userId!);
 
   return (
     <section className="p-6 space-y-5">

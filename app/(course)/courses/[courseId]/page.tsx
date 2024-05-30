@@ -11,17 +11,20 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const course: {
     title: string;
+    description: string | null
   } | null = await db.course.findUnique({
     where: {
       id: params.courseId,
     },
     select: {
       title: true,
+      description: true
     },
   });
 
   return {
-    title: course ? `Course: ${course.title}` : "Course Not Found",
+    title: course ? `${course.title}` : "Course Not Found",
+    description: course?.description ?? "Course details and data page"
   };
 }
 

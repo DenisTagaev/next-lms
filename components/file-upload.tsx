@@ -1,9 +1,10 @@
 "use client";
 
-import { UploadDropzone } from "@/lib/uploadthing";
-import { IFileUploadProps } from "@/lib/interfaces";
 import toast from "react-hot-toast";
 import { ClientUploadedFileData } from "uploadthing/types";
+
+import { UploadDropzone } from "@/lib/uploadthing";
+import { IFileUploadProps } from "@/lib/interfaces";
 
 export const FileUpload = ({ 
     onChange,

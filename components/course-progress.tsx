@@ -19,7 +19,7 @@ export const CourseProgress = ({
   value,
   variant,
   size,
-}: ICourseProgressProps) => {
+}: ICourseProgressProps): JSX.Element => {
   return (
     <>
       <Progress className="h-2" value={value} variant={variant} />

@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { ICourseProgressButtonProps } from "@/lib/interfaces";
 import { useConfettiStore } from "@/hooks/use-confetti-store";

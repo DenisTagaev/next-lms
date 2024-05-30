@@ -1,16 +1,16 @@
 "use client"
 import * as zod from "zod";
 import axios, { AxiosResponse } from "axios";
+import toast from "react-hot-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UseFormReturn, useForm } from "react-hook-form";
 import { useState } from "react";
-import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 import { formCategorySchema } from "@/app/(dashboard)/_schemas/new-course";
 import { getErrorMessage } from "@/app/(dashboard)/client-utils";
 import { ICategoryFormProps } from "@/lib/interfaces";
-import { cn } from "@/lib/utils";
 
 import {
   Form,
@@ -20,8 +20,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { Pencil } from "lucide-react";
 import { Combobox } from "@/components/ui/combobox";
+import { Pencil } from "lucide-react";
 
 
 export const CategoryForm = ({
@@ -42,20 +42,29 @@ export const CategoryForm = ({
         }
     });
 
-    const _selectedCategory = options.find(
-      option => option.value === initialData.categoryId);
+    const _selectedCategory:
+      {
+        label: string;
+        value: string;
+      } | undefined = options.find(
+      (option) => option.value === initialData.categoryId
+    );
 
-    const { isSubmitting, isValid } = _form.formState;
+    const {
+      isSubmitting,
+      isValid,
+    }: { isSubmitting: boolean; isValid: boolean } = _form.formState;
 
     const onSubmit = async (
       values: zod.infer<typeof formCategorySchema>
     ): Promise<void> => {
       try {
-        const response: AxiosResponse<any, any> = await axios.patch(
+        await axios.patch(
           `/api/courses/${courseId}`,
           values
         );
         toast.success("Course successfully edited!");
+        
         toggleEdit();
         router.refresh();
       } catch (error) {

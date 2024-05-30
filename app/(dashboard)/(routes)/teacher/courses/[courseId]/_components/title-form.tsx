@@ -1,10 +1,10 @@
 "use client"
 import * as zod from "zod";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
+import toast from "react-hot-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UseFormReturn, useForm } from "react-hook-form";
 import { useState } from "react";
-import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
 import { formTitleSchema } from "@/app/(dashboard)/_schemas/new-course";
@@ -39,7 +39,10 @@ export const TitleForm = ({
       defaultValues: initialData
     });
 
-    const { isSubmitting, isValid } = _form.formState;
+    const {
+      isSubmitting,
+      isValid,
+    }: { isSubmitting: boolean; isValid: boolean } = _form.formState;
 
     const onSubmit = async (
       values: zod.infer<typeof formTitleSchema>
@@ -49,8 +52,9 @@ export const TitleForm = ({
           `/api/courses/${courseId}`,
           values
         );
-        toast.success("Course successfully edited!");
         toggleEdit();
+        toast.success("Course successfully edited!");
+        
         router.refresh();
       } catch (error) {
         getErrorMessage(error);

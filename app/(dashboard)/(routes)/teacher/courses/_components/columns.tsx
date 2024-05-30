@@ -2,6 +2,9 @@
 import Link from "next/link";
 import { Course } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
+import { cn } from "@/lib/utils";
+
+import { formatPrice } from "@/lib/custom-utils";
 
 import { Button } from "@/components/ui/button";
 import { 
@@ -10,9 +13,8 @@ import {
   DropdownMenuTrigger, 
   DropdownMenuItem 
 } from "@/components/ui/dropdown-menu";
-import { ArrowUpDown, MoreHorizontal, Pencil } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
+import { ArrowUpDown, MoreHorizontal, Pencil } from "lucide-react";
 
 export const columns: ColumnDef<Course>[] = [
   {
@@ -52,10 +54,7 @@ export const columns: ColumnDef<Course>[] = [
     },
     cell: ({ row }) => {
       const price: number = parseFloat(row.getValue("price") || "0");
-      const formattedPrice: string = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(price);
+      const formattedPrice: string = formatPrice(price);
       return (
         <>{formattedPrice}</>
       );

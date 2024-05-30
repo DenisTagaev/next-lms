@@ -1,13 +1,13 @@
 "use client"
 
 import * as zod from "zod"
+import Link from "next/link"
+import toast from "react-hot-toast"
+import { Metadata } from "next"
 import axios, { AxiosResponse } from "axios"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { UseFormReturn, useForm } from "react-hook-form"
 import { useRouter } from "next/navigation"
-import Link from "next/link"
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime"
-import toast from "react-hot-toast"
 
 import { formTitleSchema } from "@/app/(dashboard)/_schemas/new-course"
 import { getErrorMessage } from "@/app/(dashboard)/client-utils"
@@ -24,9 +24,13 @@ import {
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
+export const metadata: Metadata = {
+  title: "New Course",
+  description: "Course creation form page",
+};
 
 export default function AddCourse(): JSX.Element {
-    const router: AppRouterInstance = useRouter();
+    const router = useRouter();
     const _form: UseFormReturn<zod.infer<typeof formTitleSchema>> = 
         useForm<zod.infer<typeof formTitleSchema>>(
         {
@@ -36,7 +40,7 @@ export default function AddCourse(): JSX.Element {
             },
         });
 
-    const { isSubmitting, isValid } = _form.formState;
+    const { isSubmitting, isValid }: { isSubmitting: boolean, isValid: boolean} = _form.formState;
 
     const onSubmit = async(values: zod.infer<typeof formTitleSchema>) => {
         try {

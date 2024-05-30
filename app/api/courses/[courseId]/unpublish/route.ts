@@ -14,7 +14,7 @@ export async function PATCH(
     checkAuthorization(!!userId);
     await checkOwnership(params.courseId, userId!);
 
-    const _course = await db.course.findUnique({
+    const _course: Course | null = await db.course.findUnique({
       where: {
         id: params.courseId,
         userId: userId!,

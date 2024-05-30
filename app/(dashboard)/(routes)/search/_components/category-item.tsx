@@ -4,14 +4,14 @@ import { cn } from "@/lib/utils";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { ICategoryItemProps } from "@/lib/interfaces";
-import { getSearchedUrl } from "@/app/(dashboard)/client-utils";
+import { getSearchedUrl } from "@/lib/custom-utils";
 
 export const CategoryItem = ({
     label,
     icon: Icon,
     value,
 }: ICategoryItemProps): JSX.Element => {
-    const _path: string = usePathname();
+    const _path = usePathname();
     const router = useRouter();
     const searchParams = useSearchParams();
 

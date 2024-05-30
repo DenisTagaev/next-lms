@@ -1,8 +1,8 @@
 "use client"
 import * as zod from "zod";
 import axios from "axios";
-import { useState } from "react";
 import toast from "react-hot-toast";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import MuxPlayer from "@mux/mux-player-react";
@@ -31,8 +31,9 @@ export const ChVideoForm = ({
   ): Promise<void> => {
     try {
       await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}`, values);
-      toast.success("Chapter successfully updated!");
       toggleEdit();
+      toast.success("Chapter successfully updated!");
+      
       router.refresh();
     } catch (error) {
       getErrorMessage(error);

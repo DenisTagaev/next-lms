@@ -1,8 +1,9 @@
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
-import { Course } from "@prisma/client";
 import { NextResponse } from "next/server";
-import { checkAuthorization, checkOwnership } from "../../../utils";
+import { Chapter } from "@prisma/client";
+
+import { checkAuthorization, checkOwnership } from "@/app/api/courses/utils";
 
 export async function PUT(
   req: Request,
@@ -13,7 +14,7 @@ export async function PUT(
     checkAuthorization(!!userId);
     await checkOwnership(params.courseId, userId!);
 
-    const { list } = await req.json();
+    const { list } : { list: Chapter[] } = await req.json();
 
     for(let chapter of list) {
         await db.chapter.update({

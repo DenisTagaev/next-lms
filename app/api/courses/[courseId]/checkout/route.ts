@@ -1,11 +1,11 @@
-import { db } from "@/lib/db";
 import Stripe from "stripe";
+import { db } from "@/lib/db";
 import { Course, Purchase } from "@prisma/client";
 import { NextResponse } from "next/server";
 import { User, currentUser } from "@clerk/nextjs/server";
+import { stripe } from "@/lib/stripe";
 
 import { checkAuthorization, checkExistingRecord } from "@/app/api/courses/utils";
-import { stripe } from "@/lib/stripe";
 
 export async function POST(
     req: Request,
@@ -78,17 +78,22 @@ export async function POST(
         });
     }
 
-    const _session = await stripe.checkout.sessions.create({
+    const _session: Stripe.Response<Stripe.Checkout.Session> =
+      await stripe.checkout.sessions.create({
         customer: _stripeCustomer.stripeCustomerId,
         line_items: _line_items,
-        mode: 'payment',
-        success_url: `${process.env.NEXT_PUBLIC_APP_URL}/courses/${_course!.id}?success=1`,
-        cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/courses/${_course!.id}?canceled=1}`,
+        mode: "payment",
+        success_url: `${process.env.NEXT_PUBLIC_APP_URL}/courses/${
+          _course!.id
+        }?success=1`,
+        cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/courses/${
+          _course!.id
+        }?canceled=1}`,
         metadata: {
-            courseId: _course!.id,
-            userId: user!.id
-        }
-    });
+          courseId: _course!.id,
+          userId: user!.id,
+        },
+      });
 
     return NextResponse.json({ url: _session.url });
   } catch (error) {

@@ -1,10 +1,10 @@
+import Mux from "@mux/mux-node";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { Chapter, MuxData } from "@prisma/client";
 import { NextResponse } from "next/server";
-import Mux from "@mux/mux-node";
 
-import { checkAuthorization, checkExistingRecord, checkOwnership, check_and_updateVoidCourse } from "../../../utils";
+import { checkAuthorization, checkExistingRecord, checkOwnership, check_and_updateVoidCourse } from "@/app/api/courses/utils";
 
 const mux: Mux = new Mux({
   tokenId: process.env.MUX_TOKEN_ID,
@@ -82,24 +82,24 @@ export async function PATCH(
     });
 
     if(values.videoUrl) {
-      const existingVideo: MuxData | null = await db.muxData.findFirst({
+      const _existingVideo: MuxData | null = await db.muxData.findFirst({
         where: {
           chapterId: params.chapterId,
         },
       });
 
       /* Use this piece to replace the existing video*/
-      if (existingVideo) {
-        await mux.video.assets.delete(existingVideo.assetId);
+      if (_existingVideo) {
+        await mux.video.assets.delete(_existingVideo.assetId);
         await db.muxData.delete({
           where: {
-            id: existingVideo.id,
+            id: _existingVideo.id,
           },
         });
       }
 
       /* Use this piece to upload and save reference for the new video*/
-      const asset: Mux.Video.Assets.Asset = await mux.video.assets.create({
+      const _asset: Mux.Video.Assets.Asset = await mux.video.assets.create({
         input: values.videoUrl,
         playback_policy: ["public"],
         encoding_tier: "baseline",
@@ -109,8 +109,8 @@ export async function PATCH(
       await db.muxData.create({
         data: {
           chapterId: params.chapterId,
-          assetId: asset.id,
-          playbackId: asset.playback_ids?.[0]?.id,
+          assetId: _asset.id,
+          playbackId: _asset.playback_ids?.[0]?.id,
         },
       });
     }

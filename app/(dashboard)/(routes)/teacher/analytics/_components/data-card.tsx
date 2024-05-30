@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 
-import { formatPrice } from "@/lib/format"
+import { formatPrice } from "@/lib/custom-utils"
 import { IAnalyticsCardProps } from "@/lib/interfaces"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -48,7 +48,6 @@ export const DataCard = ({
               </Popover.Content>
             </Popover.Portal>
           </Popover.Root>
-          {/* <Info className="text-sky-600 cursor-pointer" /> */}
         </CardHeader>
         <CardContent>
           <h4 className="text-lg font-bold flex gap-x-2">

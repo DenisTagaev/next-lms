@@ -8,21 +8,31 @@ import { getProgress } from "@/actions/get-progress";
 import { CourseSidebar } from "../_components/course-sidebar";
 import { CourseNavbar } from "../_components/course-navbar";
 
-export const metadata: Metadata = {
-  title: "Course page",
-  description: "Course page in the Next.js LMS app created by Denis Tagaev",
-};
-
-export async function generateStaticParams() {
-  const courses = await db.course.findMany({
+export async function generateMetadata({
+  params,
+}: {
+  params: { courseId: string };
+}): Promise<Metadata> {
+  const course: {
+    title: string;
+    description: string | null;
+  } | null = await db.course.findUnique({
+    where: {
+      id: params.courseId,
+    },
     select: {
-      id: true,
+      title: true,
+      description: true,
     },
   });
+  checkExistence(course);
 
-  return courses.map((course) => ({
-    courseId: course.id,
-  }));
+  return {
+    title: course?.title
+      ? `${course.title}`
+      : "Course Not Found",
+    description: course?.description ?? "Course details and progress Page",
+  };
 }
 
 const CourseLayout = async ({

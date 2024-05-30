@@ -4,7 +4,7 @@ import { Navbar } from "./_components/navbar";
 import { Sidebar } from "./_components/sidebar";
 
 export const metadata: Metadata = {
-  title: "Dashboard page",
+  title: "Dashboard",
   description: "Dashboard page for the user in the Next.js LMS app created by Denis Tagaev",
 };
 

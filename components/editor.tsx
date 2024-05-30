@@ -10,7 +10,7 @@ import { IEditorComponentProps } from "@/lib/interfaces"
 export const Editor= ({
     onChange,
     value
-}: IEditorComponentProps) => {
+}: IEditorComponentProps): JSX.Element => {
     const ReactQuill = useMemo(
         () => dynamic(
             () => import("react-quill"), { ssr: false}

@@ -4,18 +4,18 @@ import { ChangeEvent, useEffect, useState } from "react"
 import { useSearchParams, useRouter, usePathname } from "next/navigation"
 
 import { useDebounce } from "@/hooks/use-debounce"
-import { getSearchedUrl } from "@/app/(dashboard)/client-utils"
+import { getSearchedUrl } from "@/lib/custom-utils"
 
 import { Input } from "@/components/ui/input"
 import { SearchIcon } from "lucide-react"
 
 export const SearchInput = (): JSX.Element => {
     const [value, setValue] = useState("");
-    const debouncedValue: string = useDebounce(value);
+    const debouncedValue = useDebounce(value);
     
     const searchParams = useSearchParams();
     const router = useRouter();
-    const _path: string = usePathname();
+    const _path = usePathname();
     const currCategoryId: string | null = searchParams.get("categoryId");
 
     useEffect((): void => {

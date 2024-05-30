@@ -1,15 +1,16 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
-import { ISidebarItemProps } from "@/lib/interfaces";
 import { cn } from "@/lib/utils";
+import { usePathname, useRouter } from "next/navigation";
+
+import { ISidebarItemProps } from "@/lib/interfaces";
 
 export const SidebarItem = ({
     icon: Icon,
     label,
     href
 }: ISidebarItemProps): JSX.Element => {
-    const _path: string = usePathname();
+    const _path = usePathname();
     const router = useRouter();
 
     const _isActiveRoute: boolean =

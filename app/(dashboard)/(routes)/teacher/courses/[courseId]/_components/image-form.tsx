@@ -1,8 +1,8 @@
 "use client"
 import * as zod from "zod";
-import axios, { AxiosResponse } from "axios";
-import { useState } from "react";
+import axios from "axios";
 import toast from "react-hot-toast";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { getErrorMessage } from "@/app/(dashboard)/client-utils";
@@ -11,9 +11,8 @@ import { IDescriptionFormProps } from "@/lib/interfaces";
 
 import Image  from "next/image"
 import { Button } from "@/components/ui/button";
-import { ImageIcon, Pencil, PlusCircle } from "lucide-react";
 import { FileUpload } from "@/components/file-upload";
-
+import { ImageIcon, Pencil, PlusCircle } from "lucide-react";
 
 export const ImageForm = ({
     initialData,
@@ -32,8 +31,9 @@ export const ImageForm = ({
           `/api/courses/${courseId}`,
           values
         );
-        toast.success("Course successfully edited!");
         toggleEdit();
+        toast.success("Course successfully edited!");
+        
         router.refresh();
       } catch (error) {
         getErrorMessage(error);

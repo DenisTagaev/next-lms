@@ -9,7 +9,7 @@ type UserInfoCourse = Course & {
     progress: number | null;
 }
 
-type DashboardInfo = {
+export type DashboardInfo = {
   completedCourses: UserInfoCourse[];
   coursesInProgress: UserInfoCourse[];
 };

@@ -14,7 +14,6 @@ import { CourseEnrollButton } from "./_components/enroll-button";
 import { CourseProgressButton } from "./_components/progress-button";
 import { File } from "lucide-react";
 
-
 export async function generateMetadata({
   params,
 }: {
@@ -22,51 +21,21 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const chapter: {
     title: string;
+    description: string | null;
   } | null = await db.chapter.findUnique({
     where: {
       id: params.chapterId,
     },
     select: {
       title: true,
+      description: true
     },
   });
 
   return {
-    title: chapter ? `Chapter: ${chapter.title}` : "Chapter Not Found",
+    title: chapter?.title ?? "Chapter Not Found",
+    description: chapter?.description ?? "Chapter details and data page",
   };
-}
-
-export async function generateStaticParams(): Promise<
-  {
-    courseId: string;
-    chapterId: string;
-  }[]
-> {
-  const chapters: {
-    id: string;
-    courseId: string;
-  }[] = await db.chapter.findMany({
-    select: {
-      id: true,
-      courseId: true,
-    },
-    where: {
-      isPublished: true,
-    },
-  });
-
-  return chapters.map(
-    (chapter: {
-      id: string;
-      courseId: string;
-    }): {
-      courseId: string;
-      chapterId: string;
-    } => ({
-      courseId: chapter.courseId,
-      chapterId: chapter.id,
-    })
-  );
 }
 
 export default async function ChapterIdPage({

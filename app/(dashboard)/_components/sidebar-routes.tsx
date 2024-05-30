@@ -1,9 +1,12 @@
 "use client";
 
-import { BarChart, Layout, List, Search } from "lucide-react";
-import { SidebarItem } from "./sidebar-item";
 import { usePathname } from "next/navigation";
+
 import { getPathParams } from "@/lib/custom-utils";
+
+import { SidebarItem } from "./sidebar-item";
+import { BarChart, Layout, List, Search } from "lucide-react";
+
 
 const _guestRoutes = [
     {
@@ -32,7 +35,7 @@ const _teacherRoutes = [
 ]
 
 export const SidebarRoutes = (): JSX.Element => {
-    const path: string = usePathname();
+    const path = usePathname();
     const routes = getPathParams(path).isTeacher ? 
         _teacherRoutes : _guestRoutes;
 

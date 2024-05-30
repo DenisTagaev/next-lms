@@ -1,17 +1,17 @@
 "use client"
 import * as zod from "zod";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
+import toast from "react-hot-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UseFormReturn, useForm } from "react-hook-form";
 import { useState } from "react";
-import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 import { formPriceSchema } from "@/app/(dashboard)/_schemas/new-course";
 import { getErrorMessage } from "@/app/(dashboard)/client-utils";
+import { formatPrice } from "@/lib/custom-utils";
 import { IPriceFormProps } from "@/lib/interfaces";
-import { formatPrice } from "@/lib/format";
-import { cn } from "@/lib/utils";
 
 import {
   Form,
@@ -21,9 +21,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { Pencil } from "lucide-react";
 import { Input } from "@/components/ui/input";
-
+import { Pencil } from "lucide-react";
 
 export const PriceForm = ({
     initialData,
@@ -34,7 +33,7 @@ export const PriceForm = ({
     
     const router = useRouter();
 
-    const form: UseFormReturn<zod.infer<typeof formPriceSchema>> = useForm<
+    const _form: UseFormReturn<zod.infer<typeof formPriceSchema>> = useForm<
       zod.infer<typeof formPriceSchema>
     >({
       resolver: zodResolver(formPriceSchema),
@@ -43,7 +42,10 @@ export const PriceForm = ({
       }
     });
 
-    const { isSubmitting, isValid } = form.formState;
+    const {
+      isSubmitting,
+      isValid,
+    }: { isSubmitting: boolean; isValid: boolean } = _form.formState;
 
     const onSubmit = async (
       values: zod.infer<typeof formPriceSchema>
@@ -53,8 +55,9 @@ export const PriceForm = ({
           `/api/courses/${courseId}`,
           values
         );
-        toast.success("Course successfully edited!");
         toggleEdit();
+        toast.success("Course successfully edited!");
+        
         router.refresh();
       } catch (error) {
         getErrorMessage(error);
@@ -88,13 +91,13 @@ export const PriceForm = ({
             }
           </p>
         ) : (
-          <Form {...form}>
+          <Form {..._form}>
             <form
               className="space-y-4 mt-4"
-              onSubmit={form.handleSubmit(onSubmit)}
+              onSubmit={_form.handleSubmit(onSubmit)}
             >
               <FormField
-                control={form.control}
+                control={_form.control}
                 name="price"
                 render={({ field }) => (
                   <FormItem>

@@ -24,11 +24,6 @@ import {
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
-export const metadata: Metadata = {
-  title: "New Course",
-  description: "Course creation form page",
-};
-
 export default function AddCourse(): JSX.Element {
     const router = useRouter();
     const _form: UseFormReturn<zod.infer<typeof formTitleSchema>> = 
@@ -53,11 +48,7 @@ export default function AddCourse(): JSX.Element {
     };
 
     return (
-      <div
-        className="max-w-5xl min-w-[476px] lg:mx-auto flex lg:items-center 
-        md:justify-center h-full p-6"
-      >
-        <div>
+        <div className="pt-3">
           <h1 className="text-3xl">Enter the title for your course</h1>
           <p className="text-sm text-slate-600">
             How would you like to name your course? Don&apos;t worry, you can
@@ -109,6 +100,5 @@ export default function AddCourse(): JSX.Element {
             </form>
           </Form>
         </div>
-      </div>
     );
 }

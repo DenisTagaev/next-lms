@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { UseFormReturn, useForm } from "react-hook-form";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Chapter } from "@prisma/client";
 import { cn } from "@/lib/utils";
 
 import { formChapterSchema } from "@/app/(dashboard)/_schemas/new-course";
@@ -58,7 +59,7 @@ export const ChapterForm = ({
           `/api/courses/${courseId}/chapters`,
           values
         );
-        const newChapter = response.data;
+        const newChapter: Chapter = response.data;
 
         setChapters((prevChapters) => {
           const updatedChapters = [...prevChapters, newChapter];

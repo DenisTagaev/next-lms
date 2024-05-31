@@ -1,13 +1,12 @@
-import Link from "next/link";
 import { auth } from "@clerk/nextjs/server";
 import { db } from "@/lib/db";
 
 import { ICourseSidebarProps } from "@/lib/interfaces";
 import { checkExistence } from "@/app/(dashboard)/client-utils";
 
-import { CourseSidebarItem } from "./course-sidebar-item";
 import { CourseProgress } from "@/components/course-progress";
-import { ArrowLeft } from "lucide-react";
+import { BackButton } from "@/components/back-button";
+import { CourseSidebarItem } from "./course-sidebar-item";
 
 export const CourseSidebar = async({
     course,
@@ -50,13 +49,11 @@ export const CourseSidebar = async({
             />
           ))}
         </div>
-        <Link
-          href={`/`}
-          className="flex md:hidden justify-end mr-3 items-center text-sm hover:opacity-75 transition"
-        >
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to dashboard
-        </Link>
+        <BackButton
+          path="/"
+          platform="mobile"
+          origin="course"
+        />
       </div>
     );
 }

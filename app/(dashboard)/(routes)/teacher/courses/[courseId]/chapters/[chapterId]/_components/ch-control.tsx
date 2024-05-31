@@ -28,8 +28,8 @@ export const ChapterControl = ({
         await axios.delete(`/api/courses/${courseId}/chapters/${chapterId}`)
         toast.success("Chapter successfully deleted!");
         
-        router.refresh();
         router.push(`/teacher/courses/${courseId}`);
+        router.refresh();
       } catch (error) {
         getErrorMessage(error);
       } finally {

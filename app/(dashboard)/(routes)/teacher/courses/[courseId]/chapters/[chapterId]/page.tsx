@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { Chapter } from "@prisma/client";
@@ -13,7 +12,7 @@ import { ChDescriptionForm } from "./_components/ch-description-form";
 import { ChAccessForm } from "./_components/ch-access-form";
 import { ChVideoForm } from "./_components/ch-video-form";
 import { ChapterControl } from "./_components/ch-control";
-import { ArrowLeft, Eye, LayoutDashboard, Video } from "lucide-react";
+import { Eye, LayoutDashboard, Video } from "lucide-react";
 
 export async function generateMetadata({
   params,
@@ -80,13 +79,6 @@ export default async function ChapterIdPage({
       <section className="p-6 md:max-w-full">
         <div className="flex items-center justify-between">
           <div className="w-full">
-            <Link
-              href={`/teacher/courses/${params.courseId}`}
-              className="flex items-center text-sm hover:opacity-75 transition mb-5"
-            >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to the course page
-            </Link>
             <div className="flex items-center justify-between w-full">
               <div className="flex flex-col gap-y-2">
                 <h2 className="text-2xl font-medium">

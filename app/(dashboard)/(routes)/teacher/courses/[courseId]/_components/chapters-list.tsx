@@ -46,7 +46,7 @@ export const ChaptersList = ({
     }
     
     useEffect(() =>{
-      setChapters(chapters)
+      setChapters(items)
     }, [items]);
 
     useEffect(() => {

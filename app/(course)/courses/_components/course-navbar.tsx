@@ -1,8 +1,8 @@
 import { ICourseNavbarProps } from "@/lib/interfaces";
 
 import { NavbarRoutes } from "@/components/navbar-routes";
-import { CourseMobileSidebar } from "./course-mobile-sidebar";
 import { BackButton } from "@/components/back-button";
+import { CourseMobileSidebar } from "./course-mobile-sidebar";
 
 export const CourseNavbar = ({
   course,

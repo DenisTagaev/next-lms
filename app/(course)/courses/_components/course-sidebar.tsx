@@ -52,7 +52,7 @@ export const CourseSidebar = async({
         <BackButton
           path="/"
           platform="mobile"
-          origin="course"
+          origin="dashboard"
         />
       </div>
     );

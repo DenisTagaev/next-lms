@@ -1,25 +1,27 @@
-import Link from "next/link";
-import { headers } from "next/headers";
+"use client"
 
-import { getPathParams } from "@/lib/custom-utils";
+import { usePathname } from "next/navigation";
+import { useEffect } from "react";
 
 import { NavbarRoutes } from "@/components/navbar-routes";
-import { MobileSidebar } from "./_mobile-view/mobile-sidebar";
-import { ArrowLeft } from "lucide-react";
 import { BackButton } from "@/components/back-button";
+import { MobileSidebar } from "./_mobile-view/mobile-sidebar";
 
 export const Navbar = (): JSX.Element => {
-    const path = headers().get("referer") ?? "";
+    const path = usePathname();
 
+    useEffect(() => {}, [path]);
     return (
       <div
         className="p-4 border-b h-full flex items-center
          bg-white shadow-sm"
       >
-        {getPathParams("/" + path.split("/")[3]).isTeacher &&
-          getPathParams("/" + path.split("/")[4]).isPlayer && (
-            <BackButton path={path.split("/")[5]} origin="dashboard"/>
-          )}
+        {path.includes("chapters") && (
+          <BackButton
+            path={`/teacher/courses/${path.split("/")[3]}`}
+            origin="course"
+          />
+        )}
         <MobileSidebar />
         <NavbarRoutes />
       </div>

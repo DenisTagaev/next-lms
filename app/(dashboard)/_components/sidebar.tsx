@@ -1,8 +1,18 @@
+"use client"
+
+import { usePathname } from "next/navigation";
+import { useEffect } from "react";
+
 import { BackButton } from "@/components/back-button";
 import { SidebarRoutes } from "./sidebar-routes"
 import { Logo } from "./logo"
 
 export const Sidebar = (): JSX.Element => {
+    const path = usePathname();
+    
+    useEffect(() => {
+    }, [path]);
+    
     return (
       <aside
         className="h-full border-r flex flex-col 
@@ -13,7 +23,9 @@ export const Sidebar = (): JSX.Element => {
         </div>
         <div className="flex flex-col w-full">
           <SidebarRoutes />
-          <BackButton path="/" platform="mobile" origin="dashboard" />
+          {path.includes("chapters") && (
+            <BackButton path={`/teacher/courses/${path.split("/")[3]}`} platform="mobile" origin="course"/>
+          )}
         </div>
       </aside>
     );

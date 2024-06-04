@@ -11,7 +11,7 @@ export const CourseNavbar = ({
   return (
     <div
       className="p-4 border-b h-full flex items-center
-         bg-white shadow-sm"
+         bg-white shadow-sm dark:bg-slate-800/75"
     >
       <BackButton path="/" origin="dashboard"/>
       <CourseMobileSidebar course={course} progress={progress} />

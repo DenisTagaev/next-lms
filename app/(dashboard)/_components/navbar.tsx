@@ -14,7 +14,7 @@ export const Navbar = (): JSX.Element => {
     return (
       <div
         className="p-4 border-b h-full flex items-center
-         bg-white shadow-sm"
+         bg-white dark:bg-slate-800/75 shadow-sm"
       >
         {path.includes("chapters") && (
           <BackButton

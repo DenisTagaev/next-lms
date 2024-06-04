@@ -33,12 +33,14 @@ export const CategoryItem = ({
         onClick={onClick}
         className={cn(
           `text-sm font-medium border-2 border-sky-600 rounded-full
-                py-2 px-3 flex items-center gap-x-1 transition
-                hover:animate-border-rotate hover:bg-emerald-100`,
+            py-2 px-3 flex items-center gap-x-1 transition
+            hover:animate-border-rotate hover:bg-emerald-100
+            dark:hover:bg-emerald-900`,
           hasSelectedCategory &&
             `text-sky-600 bg-slate-200/75 
-                hover:text-sky-600 hover:bg-slate-200/75
-                border-sky-600`
+            hover:text-sky-600 hover:bg-slate-200/75
+            border-sky-600 
+            dark:bg-slate-800 dark:hover:text-sky-400`
         )}
         type="button"
       >

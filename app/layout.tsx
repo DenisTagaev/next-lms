@@ -6,6 +6,7 @@ import './globals.css'
 
 import { ToastProvider } from '@/providers/toaster-provider'
 import { ConfettiProvider } from '@/providers/confetti-provider'
+import { ThemeProvider } from "@/providers/theme-provider"
 
 const inter: NextFont = Inter({ subsets: ["latin"] });
 
@@ -21,11 +22,18 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en">
+      <html lang="en" suppressHydrationWarning>
         <body className={inter.className}>
           <ConfettiProvider/>
           <ToastProvider/>
-          {children}
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            storageKey="color-schema"
+            enableSystem
+          >
+            {children}
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>

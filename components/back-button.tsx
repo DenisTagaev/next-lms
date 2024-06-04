@@ -26,7 +26,10 @@ export const BackButton = ({
         onClick={onclick}
         role="button"
         variant="outline"
-        className={`${platformClass} w-fit items-center text-sm hover:bg-slate-400/75 hover:text-sky-600 transition`}
+        className={`${platformClass} w-fit items-center text-sm transition
+        hover:bg-slate-400/75 dark:hover:bg-slate-700
+        hover:text-sky-600 
+        `}
       >
         <ArrowLeft className="w-4 h-4 mr-1" />
         {origin === "course" && "Back to the course page"}

@@ -23,7 +23,7 @@ export const columns: ColumnDef<Course>[] = [
       return (
         <Button
           className="w-full hover:text-sky-600
-                hover:bg-slate-400/75"
+                hover:bg-slate-400/75 dark:hover:bg-slate-700"
           variant="ghost"
           onClick={(): void =>
             column.toggleSorting(column.getIsSorted() === "asc")
@@ -41,7 +41,7 @@ export const columns: ColumnDef<Course>[] = [
       return (
         <Button
           className="w-full hover:text-sky-600
-                hover:bg-slate-400/75"
+                hover:bg-slate-400/75 dark:hover:bg-slate-700"
           variant="ghost"
           onClick={(): void =>
             column.toggleSorting(column.getIsSorted() === "asc")
@@ -66,7 +66,7 @@ export const columns: ColumnDef<Course>[] = [
       return (
         <Button
           className="w-full hover:text-sky-600
-                hover:bg-slate-400/75"
+                hover:bg-slate-400/75 dark:hover:bg-slate-700"
           variant="ghost"
           onClick={(): void =>
             column.toggleSorting(column.getIsSorted() === "asc")

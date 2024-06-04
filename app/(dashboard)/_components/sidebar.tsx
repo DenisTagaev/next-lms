@@ -16,7 +16,7 @@ export const Sidebar = (): JSX.Element => {
     return (
       <aside
         className="h-full border-r flex flex-col 
-            overflow-y-auto bg-slate-200 shadow-sm"
+            overflow-y-auto bg-slate-200 dark:bg-slate-800 shadow-sm"
       >
         <div className="p-6">
           <Logo />

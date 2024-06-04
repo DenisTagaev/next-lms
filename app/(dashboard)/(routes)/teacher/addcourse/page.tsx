@@ -48,57 +48,53 @@ export default function AddCourse(): JSX.Element {
     };
 
     return (
-        <div className="pt-3">
-          <h1 className="text-3xl">Enter the title for your course</h1>
-          <p className="text-sm text-slate-600">
-            How would you like to name your course? Don&apos;t worry, you can
-            change this later.
-          </p>
-          <Form {..._form}>
-            <form 
-                onSubmit={_form.handleSubmit(onSubmit)}
-                className="space-y-8 mt-8"
-            >
-                <FormField
-                    control={_form.control}
-                    name="title"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>
-                                Course title
-                            </FormLabel>
-                            <FormControl>
-                                <Input
-                                    disabled={isSubmitting}
-                                    placeholder="e.g. 'Next.js 2024 full course'"
-                                    {...field}
-                                />
-                            </FormControl>
-                            <FormMessage/>
-                            <FormDescription>
-                                What would you like to teach in this course?
-                            </FormDescription>
-                        </FormItem>
-                    )}
-                />
-                <div className="flex items-center gap-x-2">
-                    <Link href="/teacher/courses">
-                        <Button
-                            type="button"
-                            variant="destructive"
-                        >
-                            Cancel
-                        </Button>
-                    </Link>
-                    <Button
-                        type="submit"
-                        disabled={isSubmitting || !isValid}
-                    >
-                        Continue
-                    </Button>
-                </div>
-            </form>
-          </Form>
-        </div>
+      <div className="pt-3">
+        <h1 className="text-3xl">Enter the title for your course</h1>
+        <p className="text-sm text-slate-600 dark:text-slate-400">
+          How would you like to name your course? Don&apos;t worry, you can
+          change this later.
+        </p>
+        <Form {..._form}>
+          <form
+            onSubmit={_form.handleSubmit(onSubmit)}
+            className="space-y-8 mt-8"
+          >
+            <FormField
+              control={_form.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Course title</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={isSubmitting}
+                      placeholder="e.g. 'Next.js 2024 full course'"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                  <FormDescription>
+                    What would you like to teach in this course?
+                  </FormDescription>
+                </FormItem>
+              )}
+            />
+            <div className="flex items-center gap-x-2">
+              <Link href="/teacher/courses">
+                <Button type="button" variant="destructive">
+                  Cancel
+                </Button>
+              </Link>
+              <Button
+                className="dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+                type="submit"
+                disabled={isSubmitting || !isValid}
+              >
+                Continue
+              </Button>
+            </div>
+          </form>
+        </Form>
+      </div>
     );
 }

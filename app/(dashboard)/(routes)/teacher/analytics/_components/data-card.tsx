@@ -34,7 +34,7 @@ export const DataCard = ({
               <Popover.Content
                 align="center"
                 side="top"
-                className="bg-white border border-gray-300 rounded-md p-2"
+                className="bg-white dark:bg-black border border-gray-300 rounded-md p-2"
               >
                 <p className="text-sm">
                   {shouldFormat ?  

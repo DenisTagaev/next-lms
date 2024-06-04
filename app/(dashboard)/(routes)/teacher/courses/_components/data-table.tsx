@@ -66,7 +66,7 @@ export function DataTable<TData, TValue>({
           className="max-w-sm"
         />
         <Link href="/teacher/addcourse">
-          <Button>
+          <Button className="dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700">
             <PlusCircle className="mr-2 h-4 w-4"/>
             Add course
           </Button>
@@ -74,13 +74,13 @@ export function DataTable<TData, TValue>({
       </div>
       <div className="rounded-md border overflow-hidden text-center">
         <Table>
-          <TableHeader className="bg-slate-200 rounded-t-md">
+          <TableHeader className="bg-slate-200 dark:bg-slate-800 rounded-t-md">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead
-                      className="font-semibold text-gray-950 px-1 py-1"
+                      className="font-semibold text-gray-950 dark:text-slate-200 px-1 py-1"
                       key={header.id}
                     >
                       {header.isPlaceholder

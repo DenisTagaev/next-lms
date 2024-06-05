@@ -57,7 +57,7 @@ export const AttachmentForm = ({
     }
 
     return (
-      <div className="p-4 mt-6 border bg-sky-300/50 rounded-md">
+      <div className="p-4 mt-6 border bg-sky-300/50 dark:bg-sky-900/50 rounded-md">
         <div className="font-medium flex items-center justify-between">
           Course attachments
           <Button onClick={toggleEdit} variant="ghost">
@@ -73,7 +73,7 @@ export const AttachmentForm = ({
         {!isEditing ? (
           <>
             {!initialData.attachments?.length ? (
-              <p className="text-sm mt-2 text-slate-600 italic">
+              <p className="text-sm mt-2 text-slate-600 dark:text-slate-400 italic">
                 No attachments were found
               </p>
             ) : (
@@ -89,9 +89,10 @@ export const AttachmentForm = ({
                     {deleteId === file.id ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
                     ) : (
-                      <button 
+                      <button
                         onClick={(): Promise<void> => onDelete(file.id)}
-                        className="ml-auto hover:text-destructive transition-all">
+                        className="ml-auto hover:text-destructive transition-all"
+                      >
                         <X className="h-4 w-4" />
                       </button>
                     )}

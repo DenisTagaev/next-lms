@@ -41,7 +41,7 @@ export const ImageForm = ({
     };
 
     return (
-      <div className="p-4 mt-6 border bg-sky-300/50 rounded-md flex flex-col">
+      <div className="p-4 mt-6 border bg-sky-300/50 dark:bg-sky-900/50 rounded-md flex flex-col">
         <div className="font-medium flex items-center justify-between">
           Course image
           <Button onClick={toggleEdit} variant="ghost">
@@ -64,7 +64,7 @@ export const ImageForm = ({
           !initialData?.imageUrl ? (
             <div
               className="flex items-center justify-center 
-              h-60 bg-slate-200 rounded-md flex-grow"
+              h-60 bg-slate-200 dark:bg-slate-900 rounded-md flex-grow"
             >
               <ImageIcon className="h-10 w-10 text-slate-500" />
             </div>

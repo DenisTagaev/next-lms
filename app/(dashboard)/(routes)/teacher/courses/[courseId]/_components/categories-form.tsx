@@ -73,7 +73,7 @@ export const CategoryForm = ({
     };
     
     return (
-      <div className="p-4 mt-6 border bg-sky-300/50 rounded-md max-h-[250px]">
+      <div className="p-4 mt-6 border bg-sky-300/50 dark:bg-sky-900/50 rounded-md max-h-[250px]">
         <div className="font-medium flex items-center justify-between">
           Course category
           <Button onClick={toggleEdit} variant="ghost">
@@ -88,11 +88,15 @@ export const CategoryForm = ({
           </Button>
         </div>
         {!isEditing ? (
-          <p className={cn(
-            "text-md mt-2",
-            !initialData.categoryId && "text-slate-600 italic",
-            _selectedCategory?.label && "text-lg text-sky-500 bg-white rounded-md p-2"
-          )}>
+          <p
+            className={cn(
+              "text-md mt-2",
+              !initialData.categoryId &&
+                "text-slate-600 dark:text-slate-400 italic",
+              _selectedCategory?.label &&
+                "text-lg text-sky-500 bg-white dark:bg-slate-900 rounded-md p-2"
+            )}
+          >
             {_selectedCategory?.label || "No category yet"}
           </p>
         ) : (
@@ -107,20 +111,14 @@ export const CategoryForm = ({
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Combobox
-                        options={options}
-                        {...field}
-                      />
+                      <Combobox options={options} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
               <div className="flex items-center gap-x-2">
-                <Button
-                  disabled={ !isValid || isSubmitting}
-                  type="submit"
-                >
+                <Button disabled={!isValid || isSubmitting} type="submit">
                   Save
                 </Button>
               </div>

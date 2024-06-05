@@ -104,7 +104,7 @@ export default async function CourseIdPage({
         <div className="flex items-center justify-between">
           <div className="flex flex-col gap-y-2">
             <h2 className="text-3xl font-semibold">Course content</h2>
-            <span className="text-sm text-slate-600">
+            <span className="text-sm text-slate-600 dark:text-slate-400">
               Complete all fields {completionStatus}
             </span>
           </div>

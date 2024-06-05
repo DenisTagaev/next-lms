@@ -86,7 +86,7 @@ export const VideoPlayer = ({
           </div>
         )}
         {!isLocked && !isReady && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-sky-800">
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-sky-900/50">
             <Loader2 className="h-12 w-12 animate-spin text-secondary dark:text-slate-200" />
             <p className="w-full text-center text-secondary dark:text-slate-200">
               Please note, this site is using free tier of MuxPlayer. Videos are

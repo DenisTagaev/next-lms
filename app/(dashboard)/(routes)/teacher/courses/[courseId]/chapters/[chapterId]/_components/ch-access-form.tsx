@@ -67,7 +67,7 @@ export const ChAccessForm = ({
     };
 
     return (
-      <div className="p-4 mt-6 border bg-sky-300/50 rounded-md">
+      <div className="p-4 mt-6 border bg-sky-300/50 dark:bg-sky-900/50 rounded-md">
         <div className="font-medium flex items-center justify-between">
           Chapter access
           <Button onClick={toggleEdit} variant="ghost">
@@ -85,7 +85,7 @@ export const ChAccessForm = ({
           <p
             className={cn(
               "text-sm mt-2",
-              !initialData.isFree && "text-slate-600 italic"
+              !initialData.isFree && "text-slate-600 dark:text-slate-400 italic"
             )}
           >
             {initialData.isFree ? (
@@ -104,7 +104,7 @@ export const ChAccessForm = ({
                 control={_form.control}
                 name="isFree"
                 render={({ field }) => (
-                  <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 bg-white">
+                  <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 bg-slate-100 dark:bg-slate-900">
                     <FormControl>
                       <Checkbox
                         checked={field.value}
@@ -113,7 +113,8 @@ export const ChAccessForm = ({
                     </FormControl>
                     <div className="space-y-1 leading-none">
                       <FormDescription className="text-dark">
-                        {initialData.isFree ? "Uncheck" : "Check" } the box to make a free preview for the chapter
+                        {initialData.isFree ? "Uncheck" : "Check"} the box to
+                        make a free preview for the chapter
                       </FormDescription>
                     </div>
                     <FormMessage />

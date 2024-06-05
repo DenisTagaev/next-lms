@@ -44,7 +44,7 @@ export const Chart = ({
             className="font-bold"
             dataKey="name"
             type="category"
-            stroke={theme === "dark" ? "#fff" : "#000"}
+            stroke={theme !== "light" ? "#fff" : "#000"}
             fontSize={12}
             tickLine={false}
             axisLine={false}
@@ -52,7 +52,7 @@ export const Chart = ({
           <YAxis
             className="font-bold"
             type="number"
-            stroke={theme === "dark" ? "#fff" : "#000"}
+            stroke={theme !== "light" ? "#fff" : "#000"}
             fontSize={12}
             tickMargin={-5}
             tickFormatter={(value) => `$ ${value}`}

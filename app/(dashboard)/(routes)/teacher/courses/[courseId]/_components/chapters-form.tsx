@@ -98,10 +98,10 @@ export const ChapterForm = ({
     }
 
     return (
-      <div className="relative p-4 mt-6 border bg-sky-300/50 rounded-md">
+      <div className="relative p-4 mt-6 border bg-sky-300/50 dark:bg-sky-900/50 rounded-md">
         {isEditing && (
           <div className="absolute h-full w-full bg-slate-500/60 top-0 right-0 rounded-md flex items-center justify-center">
-            <Loader2 className="animate-spin h-7 w-7 text-sky-500"/>
+            <Loader2 className="animate-spin h-7 w-7 text-sky-500" />
           </div>
         )}
         <div className="font-medium flex items-center justify-between">
@@ -130,7 +130,7 @@ export const ChapterForm = ({
                   <FormItem>
                     <FormControl>
                       <Input
-                        className="bg-slate-100"
+                        className="bg-slate-100 dark:bg-slate-900"
                         disabled={isSubmitting}
                         placeholder="e.g. 'Introduction'"
                         {...field}
@@ -140,21 +140,20 @@ export const ChapterForm = ({
                   </FormItem>
                 )}
               />
-                <Button
-                  disabled={ !isValid || isSubmitting}
-                  type="submit"
-                >
-                  Create
-                </Button>
+              <Button disabled={!isValid || isSubmitting} type="submit">
+                Create
+              </Button>
             </form>
           </Form>
         )}
         {!isCreating && (
           <>
-            <div className={cn(
-              "text-sm mt-2",
-              !chapters?.length && "text-slate-500 italic"
-            )}>
+            <div
+              className={cn(
+                "text-sm mt-2",
+                !chapters?.length && "text-slate-200 dark:text-slate-400 italic"
+              )}
+            >
               {!chapters?.length && "No chapters"}
               <ChaptersList
                 onEdit={onEdit}
@@ -162,7 +161,9 @@ export const ChapterForm = ({
                 items={chapters}
               />
             </div>
-            <p className="text-xs text-muted-foreground mt-3">Drag & Drop to reorder</p> 
+            <p className="text-xs text-muted-foreground dark:text-slate-400 mt-3">
+              Drag & Drop to reorder
+            </p>
           </>
         )}
       </div>

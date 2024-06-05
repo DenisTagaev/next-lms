@@ -65,7 +65,7 @@ export const PriceForm = ({
     };
 
     return (
-      <div className="p-4 mt-6 border bg-sky-300/50 rounded-md">
+      <div className="p-4 mt-6 border bg-sky-300/50 dark:bg-sky-900/50 rounded-md">
         <div className="font-medium flex items-center justify-between">
           Course price
           <Button onClick={toggleEdit} variant="ghost">
@@ -83,12 +83,12 @@ export const PriceForm = ({
           <p
             className={cn(
               "text-sm mt-2",
-              !initialData.price && "text-slate-600 italic"
+              !initialData.price && "text-slate-600 dark:text-slate-400 italic"
             )}
           >
-            {initialData.price ? 
-              formatPrice(initialData.price) : "No price yet"
-            }
+            {initialData.price
+              ? formatPrice(initialData.price)
+              : "No price yet"}
           </p>
         ) : (
           <Form {..._form}>
@@ -105,7 +105,7 @@ export const PriceForm = ({
                       <Input
                         type="number"
                         step={0.1}
-                        className="bg-slate-100"
+                        className="bg-slate-100 dark:bg-slate-900"
                         disabled={isSubmitting}
                         placeholder="Set a price for your course"
                         {...field}

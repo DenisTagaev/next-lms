@@ -84,7 +84,7 @@ export default async function ChapterIdPage({
                 <h2 className="text-2xl font-medium">
                   Chapter {_chapter!.position}
                 </h2>
-                <span>Complete all fields {completionStatus}</span>
+                <span className="text-slate-600 dark:text-slate-400">Complete all fields {completionStatus}</span>
               </div>
               <ChapterControl
                 disabled={!_isComplete}

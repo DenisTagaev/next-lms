@@ -41,7 +41,7 @@ export const ChVideoForm = ({
   };
 
   return (
-    <div className="p-4 mt-6 border bg-sky-300/50 rounded-md">
+    <div className="p-4 mt-6 border bg-sky-300/50 dark:bg-sky-900/50 rounded-md">
       <div className="font-medium flex items-center justify-between">
         Chapter Video
         <Button onClick={toggleEdit} variant="ghost">
@@ -64,9 +64,9 @@ export const ChVideoForm = ({
         !initialData.videoUrl ? (
           <div
             className="flex items-center justify-center 
-              h-60 bg-slate-200 rounded-md"
+              h-60 bg-slate-200 dark:bg-slate-900 rounded-md"
           >
-            <Video className="h-10 w-10 text-slate-500" />
+            <Video className="h-10 w-10 text-slate-600 dark:text-slate-400" />
           </div>
         ) : (
           <div className="relative aspect-video mt-2">
@@ -89,13 +89,13 @@ export const ChVideoForm = ({
               }
             }}
           />
-          <div className="text-xs text-muted-foreground mt-4">
+          <div className="text-xs text-muted-foreground dark:text-slate-400 mt-4">
             Add videos to this chapter
           </div>
         </>
       )}
       {initialData.videoUrl && !isEditing && (
-        <div className="text-xs text-muted-foreground mt-2">
+        <div className="text-xs text-muted-foreground dark:text-slate-400 mt-2">
           Videos can take a few moments to process. Please, refresh the page if
           necessary
         </div>

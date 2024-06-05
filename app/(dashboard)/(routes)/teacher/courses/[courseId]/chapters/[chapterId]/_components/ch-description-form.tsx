@@ -67,7 +67,7 @@ export const ChDescriptionForm = ({
     };
 
     return (
-      <div className="p-4 mt-6 border bg-sky-300/50 rounded-md">
+      <div className="p-4 mt-6 border bg-sky-300/50 dark:bg-sky-900/50 rounded-md">
         <div className="font-medium flex items-center justify-between">
           Chapter description
           <Button onClick={toggleEdit} variant="ghost">
@@ -82,16 +82,16 @@ export const ChDescriptionForm = ({
           </Button>
         </div>
         {!isEditing ? (
-          <div className={cn(
-            "text-sm mt-2",
-            !initialData.description && "text-slate-600 italic"
-          )}>
+          <div
+            className={cn(
+              "text-sm mt-2",
+              !initialData.description && "text-slate-600 dark:text-slate-400 italic"
+            )}
+          >
             {!initialData.description && "No description yet"}
-            {initialData.description && 
-              <Preview
-                value={initialData.description}
-              />
-            }
+            {initialData.description && (
+              <Preview value={initialData.description} />
+            )}
           </div>
         ) : (
           <Form {..._form}>
@@ -105,19 +105,14 @@ export const ChDescriptionForm = ({
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Editor            
-                        {...field}
-                      />
+                      <Editor {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
               <div className="flex items-center gap-x-2">
-                <Button
-                  disabled={ !isValid || isSubmitting}
-                  type="submit"
-                >
+                <Button disabled={!isValid || isSubmitting} type="submit">
                   Save
                 </Button>
               </div>

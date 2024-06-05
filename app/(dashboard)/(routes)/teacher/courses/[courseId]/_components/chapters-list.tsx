@@ -67,21 +67,27 @@ export const ChaptersList = ({
                   {(provided) => (
                     <div
                       className={cn(
-                        `flex items-center gap-x-2 bg-slate-200
-                        border-slate-200 border text-slate-700 
-                        rounded-md mb-4 text-sm`,
+                        `flex items-center gap-x-2 border
+                        bg-slate-200 dark:bg-slate-900
+                        border-slate-300 dark:border-slate-700
+                        text-slate-700 dark:text-slate-200
+                        rounded-md mb-4 text-sm overflow-hidden`,
                         chapter.isPublished &&
-                          "bg-white border-sky-200 text-sky-700"
+                          `bg-white dark:bg-slate-800
+                          border-sky-200 dark:border-sky-700
+                          text-sky-700 dark:text-sky-200`
                       )}
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                     >
                       <div
                         className={cn(
-                          `px-2 py-3 border-r border-r-slate-200
-                           hover:bg-slate-300 transition`,
+                          `px-2 py-3 border-r transition
+                          border-r-slate-300 dark:border-r-slate-700
+                          hover:bg-slate-300 dark:hover:bg-slate-700`,
                           chapter.isPublished &&
-                            "border-r-sky-200 hover:bg-sky-200"
+                            `border-r-sky-200 dark:border-r-sky-700
+                            hover:bg-sky-200 dark:hover:bg-sky-700`
                         )}
                         {...provided.dragHandleProps}
                       >
@@ -92,7 +98,7 @@ export const ChaptersList = ({
                         {chapter.isFree && <Badge>Free</Badge>}
                         <Badge
                             className={cn(
-                                "bg-slate-700",
+                                "bg-slate-700 dark:text-slate-400",
                                 chapter.isPublished && "bg-emerald-600"
                             )
                             }

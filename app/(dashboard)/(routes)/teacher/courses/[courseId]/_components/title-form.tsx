@@ -62,7 +62,7 @@ export const TitleForm = ({
     };
 
     return (
-      <div className="p-4 mt-6 border bg-sky-300/50 rounded-md">
+      <div className="p-4 mt-6 border bg-sky-300/50 dark:bg-sky-900/50 rounded-md">
         <div className="font-medium flex items-center justify-between">
           Course Title
           <Button onClick={toggleEdit} variant="ghost">
@@ -91,7 +91,7 @@ export const TitleForm = ({
                   <FormItem>
                     <FormControl>
                       <Input
-                        className="bg-slate-100"
+                        className="bg-slate-100 dark:bg-slate-900"
                         disabled={isSubmitting}
                         placeholder="e.g. 'Next.js 2024 full course'"
                         {...field}

@@ -65,7 +65,7 @@ export const DescriptionForm = ({
     };
 
     return (
-      <div className="p-4 mt-6 border bg-sky-300/50 rounded-md">
+      <div className="p-4 mt-6 border bg-sky-300/50 dark:bg-sky-900/50 rounded-md">
         <div className="font-medium flex items-center justify-between">
           Course description
           <Button onClick={toggleEdit} variant="ghost">
@@ -80,10 +80,15 @@ export const DescriptionForm = ({
           </Button>
         </div>
         {!isEditing ? (
-          <p className={cn(
-            "text-sm mt-2",
-            !initialData?.description && "text-slate-600 italic"
-          )}>{initialData?.description || "No description yet"}</p>
+          <p
+            className={cn(
+              "text-sm mt-2",
+              !initialData?.description &&
+                "text-slate-600 dark:text-slate-400 italic"
+            )}
+          >
+            {initialData?.description || "No description yet"}
+          </p>
         ) : (
           <Form {..._form}>
             <form
@@ -97,7 +102,7 @@ export const DescriptionForm = ({
                   <FormItem>
                     <FormControl>
                       <Textarea
-                        className="bg-slate-100"
+                        className="bg-slate-100 dark:bg-slate-900"
                         disabled={isSubmitting}
                         placeholder="e.g. 'Next.js 2024 full course'"
                         {...field}
@@ -108,10 +113,7 @@ export const DescriptionForm = ({
                 )}
               />
               <div className="flex items-center gap-x-2">
-                <Button
-                  disabled={ !isValid || isSubmitting}
-                  type="submit"
-                >
+                <Button disabled={!isValid || isSubmitting} type="submit">
                   Save
                 </Button>
               </div>

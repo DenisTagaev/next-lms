@@ -83,4 +83,20 @@ html, body:root{
   font-size: calc(12px + 0.25vw)!important;
 }
 
+.quill.dark .ql-toolbar.ql-snow .ql-formats{
+  .ql-picker-label, 
+  .ql-stroke{
+    color: white;
+    stroke: white;
+  }
+  .ql-picker-label:hover,
+  button:hover{
+    color: #06c;
+    .ql-stroke{
+      stroke: #06c;
+    }
+  }
+}
+
+
 @import "~@uploadthing/react/styles.css"

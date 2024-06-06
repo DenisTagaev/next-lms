@@ -1,5 +1,7 @@
 import { Metadata } from "next";
+import { Suspense } from "react";
 
+import { Loading } from "@/components/loading";
 import { Navbar } from "./_components/navbar";
 import { Sidebar } from "./_components/sidebar";
 
@@ -22,9 +24,11 @@ const DashboardLayout = ({
             <Sidebar/>
         </aside>
         <section className="md:pl-52 pt-[80px] h-full">
+          <Suspense fallback={<Loading/>}>
             {children}
+          </Suspense>
         </section>
-    </main>
+      </main>
   )
 }
 

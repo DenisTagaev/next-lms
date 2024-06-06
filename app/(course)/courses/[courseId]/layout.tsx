@@ -1,10 +1,12 @@
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
+import { Suspense } from "react";
 import type { Metadata } from "next";
 
 import { checkExistence } from "@/app/(dashboard)/client-utils";
 import { getProgress } from "@/actions/get-progress";
 
+import { Loading } from "@/components/loading";
 import { CourseSidebar } from "../_components/course-sidebar";
 import { CourseNavbar } from "../_components/course-navbar";
 
@@ -79,7 +81,9 @@ const CourseLayout = async ({
         <aside className="hidden md:flex h-full w-80 flex-col fixed inset-y-0 z-50">
           <CourseSidebar course={_course!} progress={courseProgress} />
         </aside>
-        <section className="h-full pt-[80px] md:pl-80">{children}</section>
+        <section className="h-full pt-[80px] md:pl-80">
+          <Suspense fallback={<Loading />}>{children}</Suspense>
+        </section>
       </>
     );
 }

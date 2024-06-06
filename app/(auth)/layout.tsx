@@ -1,4 +1,7 @@
-import type { Metadata } from "next";
+import { Suspense } from "react"
+import type { Metadata } from "next"
+
+import { Loading } from "@/components/loading"
 
 export const metadata: Metadata = {
   title: "LMS Sign-In",
@@ -12,7 +15,11 @@ const AuthLayout = ({
 ): JSX.Element => {
   return (
     <div className="min-h-screen flex justify-center items-center">
-      <main className="w-full max-w-lg">{children}</main>
+      <main className="w-full max-w-lg">
+        <Suspense fallback={<Loading/>}>
+          {children}
+        </Suspense>
+      </main>
     </div>
   );
 };

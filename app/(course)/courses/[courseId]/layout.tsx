@@ -1,14 +1,19 @@
+import dynamic from "next/dynamic";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { Suspense } from "react";
 import type { Metadata } from "next";
 
 import { checkExistence } from "@/app/(dashboard)/client-utils";
-import { getProgress } from "@/actions/get-progress";
 
 import { Loading } from "@/components/loading";
-import { CourseSidebar } from "../_components/course-sidebar";
-import { CourseNavbar } from "../_components/course-navbar";
+
+const CourseSidebar = dynamic(() =>
+  import("../_components/course-sidebar").then((res) => res.CourseSidebar)
+);
+const CourseNavbar = dynamic(() =>
+  import("../_components/course-navbar").then((res) => res.CourseNavbar)
+);
 
 export async function generateMetadata({
   params,
@@ -30,62 +35,61 @@ export async function generateMetadata({
   checkExistence(course);
 
   return {
-    title: course?.title
-      ? `${course.title}`
-      : "Course Not Found",
+    title: course?.title ? `${course.title}` : "Course Not Found",
     description: course?.description ?? "Course details and progress Page",
   };
 }
 
 const CourseLayout = async ({
   children,
-  params
+  params,
 }: Readonly<{
   children: React.ReactNode;
-  params: { courseId: string }
+  params: { courseId: string };
 }>) => {
-    const { userId }: { userId: string | null } = auth();
-    checkExistence(userId);
-    
-    const _course = await db.course.findUnique({
+  const { userId }: { userId: string | null } = auth();
+  checkExistence(userId);
+
+  const _course = await db.course.findUnique({
+    where: {
+      id: params.courseId,
+    },
+    include: {
+      chapters: {
         where: {
-            id: params.courseId
+          isPublished: true,
         },
         include: {
-            chapters: {
-                where: {
-                    isPublished: true
-                },
-                include: {
-                    userProgress: {
-                        where: {
-                            userId: userId!
-                        }
-                    }
-                },
-                orderBy: {
-                    position: "asc"
-                }
-            }
-        }
-    });
-    checkExistence(_course);
+          userProgress: {
+            where: {
+              userId: userId!,
+            },
+          },
+        },
+        orderBy: {
+          position: "asc",
+        },
+      },
+    },
+  });
+  checkExistence(_course);
 
-    const courseProgress: number = await getProgress(userId!, _course!.id);
-    
-    return (
-      <>
-        <nav className="h-[80px] md:pl-80 fixed inset-y-0 w-full z-50">
-          <CourseNavbar course={_course!} progress={courseProgress} />
-        </nav>
-        <aside className="hidden md:flex h-full w-80 flex-col fixed inset-y-0 z-50">
-          <CourseSidebar course={_course!} progress={courseProgress} />
-        </aside>
-        <section className="h-full pt-[80px] md:pl-80">
-          <Suspense fallback={<Loading />}>{children}</Suspense>
-        </section>
-      </>
-    );
-}
+  const { getProgress } = await import("@/actions/get-progress");
+  const courseProgress: number = await getProgress(userId!, _course!.id);
+
+  return (
+    <>
+      <nav className="h-[80px] md:pl-80 fixed inset-y-0 w-full z-50">
+        <CourseNavbar course={_course!} progress={courseProgress} />
+      </nav>
+      <aside className="hidden md:flex h-full w-80 flex-col fixed inset-y-0 z-50">
+        <CourseSidebar course={_course!} progress={courseProgress} />
+      </aside>
+      <section className="h-full pt-[80px] md:pl-80">
+        <Suspense fallback={<Loading />}>{children}</Suspense>
+      </section>
+    </>
+  );
+};
 
 export default CourseLayout;

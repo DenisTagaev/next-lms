@@ -1,18 +1,15 @@
 "use client";
 
-import axios from "axios";
-import toast from "react-hot-toast";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { ICourseProgressButtonProps } from "@/lib/interfaces";
 import { useConfettiStore } from "@/hooks/use-confetti-store";
-import { getErrorMessage } from "@/app/(dashboard)/client-utils";
 
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, XCircle } from "lucide-react";
 
-export const CourseProgressButton = ({
+const CourseProgressButton = ({
   courseId,
   chapterId,
   nextChapterId,
@@ -27,13 +24,15 @@ export const CourseProgressButton = ({
     const onClick = async (): Promise<void> => {
         try {
             setIsLoading(true);
+
+            const axios = (await import("axios")).default;
             await axios.put(
                 `/api/courses/${courseId}/chapters/${chapterId}/progress`,
                 {
                     isCompleted: !isCompleted,
                 }
             );
-
+            
             if(!isCompleted && !nextChapterId) {
                 confetti.onOpen();
             }
@@ -42,9 +41,11 @@ export const CourseProgressButton = ({
                 router.push(`/courses/${courseId}/chapters/${nextChapterId}`);
             }
 
+            const toast = (await import("react-hot-toast")).default;
             toast.success("Your progress has been updated!");
             router.refresh();
         } catch (error) {
+            const { getErrorMessage } = (await import("@/app/(dashboard)/client-utils"));
             getErrorMessage(error);
         } finally {
             setIsLoading(false);
@@ -64,3 +65,5 @@ export const CourseProgressButton = ({
         </Button>
     );
 };
+
+export default CourseProgressButton;

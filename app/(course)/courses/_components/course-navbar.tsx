@@ -2,7 +2,9 @@ import { ICourseNavbarProps } from "@/lib/interfaces";
 
 import { NavbarRoutes } from "@/components/navbar-routes";
 import { BackButton } from "@/components/back-button";
-import { CourseMobileSidebar } from "./course-mobile-sidebar";
+import dynamic from "next/dynamic";
+const MobileSidebar = dynamic(() => 
+  import("./course-mobile-sidebar").then(res => res.CourseMobileSidebar));
 
 export const CourseNavbar = ({
   course,
@@ -14,7 +16,7 @@ export const CourseNavbar = ({
          bg-white shadow-sm dark:bg-slate-800/75"
     >
       <BackButton path="/" origin="dashboard"/>
-      <CourseMobileSidebar course={course} progress={progress} />
+      <MobileSidebar course={course} progress={progress} />
       <NavbarRoutes />
     </div>
   );

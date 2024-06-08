@@ -1,19 +1,20 @@
 "use client"
 
-import MuxPlayer from "@mux/mux-player-react";
+import dynamic from "next/dynamic";
 import MuxPlayerElement from "@mux/mux-player"
-import axios from "axios";
-import toast from "react-hot-toast";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+const MuxPlayer = dynamic(() => import("@mux/mux-player-react"));
 
-import { useConfettiStore } from "@/hooks/use-confetti-store";
 import { useProgressStore } from "@/hooks/use-video-progress";
 import { ICourseVideoPlayerProps } from "@/lib/interfaces";
-import { getErrorMessage } from "@/app/(dashboard)/client-utils";
+import { useConfettiStore } from "@/hooks/use-confetti-store";
 
-import { Loader2, Lock } from "lucide-react";
+const Loader2 = dynamic(() =>
+  import("lucide-react").then((mod) => mod.Loader2)
+);
+const Lock = dynamic(() => import("lucide-react").then((mod) => mod.Lock));
 
 export const VideoPlayer = ({
     chapterId,
@@ -25,10 +26,10 @@ export const VideoPlayer = ({
     completeOnFinish,
 }: ICourseVideoPlayerProps) => {
     const [isReady, setIsReady] = useState(false);
+    const confetti = useConfettiStore();
     const setProgress = useProgressStore((state) => state.setProgress);
     const playerRef = useRef<MuxPlayerElement | null>(null);
     const router = useRouter();
-    const confetti = useConfettiStore();
 
     useEffect(() => {
       const player: MuxPlayerElement | null = playerRef.current;
@@ -51,6 +52,7 @@ export const VideoPlayer = ({
     const onEnded = async (): Promise<void> => {
       try {
         if (completeOnFinish) {
+          const axios = (await import("axios")).default;
           await axios.put(
             `/api/courses/${courseId}/chapters/${chapterId}/progress`,
             {
@@ -67,9 +69,11 @@ export const VideoPlayer = ({
           router.push(`/courses/${courseId}/chapters/${nextChapterId}`);
         }
         
+        const toast = (await import("react-hot-toast")).default;
         toast.success("Your progress has been updated!");
         router.refresh();
       } catch (error) {
+        const { getErrorMessage } = (await import("@/app/(dashboard)/client-utils"));
         getErrorMessage(error);
       }
     };

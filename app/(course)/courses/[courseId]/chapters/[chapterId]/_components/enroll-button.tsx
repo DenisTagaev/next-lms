@@ -1,10 +1,8 @@
 "use client"
 
-import axios, { AxiosResponse } from "axios";
 import { useState } from "react";
 
 import { formatPrice } from "@/lib/custom-utils";
-import { getErrorMessage } from "@/app/(dashboard)/client-utils";
 
 import { Button } from "@/components/ui/button";
 
@@ -20,12 +18,14 @@ export const CourseEnrollButton = ({
     const onClick = async(): Promise<void> => {
         try {
             setIsLoading(true);
-
-            const response: AxiosResponse<any, any> = await axios.post(
+            
+            const axios = (await import("axios")).default;
+            const response = await axios.post(
               `/api/courses/${courseId}/checkout`
             );
             window.location.assign(response.data.url);
         } catch (error) {
+            const { getErrorMessage } = (await import("@/app/(dashboard)/client-utils"));
             getErrorMessage(error);
         } finally {
             setIsLoading(false);

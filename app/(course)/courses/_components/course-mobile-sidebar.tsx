@@ -1,7 +1,12 @@
+import dynamic from "next/dynamic";
+import { ComponentType } from "react";
+
 import { ICourseSidebarProps } from "@/lib/interfaces";
 
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { CourseSidebar } from "./course-sidebar";
+const Sidebar: ComponentType<ICourseSidebarProps> = dynamic(() =>
+  import("./course-sidebar").then((res) => res.CourseSidebar)
+);
 import { Menu } from "lucide-react";
 
 export const CourseMobileSidebar = ({
@@ -14,7 +19,7 @@ export const CourseMobileSidebar = ({
         <Menu />
       </SheetTrigger>
       <SheetContent side="left" className="p-0 bg-white w-72">
-        <CourseSidebar 
+        <Sidebar 
             course={course}
             progress={progress}
         />

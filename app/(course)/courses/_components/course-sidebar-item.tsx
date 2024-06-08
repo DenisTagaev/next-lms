@@ -1,15 +1,17 @@
 "use client"
 
+import dynamic from "next/dynamic";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 import { ICourseSidebarItemProps } from "@/lib/interfaces";
 
-import { Lock, CheckCircle, PlayCircle } from "lucide-react";
 import { useProgressStore } from "@/hooks/use-video-progress";
-import { Progress } from "@/components/ui/progress";
+const Progress = dynamic(() => 
+  import("@/components/ui/progress").then(res => res.Progress));
+import { Lock, CheckCircle, PlayCircle } from "lucide-react";
 
-export const CourseSidebarItem = ({
+const CourseSidebarItem = ({
   id,
   label,
   isCompleted,
@@ -68,3 +70,5 @@ export const CourseSidebarItem = ({
       </button>
     );
 };
+
+export default CourseSidebarItem;

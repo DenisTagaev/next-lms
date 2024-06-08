@@ -1,12 +1,17 @@
+import dynamic from "next/dynamic";
 import { auth } from "@clerk/nextjs/server";
-import { db } from "@/lib/db";
 
 import { ICourseSidebarProps } from "@/lib/interfaces";
 import { checkExistence } from "@/app/(dashboard)/client-utils";
 
-import { CourseProgress } from "@/components/course-progress";
 import { BackButton } from "@/components/back-button";
-import { CourseSidebarItem } from "./course-sidebar-item";
+const CourseProgress = dynamic(() =>
+  import("@/components/course-progress").then((res) => res.CourseProgress)
+);
+const CourseSidebarItem = dynamic(() =>
+  import("./course-sidebar-item"),
+  { ssr: false }
+);
 
 export const CourseSidebar = async({
     course,
@@ -15,6 +20,7 @@ export const CourseSidebar = async({
     const { userId }: { userId: string | null } = auth();
     checkExistence(userId);
     
+    const db = ((await import("@/lib/db")).db);
     const _purchase = await db.purchase.findUnique({
         where: {
             userId_courseId: {

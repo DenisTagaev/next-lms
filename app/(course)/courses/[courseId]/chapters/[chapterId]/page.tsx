@@ -1,18 +1,26 @@
+import dynamic from "next/dynamic";
 import { auth } from "@clerk/nextjs/server";
 import { db } from "@/lib/db";
 import { Attachment } from "@prisma/client";
 import { Metadata } from "next";
 
-import { getChapter } from "@/actions/get-chapter";
 import { checkExistence } from "@/app/(dashboard)/client-utils";
 
-import { Banner } from "@/components/banner";
-import { Separator } from "@/components/ui/separator";
-import { Preview } from "@/components/preview";
 import { VideoPlayer } from "./_components/video-player";
-import { CourseEnrollButton } from "./_components/enroll-button";
-import { CourseProgressButton } from "./_components/progress-button";
-import { File } from "lucide-react";
+import { Preview } from "@/components/preview";
+import { Separator } from "@/components/ui/separator";
+const Banner = dynamic(
+  () => import("@/components/banner").then((res) => res.Banner)
+);
+const CourseEnrollButton = dynamic(() =>
+  import("./_components/enroll-button").then((res) => res.CourseEnrollButton),
+  { ssr: false }
+);
+const CourseProgressButton = dynamic(
+  () =>
+    import("./_components/progress-button"), { ssr: false }
+);
+const File = dynamic(() => import("lucide-react").then(res => res.File));
 
 export async function generateMetadata({
   params,
@@ -46,6 +54,7 @@ export default async function ChapterIdPage({
     const { userId }: { userId: string | null } = auth();
     checkExistence(userId);
     
+    const { getChapter } = await import("@/actions/get-chapter");
     const{
         _chapter,
         _course,
@@ -65,7 +74,6 @@ export default async function ChapterIdPage({
     const isLocked: boolean = !_chapter?.isFree && !_purchase;
     const completeOnFinish: boolean =
       !!_purchase && !_userProgression?.isCompleted;
-    
 
     return (
       <>
@@ -115,8 +123,8 @@ export default async function ChapterIdPage({
                             key={attachment.id}
                             href={attachment.url!}
                             target="_blank"
-                            className="flex items-center p-3 w-full bg-sky-200
-                                border text-sky-600 rounded-md hover:underline"
+                            className="flex items-center p-3 w-full bg-sky-200 dark:bg-sky-800
+                                border text-sky-600 dark:text-sky-200 rounded-md hover:underline"
                         >
                             <File/>
                             <p className="line-clamp-1">

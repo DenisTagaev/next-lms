@@ -1,10 +1,9 @@
 import dynamic from "next/dynamic";
-import { ComponentType } from "react";
 
 import { ICourseSidebarProps } from "@/lib/interfaces";
 
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-const Sidebar: ComponentType<ICourseSidebarProps> = dynamic(() =>
+const Sidebar = dynamic(() =>
   import("./course-sidebar").then((res) => res.CourseSidebar)
 );
 import { Menu } from "lucide-react";

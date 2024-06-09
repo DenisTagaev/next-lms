@@ -1,4 +1,7 @@
 import { Metadata } from "next";
+import { Suspense } from "react";
+
+import { Loading } from "@/components/loading";
 
 export const metadata: Metadata = {
   title: "New Course",
@@ -15,7 +18,9 @@ const AddCourseLayout = ({
         className="max-w-5xl min-w-[476px] lg:mx-auto flex lg:items-center 
         md:justify-center h-full p-6"
       >
-        {children}
+        <Suspense fallback={<Loading/>}>
+          {children}
+        </Suspense>
       </div>
   );
 };

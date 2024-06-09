@@ -1,10 +1,15 @@
+import dynamic from "next/dynamic";
+
 import { 
     Sheet,
     SheetContent,
     SheetTrigger 
 } from "@/components/ui/sheet";
-import { Sidebar } from "../sidebar";
 import { Menu } from "lucide-react";
+const Sidebar = dynamic(() => 
+    import("../sidebar").then(res => res.Sidebar), 
+    { ssr: false }
+);
 
 export const MobileSidebar = () => {
     return (

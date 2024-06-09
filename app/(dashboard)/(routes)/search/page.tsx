@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic";
 import { db } from "@/lib/db";
 import { Category } from "@prisma/client";
 import { auth } from "@clerk/nextjs/server";
@@ -6,9 +7,11 @@ import { CourseWithCategoryProgress, getCourses } from "@/actions/get-courses";
 import { ISearchPageProps } from "@/lib/interfaces";
 import { checkExistence } from "@/app/(dashboard)/client-utils";
 
-import { CoursesList } from "@/components/courses-list";
 import { SearchInput } from "@/components/search-input";
 import { Categories } from "./_components/categories";
+const  CoursesList = dynamic(() => 
+  import("@/components/courses-list").then(res => res.CoursesList)
+);
 
 export async function generateStaticParams() {
   const exampleCourseTitles: {

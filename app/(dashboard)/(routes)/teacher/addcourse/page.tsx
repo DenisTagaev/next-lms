@@ -2,15 +2,11 @@
 
 import * as zod from "zod"
 import Link from "next/link"
-import toast from "react-hot-toast"
-import { Metadata } from "next"
-import axios, { AxiosResponse } from "axios"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { UseFormReturn, useForm } from "react-hook-form"
 import { useRouter } from "next/navigation"
 
 import { formTitleSchema } from "@/app/(dashboard)/_schemas/new-course"
-import { getErrorMessage } from "@/app/(dashboard)/client-utils"
 
 import { 
     Form, 
@@ -39,11 +35,16 @@ export default function AddCourse(): JSX.Element {
 
     const onSubmit = async(values: zod.infer<typeof formTitleSchema>) => {
         try {
-            const response: AxiosResponse<any, any> = await axios.post("/api/courses", values);
+            const axios = (await import("axios")).default;
+            const response = await axios.post("/api/courses", values);
+
             router.push(`/teacher/courses/${response.data.id}`);
+            const toast = (await import("react-hot-toast")).default;
             toast.success("Course successfully created!");
         } catch (error) {
+            const { getErrorMessage } = await import("@/app/(dashboard)/client-utils");
             getErrorMessage(error);
+        } finally {
         }
     };
 
@@ -81,7 +82,7 @@ export default function AddCourse(): JSX.Element {
             />
             <div className="flex items-center gap-x-2">
               <Link href="/teacher/courses">
-                <Button type="button" variant="destructive">
+                <Button type="button" disabled={isSubmitting} variant="destructive">
                   Cancel
                 </Button>
               </Link>

@@ -1,12 +1,15 @@
 import Link from "next/link"
+import dynamic from "next/dynamic";
 
 import { ICourseCardProps } from "@/lib/interfaces"
 import { formatPrice } from "@/lib/custom-utils";
 
 import Image from "next/image"
 import { IconBadge } from "@/components/icon-badge";
-import { CourseProgress } from "@/components/course-progress";
 import { BookOpen } from "lucide-react";
+const CourseProgress = dynamic(() => 
+  import("@/components/course-progress").then(res => res.CourseProgress)
+);
 
 export const CourseCard = ({
     id,
@@ -56,7 +59,7 @@ export const CourseCard = ({
                 variant={progress === 100 ? "success" : "default"}
               />
             ) : (
-              <p className="text-md md:text-sm font-medium text-slate-900">
+              <p className="text-md md:text-sm font-medium text-slate-900 dark:text-slate-200">
                 {formatPrice(price)}
               </p>
             )}

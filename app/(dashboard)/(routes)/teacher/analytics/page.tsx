@@ -2,7 +2,6 @@ import { Metadata } from "next";
 import { auth } from "@clerk/nextjs/server";
 
 import { checkExistence } from "@/app/(dashboard)/client-utils";
-import { getAnalytics } from "@/actions/get-analytics";
 
 import { DataCard } from "./_components/data-card";
 import { Chart } from "./_components/chart";
@@ -21,6 +20,7 @@ export default async function AnalyticsPage (): Promise<JSX.Element> {
     const { userId }: { userId: string | null } = auth();
     checkExistence(userId);
 
+    const { getAnalytics } = await import("@/actions/get-analytics");
     const{ data, totalRevenue, totalSales } : {
         data: {
             name: string;

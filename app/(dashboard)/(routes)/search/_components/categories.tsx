@@ -1,11 +1,11 @@
 "use client"
 
+import dynamic from "next/dynamic";
 import { IconType } from "react-icons/lib";
 
 import { ICategoriesSearchProps } from "@/lib/interfaces";
 import { Category } from "@prisma/client";
 
-import { CategoryItem } from "./category-item";
 import {
     FcCommandLine,
     FcSportsMode,
@@ -14,6 +14,10 @@ import {
     FcCalculator,
     FcBiotech,
 } from "react-icons/fc"
+const CategoryItem = dynamic(() => 
+    import("./category-item").then(res => res.CategoryItem),
+    { ssr: false }
+);
 
 const iconMap: Record<Category["name"], IconType> = {
     "Computer Science": FcCommandLine,

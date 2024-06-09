@@ -1,8 +1,9 @@
+import dynamic from "next/dynamic";
+
 import { ICourseNavbarProps } from "@/lib/interfaces";
 
 import { NavbarRoutes } from "@/components/navbar-routes";
 import { BackButton } from "@/components/back-button";
-import dynamic from "next/dynamic";
 const MobileSidebar = dynamic(() => 
   import("./course-mobile-sidebar").then(res => res.CourseMobileSidebar));
 

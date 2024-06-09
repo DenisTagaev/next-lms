@@ -1,11 +1,12 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 
 import { getPathParams } from "@/lib/custom-utils";
 
-import { SidebarItem } from "./sidebar-item";
 import { BarChart, Layout, List, Search } from "lucide-react";
+const SidebarItem = dynamic(()=> import("./sidebar-item").then(res => res.SidebarItem), { ssr: false });
 
 
 const _guestRoutes = [

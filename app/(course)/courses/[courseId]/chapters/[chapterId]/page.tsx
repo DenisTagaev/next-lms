@@ -9,11 +9,12 @@ import { checkExistence } from "@/app/(dashboard)/client-utils";
 import { VideoPlayer } from "./_components/video-player";
 import { Preview } from "@/components/preview";
 import { Separator } from "@/components/ui/separator";
+import PurchaseNotice from "./_components/purchase-notice";
 const Banner = dynamic(
   () => import("@/components/banner").then((res) => res.Banner)
 );
 const CourseEnrollButton = dynamic(() =>
-  import("./_components/enroll-button").then((res) => res.CourseEnrollButton),
+  import("./_components/enroll-button"),
   { ssr: false }
 );
 const CourseProgressButton = dynamic(
@@ -110,8 +111,9 @@ export default async function ChapterIdPage({
                   courseId={params.courseId}
                   price={_course?.price!}
                 />
-              )}
+              )}  
             </div>
+            <PurchaseNotice/>
             <Separator />
             <Preview value={_chapter?.description!} />
             {!!_attachments?.length && (

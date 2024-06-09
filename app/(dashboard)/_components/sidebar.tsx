@@ -1,11 +1,12 @@
 "use client"
 
+import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
-import { BackButton } from "@/components/back-button";
 import { SidebarRoutes } from "./sidebar-routes"
 import { Logo } from "./logo"
+const BackButton = dynamic(()=> import("@/components/back-button").then(res => res.BackButton), { ssr: false });
 
 export const Sidebar = (): JSX.Element => {
     const path = usePathname();

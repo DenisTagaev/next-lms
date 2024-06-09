@@ -6,7 +6,7 @@ import { formatPrice } from "@/lib/custom-utils";
 
 import { Button } from "@/components/ui/button";
 
-export const CourseEnrollButton = ({
+const CourseEnrollButton = ({
     courseId,
     price
 }: {
@@ -41,3 +41,5 @@ export const CourseEnrollButton = ({
     </Button>
   );
 };
+
+export default CourseEnrollButton;

@@ -6,7 +6,7 @@ export const Logo = (): JSX.Element => {
             height={30}
             width={30}
             alt="Dashboard logo image"
-            src="./logoipsum-223.svg"
+            src="/logoipsum-223.svg"
         />
     )
 }

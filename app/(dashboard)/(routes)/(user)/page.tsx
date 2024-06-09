@@ -1,7 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 import { Metadata } from "next";
 
-import { DashboardInfo, getDashboardCourses } from "@/actions/get-dashboard-info";
 import { checkExistence } from "@/app/(dashboard)/client-utils";
 
 import { CoursesList } from "@/components/courses-list";
@@ -23,10 +22,13 @@ export default async function Dashboard(
   const { userId }: { userId: string | null } = auth();
   checkExistence(!!userId);
   
+  const { getDashboardCourses } = await import(
+    "@/actions/get-dashboard-info"
+  );
   const {
     completedCourses,
     coursesInProgress,
-  }: DashboardInfo = await getDashboardCourses(userId!);
+  } = await getDashboardCourses(userId!);
 
   return (
     <section className="p-6 space-y-5">

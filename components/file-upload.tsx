@@ -1,6 +1,5 @@
 "use client";
 
-import toast from "react-hot-toast";
 import { ClientUploadedFileData } from "uploadthing/types";
 
 import { UploadDropzone } from "@/lib/uploadthing";
@@ -21,7 +20,8 @@ export const FileUpload = ({
       onClientUploadComplete={(res: ClientUploadedFileData<null>[]) => {
         onChange(res?.[0].url);
       }}
-      onUploadError={(error) => {
+      onUploadError={async(error) => {
+        const toast = (await import("react-hot-toast")).default;
         toast.error(`${error?.message}`);
       }}
     />

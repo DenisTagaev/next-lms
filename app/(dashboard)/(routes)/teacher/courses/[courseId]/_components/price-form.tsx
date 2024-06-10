@@ -105,6 +105,7 @@ export const PriceForm = ({
                       <Input
                         type="number"
                         step={0.1}
+                        min={0}
                         className="bg-slate-100 dark:bg-slate-900"
                         disabled={isSubmitting}
                         placeholder="Set a price for your course"

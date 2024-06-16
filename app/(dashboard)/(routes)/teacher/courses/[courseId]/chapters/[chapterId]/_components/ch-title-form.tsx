@@ -1,7 +1,5 @@
 "use client";
 import * as zod from "zod";
-import axios from "axios";
-import toast from "react-hot-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UseFormReturn, useForm } from "react-hook-form";
 import { useState } from "react";
@@ -46,10 +44,12 @@ export const ChTitleForm = ({
     values: zod.infer<typeof formTitleSchema>
   ): Promise<void> => {
     try {
+      const axios = (await import("axios")).default;        
       await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}`, values);
       toggleEdit();
-      toast.success("Chapter successfully edited!");
       
+      const toast = (await import("react-hot-toast")).default;
+      toast.success("Chapter successfully edited!");
       router.refresh();
     } catch (error) {
       getErrorMessage(error);

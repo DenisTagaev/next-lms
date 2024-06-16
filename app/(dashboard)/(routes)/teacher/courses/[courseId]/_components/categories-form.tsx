@@ -1,7 +1,6 @@
 "use client"
 import * as zod from "zod";
-import axios, { AxiosResponse } from "axios";
-import toast from "react-hot-toast";
+import dynamic from "next/dynamic";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UseFormReturn, useForm } from "react-hook-form";
 import { useState } from "react";
@@ -20,7 +19,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { Combobox } from "@/components/ui/combobox";
+const Combobox = dynamic(() => 
+  import("@/components/ui/combobox").then(res => res.Combobox), 
+  { ssr: false }
+);
 import { Pencil } from "lucide-react";
 
 
@@ -59,14 +61,16 @@ export const CategoryForm = ({
       values: zod.infer<typeof formCategorySchema>
     ): Promise<void> => {
       try {
+        const axios = (await import("axios")).default;
         await axios.patch(
           `/api/courses/${courseId}`,
           values
         );
-        toast.success("Course successfully edited!");
-        
         toggleEdit();
+        
         router.refresh();
+        const toast = (await import("react-hot-toast")).default;
+        toast.success("Course successfully edited!");
       } catch (error) {
         getErrorMessage(error);
       }
@@ -97,7 +101,7 @@ export const CategoryForm = ({
                 "text-lg text-sky-500 bg-white dark:bg-slate-900 rounded-md p-2"
             )}
           >
-            {_selectedCategory?.label || "No category yet"}
+            {_selectedCategory?.label ?? "No category yet"}
           </p>
         ) : (
           <Form {..._form}>

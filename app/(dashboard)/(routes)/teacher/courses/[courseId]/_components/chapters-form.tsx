@@ -1,7 +1,5 @@
 "use client"
 import * as zod from "zod";
-import toast from "react-hot-toast";
-import axios, { AxiosResponse } from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UseFormReturn, useForm } from "react-hook-form";
 import { useState } from "react";
@@ -55,7 +53,8 @@ export const ChapterForm = ({
       values: zod.infer<typeof formChapterSchema>
     ): Promise<void> => {
       try {
-        const response: AxiosResponse<any, any> = await axios.post(
+        const axios = (await import("axios")).default;
+        const response = await axios.post(
           `/api/courses/${courseId}/chapters`,
           values
         );
@@ -65,9 +64,10 @@ export const ChapterForm = ({
           const updatedChapters = [...prevChapters, newChapter];
           return updatedChapters;
         });
-
-        toast.success("Chapter successfully created!");
+        
         toggleCreating();
+        const toast = (await import("react-hot-toast")).default;
+        toast.success("Chapter successfully created!");
       } catch (error) {
         getErrorMessage(error);
       }
@@ -79,13 +79,15 @@ export const ChapterForm = ({
     }[]): Promise<void> => {
       try {
         setIsEditing(true);
-
+        
+        const axios = (await import("axios")).default;
         await axios.put(`/api/courses/${courseId}/chapters/reorder`, {
           list: updateData
         });
-        toast.success("Chapters reordered");
 
         router.refresh();
+        const toast = (await import("react-hot-toast")).default;
+        toast.success("Chapters reordered");
       } catch (error) {
         getErrorMessage(error);
       } finally {

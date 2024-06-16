@@ -28,14 +28,14 @@ import { Input } from "@/components/ui/input";
 import { PlusCircle } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
+  columns: ColumnDef<any, TValue>[];
   data: TData[];
 }
 
-export function DataTable<TData, TValue>({
+const DataTable = function DataTable<TData, TValue>({
   columns,
   data,
-}: DataTableProps<TData, TValue>) {
+}: Readonly<DataTableProps<TData, TValue>>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
 
@@ -149,3 +149,5 @@ export function DataTable<TData, TValue>({
     </div>
   );
 }
+
+export default DataTable;

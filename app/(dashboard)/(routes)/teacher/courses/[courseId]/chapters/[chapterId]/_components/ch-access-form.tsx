@@ -1,7 +1,5 @@
 "use client"
 import * as zod from "zod";
-import axios from "axios";
-import toast from "react-hot-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UseFormReturn, useForm } from "react-hook-form";
 import { useState } from "react";
@@ -53,14 +51,16 @@ export const ChAccessForm = ({
       values: zod.infer<typeof formAccessSchema>
     ): Promise<void> => {
       try {
+        const axios = (await import("axios")).default;
         await axios.patch(
           `/api/courses/${courseId}/chapters/${chapterId}`,
           values
         );
         toggleEdit();
-        toast.success("Chapter successfully updated!");
-        
+
         router.refresh();
+        const toast = (await import("react-hot-toast")).default;
+        toast.success("Chapter successfully updated!");
       } catch (error) {
         getErrorMessage(error);
       }
@@ -104,7 +104,7 @@ export const ChAccessForm = ({
                 control={_form.control}
                 name="isFree"
                 render={({ field }) => (
-                  <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 bg-slate-100 dark:bg-slate-900">
+                  <FormItem className="flex items-center space-x-2 space-y-0 rounded-md border p-4 bg-slate-100 dark:bg-slate-900">
                     <FormControl>
                       <Checkbox
                         checked={field.value}

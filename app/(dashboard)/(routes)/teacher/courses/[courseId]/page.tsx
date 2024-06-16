@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { Chapter } from "@prisma/client";
@@ -6,7 +7,6 @@ import { Metadata } from "next";
 import { checkExistence } from "@/app/(dashboard)/client-utils";
 
 import { IconBadge } from "@/components/icon-badge";
-import { Banner } from "@/components/banner";
 import { TitleForm } from "./_components/title-form";
 import { DescriptionForm } from "./_components/description-form";
 import { ImageForm } from "./_components/image-form";
@@ -15,6 +15,9 @@ import { PriceForm } from "./_components/price-form";
 import { AttachmentForm } from "./_components/attachments-form";
 import { ChapterForm } from "./_components/chapters-form";
 import { CourseControl } from "./_components/course-control";
+const Banner = dynamic(() =>
+  import("@/components/banner").then((res) => res.Banner)
+);
 import { CircleDollarSignIcon, File, LayoutDashboard, ListChecks } from "lucide-react";
 
 export async function generateMetadata({

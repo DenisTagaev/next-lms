@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { Chapter } from "@prisma/client";
@@ -6,12 +7,12 @@ import { Metadata } from "next";
 import { checkExistence } from "@/app/(dashboard)/client-utils";
 
 import { IconBadge } from "@/components/icon-badge";
-import { Banner } from "@/components/banner";
 import { ChTitleForm } from "./_components/ch-title-form";
 import { ChDescriptionForm } from "./_components/ch-description-form";
 import { ChAccessForm } from "./_components/ch-access-form";
 import { ChVideoForm } from "./_components/ch-video-form";
 import { ChapterControl } from "./_components/ch-control";
+const Banner = dynamic(() => import("@/components/banner").then(res => res.Banner));
 import { Eye, LayoutDashboard, Video } from "lucide-react";
 
 export async function generateMetadata({

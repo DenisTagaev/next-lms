@@ -1,8 +1,7 @@
 "use client"
 import * as zod from "zod";
-import axios from "axios";
+import dynamic from "next/dynamic";
 import { useState } from "react";
-import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { Attachment } from "@prisma/client";
 
@@ -11,7 +10,8 @@ import { formAttachmentSchema } from "@/app/(dashboard)/_schemas/new-course";
 import { IAttachmentFormProps } from "@/lib/interfaces";
 
 import { Button } from "@/components/ui/button";
-import { FileUpload } from "@/components/file-upload";
+const FileUpload = dynamic(() => 
+  import("@/components/file-upload").then(res => res.FileUpload));
 import { PlusCircle, File, Loader2, X } from "lucide-react";
 
 
@@ -29,14 +29,16 @@ export const AttachmentForm = ({
       values: zod.infer<typeof formAttachmentSchema>
     ): Promise<void> => {
       try {
+        const axios = (await import("axios")).default;
         await axios.post(
           `/api/courses/${courseId}/attachments`,
           values
         );
-        toast.success("Course successfully edited!");
         toggleEdit();
-        
+
         router.refresh();
+        const toast = (await import("react-hot-toast")).default;
+        toast.success("Course successfully edited!");
       } catch (error) {
         getErrorMessage(error);
       }
@@ -45,10 +47,12 @@ export const AttachmentForm = ({
     const onDelete = async (id: string): Promise<void> => {
       try {
         setDeleteId(id);
+        const axios = (await import("axios")).default;
         await axios.delete(`/api/courses/${courseId}/attachments/${id}`);
-        toast.success("File deleted!");
         
         router.refresh();
+        const toast = (await import("react-hot-toast")).default;
+        toast.success("File deleted!");
       } catch (error) {
         getErrorMessage(error);
       } finally {

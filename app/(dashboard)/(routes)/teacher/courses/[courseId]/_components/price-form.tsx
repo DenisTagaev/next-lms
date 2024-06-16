@@ -1,7 +1,5 @@
 "use client"
 import * as zod from "zod";
-import axios from "axios";
-import toast from "react-hot-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UseFormReturn, useForm } from "react-hook-form";
 import { useState } from "react";
@@ -51,14 +49,16 @@ export const PriceForm = ({
       values: zod.infer<typeof formPriceSchema>
     ): Promise<void> => {
       try {
+        const axios = (await import("axios")).default;
         await axios.patch(
           `/api/courses/${courseId}`,
           values
         );
         toggleEdit();
-        toast.success("Course successfully edited!");
-        
+
         router.refresh();
+        const toast = (await import("react-hot-toast")).default;
+        toast.success("Course successfully edited!");        
       } catch (error) {
         getErrorMessage(error);
       }

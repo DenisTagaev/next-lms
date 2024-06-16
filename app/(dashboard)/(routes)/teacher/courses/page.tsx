@@ -1,11 +1,13 @@
-import { db } from "@/lib/db";
+import dynamic from "next/dynamic";
 import { auth } from "@clerk/nextjs/server";
 import { Metadata } from "next";
 
 import { checkExistence } from "@/app/(dashboard)/client-utils";
 
-import { DataTable } from "./_components/data-table";
-import { columns } from "./_components/columns";
+const DataTable = dynamic(() => 
+    import("./_components/data-table"),
+    { ssr: false}
+);
 
 export function generateMetadata(): Metadata {
   const { userId }: { userId: string | null } = auth();
@@ -21,6 +23,7 @@ export default async function CoursesPage (): Promise<JSX.Element> {
     const { userId }: { userId: string | null } = auth();
     checkExistence(userId);
 
+    const db = (await(import("@/lib/db"))).db;
     const _courses = await db.course.findMany({
         where: {
             userId: userId!,
@@ -29,7 +32,8 @@ export default async function CoursesPage (): Promise<JSX.Element> {
             createdAt: "desc"
         }
     });
-    
+
+    const columns = (await (import("./_components/columns"))).columns;   
     return (
         <div className="p-6">
             <DataTable columns={columns} data={_courses}/>

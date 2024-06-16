@@ -49,9 +49,9 @@ export async function generateMetadata({
 
 export default async function ChapterIdPage({
   params
-}: { 
+}: Readonly<{ 
     params: {courseId: string, chapterId: string }
-}): Promise<JSX.Element> {
+}>): Promise<JSX.Element> {
     const { userId }: { userId: string | null } = auth();
     checkExistence(userId);
     

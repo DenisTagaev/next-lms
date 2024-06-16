@@ -22,7 +22,7 @@ export const CoursesList = ({ items }: ICoursesListProps): JSX.Element => {
       </ul>
       {items.length === 0 && (
         <p className="text-center text-xl text-muted-foreground mt-12">
-          No courses in this category available
+          No available courses found
         </p>
       )}
     </section>

@@ -1,7 +1,5 @@
 "use client"
 
-import axios from "axios"
-import toast from "react-hot-toast"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 
@@ -25,12 +23,13 @@ export const CourseControl = ({
     const onDelete = async(): Promise<void> => {
       try {
         setIsLoading(true);
-        
+        const axios = (await import("axios")).default;
         await axios.delete(`/api/courses/${courseId}`)
-        toast.success("Course successfully deleted!");
         
         router.refresh();
         router.push(`/teacher/courses`);
+        const toast = (await import("react-hot-toast")).default;
+        toast.success("Course successfully deleted!");
       } catch (error) {
         getErrorMessage(error);
       } finally {
@@ -41,6 +40,8 @@ export const CourseControl = ({
     const onPublish = async (): Promise<void> => {
       try {
         setIsLoading(true);
+        const axios = (await import("axios")).default;
+        const toast = (await import("react-hot-toast")).default;
 
         if(isPublished) {
           await axios.patch(`/api/courses/${courseId}/unpublish`);

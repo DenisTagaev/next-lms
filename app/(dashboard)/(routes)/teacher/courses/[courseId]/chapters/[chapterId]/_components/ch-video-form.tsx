@@ -1,11 +1,9 @@
 "use client"
 import * as zod from "zod";
-import axios from "axios";
-import toast from "react-hot-toast";
+import dynamic from "next/dynamic";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-import MuxPlayer from "@mux/mux-player-react";
 
 import { getErrorMessage } from "@/app/(dashboard)/client-utils";
 import { formVideoSchema } from "@/app/(dashboard)/_schemas/new-course";
@@ -13,6 +11,7 @@ import { IChVideoFormProps } from "@/lib/interfaces";
 
 import { Button } from "@/components/ui/button";
 import { FileUpload } from "@/components/file-upload";
+const MuxPlayer = dynamic(() => import("@mux/mux-player-react"));
 import { Pencil, PlusCircle, Video } from "lucide-react";
 
 
@@ -30,10 +29,12 @@ export const ChVideoForm = ({
     values: zod.infer<typeof formVideoSchema>
   ): Promise<void> => {
     try {
+      const axios = (await import("axios")).default;        
       await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}`, values);
       toggleEdit();
-      toast.success("Chapter successfully updated!");
       
+      const toast = (await import("react-hot-toast")).default;
+      toast.success("Chapter successfully updated!");
       router.refresh();
     } catch (error) {
       getErrorMessage(error);

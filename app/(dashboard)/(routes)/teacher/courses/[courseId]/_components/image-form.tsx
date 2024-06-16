@@ -1,7 +1,6 @@
 "use client"
 import * as zod from "zod";
-import axios from "axios";
-import toast from "react-hot-toast";
+import dynamic from "next/dynamic";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -11,7 +10,8 @@ import { IDescriptionFormProps } from "@/lib/interfaces";
 
 import Image  from "next/image"
 import { Button } from "@/components/ui/button";
-import { FileUpload } from "@/components/file-upload";
+const FileUpload = dynamic(() => 
+  import("@/components/file-upload").then(res => res.FileUpload));
 import { ImageIcon, Pencil, PlusCircle } from "lucide-react";
 
 export const ImageForm = ({
@@ -27,14 +27,16 @@ export const ImageForm = ({
       values: zod.infer<typeof formImageSchema>
     ): Promise<void> => {
       try {
+        const axios = (await import("axios")).default;
         await axios.patch(
           `/api/courses/${courseId}`,
           values
         );
         toggleEdit();
-        toast.success("Course successfully edited!");
-        
+
         router.refresh();
+        const toast = (await import("react-hot-toast")).default;
+        toast.success("Course successfully edited!");
       } catch (error) {
         getErrorMessage(error);
       }

@@ -26,8 +26,8 @@ export const CourseControl = ({
         const axios = (await import("axios")).default;
         await axios.delete(`/api/courses/${courseId}`)
         
-        router.refresh();
         router.push(`/teacher/courses`);
+        router.refresh();
         const toast = (await import("react-hot-toast")).default;
         toast.success("Course successfully deleted!");
       } catch (error) {

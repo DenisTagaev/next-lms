@@ -37,7 +37,11 @@ export async function DELETE(
 
     for (const chapter of _courseAssets!.chapters) {
       if (chapter.muxData?.assetId) {
-        await mux.video.assets.delete(chapter.muxData.assetId);
+        try{     
+          await mux.video.assets.delete(chapter.muxData.assetId);
+        } catch(error) {
+          console.log("[COURSE_ID_DELETE_MUX-ASSET]", 'NO REMOTE DATA FOUND');
+        }
       }
     }
 

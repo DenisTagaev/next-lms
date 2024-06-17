@@ -39,12 +39,12 @@ export default function AddCourse(): JSX.Element {
             const response = await axios.post("/api/courses", values);
 
             router.push(`/teacher/courses/${response.data.id}`);
+            router.refresh();
             const toast = (await import("react-hot-toast")).default;
             toast.success("Course successfully created!");
         } catch (error) {
             const { getErrorMessage } = await import("@/app/(dashboard)/client-utils");
             getErrorMessage(error);
-        } finally {
         }
     };
 

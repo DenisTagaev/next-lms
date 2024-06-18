@@ -14,7 +14,7 @@ const getAuth = (): {
 }
 
 export const fileRouter = {
-  courseImage: file({ image: { maxFileSize: "10MB", maxFileCount: 1 } })
+  courseImage: file({ image: { maxFileSize: "8MB", maxFileCount: 1 } })
     .middleware(() => getAuth())
     .onUploadComplete(() => {}),
   courseAttachments: file(["text", "image", "video", "audio", "pdf"])

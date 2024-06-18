@@ -1,12 +1,13 @@
 "use client"
 import * as zod from "zod";
+import dynamic from "next/dynamic";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UseFormReturn, useForm } from "react-hook-form";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 
-import { formDescriptionSchema } from "@/app/(dashboard)/_schemas/new-course";
+import { chDescriptionSchema } from "@/app/(dashboard)/_schemas/new-course";
 import { getErrorMessage } from "@/app/(dashboard)/client-utils";
 import { IChDescriptionFormProps } from "@/lib/interfaces";
 
@@ -19,7 +20,10 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Editor } from "@/components/editor";
-import { Preview } from "@/components/preview";
+const Preview = dynamic(() => 
+  import("@/components/preview").then(res => res.Preview),
+  { ssr: false }
+);
 import { Pencil } from "lucide-react";
 
 
@@ -33,13 +37,13 @@ export const ChDescriptionForm = ({
     
     const router = useRouter();
 
-    const _form: UseFormReturn<zod.infer<typeof formDescriptionSchema>> = useForm<
-      zod.infer<typeof formDescriptionSchema>
+    const _form: UseFormReturn<zod.infer<typeof chDescriptionSchema>> = useForm<
+      zod.infer<typeof chDescriptionSchema>
     >({
-      resolver: zodResolver(formDescriptionSchema),
+      resolver: zodResolver(chDescriptionSchema),
       defaultValues: {
-        description: initialData?.description ?? ""
-      }
+        description: initialData?.description ?? "",
+      },
     });
 
     const {
@@ -48,10 +52,10 @@ export const ChDescriptionForm = ({
     }: { isSubmitting: boolean; isValid: boolean } = _form.formState;
 
     const onSubmit = async (
-      values: zod.infer<typeof formDescriptionSchema>
+      values: zod.infer<typeof chDescriptionSchema>
     ): Promise<void> => {
       try {
-        const axios = (await import("axios")).default;        
+        const axios = (await import("axios")).default;
         await axios.patch(
           `/api/courses/${courseId}/chapters/${chapterId}`,
           values
@@ -59,7 +63,7 @@ export const ChDescriptionForm = ({
         toggleEdit();
 
         const toast = (await import("react-hot-toast")).default;
-        toast.success("Chapter successfully updated!");        
+        toast.success("Chapter successfully updated!");
         router.refresh();
       } catch (error) {
         getErrorMessage(error);

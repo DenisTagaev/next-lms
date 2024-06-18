@@ -66,6 +66,17 @@ export const formDescriptionSchema = zod.object({
     ),
 });
 
+export const chDescriptionSchema = zod.object({
+  description: zod
+    .string()
+    .trim()
+    .min(1, { message: "Description is required" })
+    .refine((value) => {
+    const textContent = value.replace(/<\/?[^>]+(>|$)/g, "").trim();
+    return textContent.length > 0;
+  }, { message: "Description must contain at least one non-whitespace character" })
+});
+
 export const formImageSchema = zod.object({
   imageUrl: zod
     .string()

@@ -29,6 +29,12 @@ export const CourseSidebar = async({
             }
         }
     });
+    const _isCourseOwner: boolean = !!(await db.course.findUnique({
+      where: {
+        id: course.id,
+        userId: userId!,
+      },
+    }));
 
     return (
       <div
@@ -51,7 +57,8 @@ export const CourseSidebar = async({
               label={ch.title}
               isCompleted={!!ch.userProgress?.[0]?.isCompleted}
               courseId={course.id}
-              isLocked={!ch.isFree && !_purchase}
+              isLocked={!ch.isFree && !_purchase && !_isCourseOwner}
+              isOwnedCourse={_isCourseOwner}
             />
           ))}
         </div>

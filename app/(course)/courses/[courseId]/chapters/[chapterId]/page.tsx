@@ -69,10 +69,17 @@ export default async function ChapterIdPage({
         chapterId: params.chapterId,
         courseId: params.courseId
     });
-    checkExistence(_chapter);
     checkExistence(_course);
+    checkExistence(_chapter);
 
-    const isLocked: boolean = !_chapter?.isFree && !_purchase;
+    const _isCourseOwner: boolean = !!(await db.course.findUnique({
+      where: {
+        id: params.courseId,
+        userId: userId!,
+      },
+    }));
+    
+    const isLocked: boolean = !_chapter?.isFree && !_purchase && !_isCourseOwner;
     const completeOnFinish: boolean =
       !!_purchase && !_userProgression?.isCompleted;
 
@@ -93,25 +100,27 @@ export default async function ChapterIdPage({
               nextChapterId={_nextChapter?.id}
               playbackId={_muxData?.playbackId!}
               isLocked={isLocked}
+              isOwnedByUser={_isCourseOwner}
               completeOnFinish={completeOnFinish}
             />
           </div>
           <div>
             <div className="p-4 flex flex-col md:flex-row items-center justify-between">
               <h2 className="text-2xl font-semibold mb-2">{_chapter!.title}</h2>
-              {_purchase ? (
+              {_purchase &&
                 <CourseProgressButton
                     chapterId={params.chapterId}
                     courseId={params.courseId}
                     nextChapterId={_nextChapter?.id}
                     isCompleted={!!_userProgression?.isCompleted}
                 />
-              ) : (
+              }
+              {!_isCourseOwner &&
                 <CourseEnrollButton
                   courseId={params.courseId}
                   price={_course?.price!}
                 />
-              )}  
+              }  
             </div>
             <PurchaseNotice/>
             <Separator />

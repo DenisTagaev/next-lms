@@ -151,6 +151,7 @@ export interface ICourseSidebarItemProps {
   isCompleted: boolean;
   courseId: string;
   isLocked: boolean;
+  isOwnedCourse: boolean;
 }
 
 export interface ICourseProgressProps {
@@ -170,6 +171,7 @@ export interface ICourseVideoPlayerProps extends Omit<ICourseProgressButtonProps
   title: string;
   playbackId: string;
   isLocked: boolean;
+  isOwnedByUser: boolean;
   completeOnFinish: boolean;
 }
 

@@ -23,6 +23,7 @@ export const VideoPlayer = ({
     nextChapterId,
     playbackId,
     isLocked,
+    isOwnedByUser,
     completeOnFinish,
 }: ICourseVideoPlayerProps) => {
     const [isReady, setIsReady] = useState(false);
@@ -32,49 +33,56 @@ export const VideoPlayer = ({
     const router = useRouter();
 
     useEffect(() => {
-      const player: MuxPlayerElement | null = playerRef.current;
-
-      const handleTimeUpdate = (): void => {
-        if (player && player.duration) {
-          setProgress((player.currentTime / player.duration) * 100);
-        }
-      };
-
-      if (player) {
-        player.addEventListener("timeupdate", handleTimeUpdate);
+      if(!isOwnedByUser) {
+        const player: MuxPlayerElement | null = playerRef.current;
         
-        return (): void => {
-          player.removeEventListener("timeupdate", handleTimeUpdate);
+        const handleTimeUpdate = (): void => {
+          if (player && player.duration) {
+            setProgress((player.currentTime / player.duration) * 100);
+          }
         };
+
+        if (player) {
+          player.addEventListener("timeupdate", handleTimeUpdate);
+          
+          return (): void => {
+            player.removeEventListener("timeupdate", handleTimeUpdate);
+          };
+        }
       }
     }, [playerRef.current]);
 
     const onEnded = async (): Promise<void> => {
-      try {
-        if (completeOnFinish) {
-          const axios = (await import("axios")).default;
-          await axios.put(
-            `/api/courses/${courseId}/chapters/${chapterId}/progress`,
-            {
-              isCompleted: true,
-            }
-          );
-        }
+      
+      if(!isOwnedByUser) {
+        try {
+          if (completeOnFinish) {
+            const axios = (await import("axios")).default;
+            await axios.put(
+              `/api/courses/${courseId}/chapters/${chapterId}/progress`,
+              {
+                isCompleted: true,
+              }
+            );
+          }
 
-        if (!nextChapterId) {
-          confetti.onOpen();
+          if (!nextChapterId) {
+            confetti.onOpen();
+          }
+          
+          if (nextChapterId) {
+            router.push(`/courses/${courseId}/chapters/${nextChapterId}`);
+          }
+          
+          const toast = (await import("react-hot-toast")).default;
+          toast.success("Your progress has been updated!");
+          router.refresh();
+        } catch (error) {
+          const { getErrorMessage } = (await import("@/app/(dashboard)/client-utils"));
+          getErrorMessage(error);
         }
-        
-        if (nextChapterId) {
-          router.push(`/courses/${courseId}/chapters/${nextChapterId}`);
-        }
-        
-        const toast = (await import("react-hot-toast")).default;
-        toast.success("Your progress has been updated!");
-        router.refresh();
-      } catch (error) {
-        const { getErrorMessage } = (await import("@/app/(dashboard)/client-utils"));
-        getErrorMessage(error);
+      } else{
+        router.push(`/courses/${courseId}/chapters/${nextChapterId}`);
       }
     };
 
@@ -112,7 +120,6 @@ export const VideoPlayer = ({
               video_title: `Chapter ${title} video`,
             }}
             style={{ aspectRatio: 16 / 9 }}
-            autoPlay
           />
         )}
       </div>

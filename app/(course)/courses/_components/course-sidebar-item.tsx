@@ -17,6 +17,7 @@ const CourseSidebarItem = ({
   isCompleted,
   courseId,
   isLocked,
+  isOwnedCourse
 }: ICourseSidebarItemProps): JSX.Element => {
     const progress = useProgressStore((state) => state.progress);
 
@@ -59,7 +60,9 @@ const CourseSidebarItem = ({
           <Icon size={24} />
           {label}
         </div>
-        <Progress value={progress} variant={isCompleted? "default": "success"}/>
+        {!isOwnedCourse &&
+          <Progress value={progress} variant={isCompleted? "default": "success"}/>
+        }
         <div
           className={cn(
             "ml-auto opacity-0 border-2 border-sky-600 h-full transition-all",

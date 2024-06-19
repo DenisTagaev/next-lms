@@ -18,14 +18,14 @@ import { Eye, LayoutDashboard, Video } from "lucide-react";
 export async function generateMetadata({
   params,
 }: {
-  params: { courseId: string };
+  params: { chapterId: string };
 }): Promise<Metadata> {
   const chapter: {
     title: string;
     description: string | null;
   } | null = await db.chapter.findUnique({
     where: {
-      id: params.courseId,
+      id: params.chapterId,
     },
     select: {
       title: true,
@@ -34,7 +34,7 @@ export async function generateMetadata({
   });
 
   return {
-    title: chapter ? `${chapter.title}` : "Chapter Not Found",
+    title: chapter?.title ?? "Chapter Not Found",
     description: chapter?.description ?? "Chapter details and data edit page",
   };
 }

@@ -19,7 +19,7 @@ export const Sidebar = (): JSX.Element => {
         className="h-full border-r flex flex-col 
             overflow-y-auto bg-slate-200 dark:bg-slate-800 shadow-sm"
       >
-        <div className="p-6">
+        <div className="h-[80px] p-6">
           <Logo />
         </div>
         <div className="flex flex-col w-full">

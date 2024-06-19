@@ -85,8 +85,10 @@ export const AttachmentForm = ({
                 {initialData.attachments?.map((file: Attachment) => (
                   <li
                     key={file.id}
-                    className="flex items-center p-2 w-full bg-sky-100
-                  border-sky-600 border rounded-sm"
+                    className="flex items-center p-2 w-full 
+                      bg-sky-100 dark:bg-slate-800
+                      dark:text-sky-200 border-sky-600 
+                      border rounded-sm"
                   >
                     <File className="h-4 w-4 mr-2 flex-shrink-0" />
                     <span className="line-clamp-1">{file.name}</span>

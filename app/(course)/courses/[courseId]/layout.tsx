@@ -7,6 +7,7 @@ import type { Metadata } from "next";
 import { checkExistence } from "@/app/(dashboard)/client-utils";
 
 import { Loading } from "@/components/loading";
+const Footer = dynamic(() => import("@/components/footer").then(res => res.Footer));
 
 const CourseSidebar = dynamic(() =>
   import("../_components/course-sidebar").then((res) => res.CourseSidebar)
@@ -88,6 +89,7 @@ const CourseLayout = async ({
       <section className="h-full pt-[80px] md:pl-80">
         <Suspense fallback={<Loading />}>{children}</Suspense>
       </section>
+      <Footer location="course"/>
     </>
   );
 };

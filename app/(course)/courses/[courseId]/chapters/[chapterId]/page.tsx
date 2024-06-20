@@ -71,8 +71,6 @@ export default async function ChapterIdPage({
     });
     checkExistence(_course);
     checkExistence(_chapter);
-
-    console.log("MUX_DATA", _muxData);
     
     const _isCourseOwner: boolean = !!(await db.course.findUnique({
       where: {

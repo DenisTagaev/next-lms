@@ -11,12 +11,13 @@ export const CourseNavbar = ({
   course,
   progress
 }: ICourseNavbarProps): JSX.Element => {
+
   return (
     <div
       className="p-4 border-b h-full flex items-center
-         bg-white shadow-sm dark:bg-slate-800/75"
+         bg-slate-100 dark:bg-black/75 shadow-sm"
     >
-      <BackButton path="/" origin="dashboard"/>
+      <BackButton path="/" origin="dashboard" />
       <MobileSidebar course={course} progress={progress} />
       <NavbarRoutes />
     </div>

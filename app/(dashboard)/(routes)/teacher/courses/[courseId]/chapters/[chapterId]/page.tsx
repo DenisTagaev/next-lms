@@ -83,7 +83,7 @@ export default async function ChapterIdPage({
             <div className="flex items-center justify-between w-full">
               <div className="flex flex-col gap-y-2">
                 <h2 className="text-2xl font-medium">
-                  Chapter {_chapter!.position}
+                  Chapter {_chapter!.position + 1}
                 </h2>
                 <span className="text-slate-600 dark:text-slate-400">Complete all fields {completionStatus}</span>
               </div>

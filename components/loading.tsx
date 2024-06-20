@@ -1,9 +1,8 @@
 export const Loading = (): JSX.Element => {
     return (
       <div className="h-dvh relative">
-        <div
+        <output
           aria-label="Loading..."
-          role="status"
           className="inset-0 absolute top-2/4 -translate-y-1/2 flex items-center justify-center space-x-2"
         >
           <svg
@@ -86,7 +85,7 @@ export const Loading = (): JSX.Element => {
           <span className="text-4xl font-medium text-gray-500 dark:text-gray-200">
             Loading...
           </span>
-        </div>
+        </output>
       </div>
     );
 }

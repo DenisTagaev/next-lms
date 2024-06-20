@@ -1,5 +1,5 @@
 import * as zod from "zod"
-const allowedCharactersRegex = /^[a-zA-Z0-9\s.,'!?"-]+$/;
+const allowedCharactersRegex = /^[a-zA-Z0-9\s.,'!?:"-]+$/;
 
 const disallowedPatterns = [
   /<script.*?>.*?<\/script.*?>/gi, // Prevent script tags

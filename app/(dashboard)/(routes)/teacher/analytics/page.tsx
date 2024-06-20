@@ -43,9 +43,11 @@ export default async function AnalyticsPage (): Promise<JSX.Element> {
                     shouldFormat
                 />
             </div>
-            <Chart
-                data={data}
-            />
+            {totalSales > 0 && 
+                <Chart
+                    data={data}
+                />
+            }
         </section>
     )
 }

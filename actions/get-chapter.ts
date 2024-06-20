@@ -45,29 +45,36 @@ export const getChapter = async ({
 
     if(!_chapter || !_course) throw new Error(`Missing data`);
 
-    if(_purchase || _chapter.isFree) {
-        _attachments = await db.attachment.findMany({
-            where: {
-                courseId
-            }
-        });
-        _muxData = await db.muxData.findUnique({
-            where: {
-                chapterId
-            }
-        });
-        _nextChapter = await db.chapter.findFirst({
-            where: {
-                courseId,
-                isPublished: true,
-                position: {
-                    gt: _chapter?.position
-                }
-            },
-            orderBy: {
-                position: "asc"
-            }
-        });
+    const _isCourseOwner: boolean = !!(await db.course.findUnique({
+      where: {
+        id: courseId,
+        userId: userId,
+      },
+    }));
+
+    if (_purchase || _chapter.isFree || _isCourseOwner) {
+      _attachments = await db.attachment.findMany({
+        where: {
+          courseId,
+        },
+      });
+      _muxData = await db.muxData.findUnique({
+        where: {
+          chapterId,
+        },
+      });
+      _nextChapter = await db.chapter.findFirst({
+        where: {
+          courseId,
+          isPublished: true,
+          position: {
+            gt: _chapter?.position,
+          },
+        },
+        orderBy: {
+          position: "asc",
+        },
+      });
     }
 
     const _userProgression = await db.userProgression.findUnique({

@@ -8,7 +8,7 @@ interface BannerProps extends VariantProps<typeof bannerVariance> {
 }
 
 const bannerVariance = cva(
-  "border text-center p-4 text-sm flex items-center w-full",
+  "border text-center p-3 text-sm flex items-center w-full",
   {
     variants: {
       variant: {

@@ -72,6 +72,8 @@ export default async function ChapterIdPage({
     checkExistence(_course);
     checkExistence(_chapter);
 
+    console.log("MUX_DATA", _muxData);
+    
     const _isCourseOwner: boolean = !!(await db.course.findUnique({
       where: {
         id: params.courseId,
@@ -115,7 +117,7 @@ export default async function ChapterIdPage({
                     isCompleted={!!_userProgression?.isCompleted}
                 />
               }
-              {!_isCourseOwner &&
+              {!_isCourseOwner && !_purchase &&
                 <CourseEnrollButton
                   courseId={params.courseId}
                   price={_course?.price!}
